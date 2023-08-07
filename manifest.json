@@ -1,0 +1,29 @@
+{
+    "manifest_version": 3,
+    "type": "extension",
+    "name": "复读姬",
+    "slug": "repeatmsg",
+    "description": "复读姬",
+    "version": "0.1.0",
+    "thumbnail": "./icon.png",
+    "author": {
+        "name": "Night-stars-1",
+        "link": "https://github.com/Night-stars-1"
+    },
+    "repository": {
+        "repo": "LiteLoaderQQNT-Plugin-RepeatMsg",
+        "branch": "main",
+        "use_release": {
+            "tag": "latest",
+            "name": "LiteLoaderQQNT-Plugin-RepeatMsg.zip"
+        }
+    },
+    "platform": [
+        "win32",
+        "linux",
+        "darwin"
+    ],
+    "injects": {
+        "renderer": "./src/renderer.js"
+    }
+}

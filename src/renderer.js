@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-08 00:31:15
+ * @LastEditTime: 2023-08-08 01:02:51
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -36,7 +36,8 @@ function output(...args) {
 function addrepeatmsg_menu(event) {
     let { target } = event
     const { classList } = target
-    if (classList[0] && ["text-normal", "ark-view-message", "image-content", "text-link", "message-content"].includes(classList[0])) {
+    // ["text-normal", "ark-view-message", "image-content", "text-link", "message-content"].includes(classList[0])
+    if (classList[0] && qContextMenu.innerText.includes("转发")) {
         // 插入分隔线
         qContextMenu.insertAdjacentHTML('beforeend', separatorHTML)
         qContextMenu.insertAdjacentHTML('beforeend', repeatmsgHTML)
@@ -57,7 +58,6 @@ function addrepeatmsg_menu(event) {
             } else {
                 msgIds = msgIds.split("-")[0];
             }
-
             const peer = await window.LLAPI.getPeer()
             await window.LLAPI.forwardMessage(peer, peer, [msgIds])
             // 关闭右键菜单

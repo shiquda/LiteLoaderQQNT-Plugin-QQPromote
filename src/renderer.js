@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-07 23:33:12
+ * @LastEditTime: 2023-08-07 23:56:44
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -36,7 +36,7 @@ function output(...args) {
 function addrepeatmsg_menu(event) {
     let { target } = event
     const { classList } = target
-    if (classList[0]) {
+    if (classList[0] && !qContextMenu.querySelector('#repeatmsg')) {
         // 插入分隔线
         qContextMenu.insertAdjacentHTML('beforeend', separatorHTML)
         qContextMenu.insertAdjacentHTML('beforeend', repeatmsgHTML)

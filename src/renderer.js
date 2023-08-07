@@ -36,8 +36,7 @@ function output(...args) {
 function addrepeatmsg_menu(event) {
     let { target } = event
     const { classList } = target
-    // ["text-normal", "ark-view-message", "image-content", "text-link", "message-content"].includes(classList[0])
-    if (classList[0] && qContextMenu.innerText.includes("转发")) {
+    if (classList[0] && qContextMenu.innerText.includes("转发") && ["text-normal", "ark-view-message", "image-content", "text-link", "message-content"].includes(classList[0])) {
         // 插入分隔线
         qContextMenu.insertAdjacentHTML('beforeend', separatorHTML)
         qContextMenu.insertAdjacentHTML('beforeend', repeatmsgHTML)

@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-07 23:18:30
+ * @LastEditTime: 2023-08-07 23:33:12
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -12,15 +12,6 @@ const separatorHTML = `
 <div class="q-context-menu-separator" role="separator"></div>
 `
 const repeatmsgHTML = `
-<a
-  id="repeatmsg"
-  class="q-context-menu-item q-context-menu-item--normal"
-  aria-disabled="false"
-  role="menuitem"
-  tabindex="-1"
->
-  <span class="q-context-menu-item__text">+1</span>
-</a>
 <a 
  id="repeatmsg"
  class="q-context-menu-item q-context-menu-item--normal" 

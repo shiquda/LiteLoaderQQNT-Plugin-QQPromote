@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-08 01:02:51
+ * @LastEditTime: 2023-08-08 02:12:08
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -37,6 +37,7 @@ function addrepeatmsg_menu(event) {
     let { target } = event
     const { classList } = target
     if (classList[0] && qContextMenu.innerText.includes("转发") && ["text-normal", "ark-view-message", "image-content", "text-link", "message-content"].includes(classList[0])) {
+        qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
         // 插入分隔线
         qContextMenu.insertAdjacentHTML('beforeend', separatorHTML)
         qContextMenu.insertAdjacentHTML('beforeend', repeatmsgHTML)
@@ -66,6 +67,7 @@ function addrepeatmsg_menu(event) {
 }
 
 async function onLoad() {
+
     const observer = new MutationObserver((mutationsList, observer) => {
         // 遍历每个变化
         for (const mutation of mutationsList) {

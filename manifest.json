@@ -12,11 +12,7 @@
     },
     "repository": {
         "repo": "LiteLoaderQQNT-Plugin-RepeatMsg",
-        "branch": "main",
-        "use_release": {
-            "tag": "latest",
-            "name": "LiteLoaderQQNT-Plugin-RepeatMsg.zip"
-        }
+        "branch": "main"
     },
     "platform": [
         "win32",

@@ -33,7 +33,7 @@ function output(...args) {
     console.log("\x1b[32m[重读姬-渲染]\x1b[0m", ...args);
 }
 
-function addrepeatmsg_menu(event, target) {
+function addrepeatmsg_menu(event, target, msgIds) {
     // ["text-normal", "ark-view-message", "image-content", "text-link", "message-content"].includes(classList[0])
     if (!qContextMenu.innerText.includes("+1")) {
         qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
@@ -42,21 +42,6 @@ function addrepeatmsg_menu(event, target) {
         qContextMenu.insertAdjacentHTML('beforeend', repeatmsgHTML)
         const repeatmsg = qContextMenu.querySelector('#repeatmsg')
         repeatmsg.addEventListener('click', async () => {
-            let msgIds;
-            // 尝试10次获取msgIds
-            for (let i = 0; i < 10; i++) {
-                msgIds = target.id;
-                if (!msgIds) {
-                    target = target.offsetParent;
-                } else {
-                    break; // 获取到msgIds退出循环
-                }
-            }
-            if (msgIds.includes("ark-view-ml-root-")) {
-                msgIds = msgIds.replace("ark-view-ml-root-", "");
-            } else {
-                msgIds = msgIds.split("-")[0];
-            }
             const peer = await window.LLAPI.getPeer()
             await window.LLAPI.forwardMessage(peer, peer, [msgIds])
             // 关闭右键菜单
@@ -73,7 +58,7 @@ async function onLoad() {
     document.head.appendChild(script);
     const Interval = setInterval(() => {
         if (window.location.href.indexOf("#/main/message") == -1 && window.location.href.indexOf("#/chat/") == -1) return;
-        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.0.2")) {
+        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.0.3")) {
             Swal.fire('LLAPI版本过低，请安装最新版', '该提示并非QQ官方提示，请不要发给官方群', 'warning');
         }
         clearInterval(Interval);

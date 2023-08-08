@@ -13,15 +13,16 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Install zip
-      run: sudo apt-get install -y zip
-
-    - name: Compress files
-      run: zip -r test.zip ./
+      
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+      
+    - name: Cp files
+      run: cp ./ LiteLoaderQQNT-Plugin-RepeatMsg
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: test
-        path: test.zip
+        name: LiteLoaderQQNT-Plugin-RepeatMsg
+        path: LiteLoaderQQNT-Plugin-RepeatMsg

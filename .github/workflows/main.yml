@@ -1,0 +1,26 @@
+name: Compress Files
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  compress-files:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install zip
+      run: sudo apt-get install -y zip
+
+    - name: Compress files
+      run: zip -r test.zip ./
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: compressed-files
+        path: compressed-files.zip

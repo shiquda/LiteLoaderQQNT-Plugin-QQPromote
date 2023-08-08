@@ -19,7 +19,7 @@ jobs:
         node-version: 16.x
       
     - name: Cp files
-      run: cp ./ LiteLoaderQQNT-Plugin-RepeatMsg
+      run: cp . LiteLoaderQQNT-Plugin-RepeatMsg
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2

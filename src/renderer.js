@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-08 02:55:07
+ * @LastEditTime: 2023-08-08 18:09:17
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -33,11 +33,9 @@ function output(...args) {
     console.log("\x1b[32m[重读姬-渲染]\x1b[0m", ...args);
 }
 
-function addrepeatmsg_menu(event) {
-    let { target } = event
-    const { classList } = target
+function addrepeatmsg_menu(event, target) {
     // ["text-normal", "ark-view-message", "image-content", "text-link", "message-content"].includes(classList[0])
-    if (classList[0] && qContextMenu.innerText.includes("转发") && !qContextMenu.innerText.includes("+1")) {
+    if (!qContextMenu.innerText.includes("+1")) {
         qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
         // 插入分隔线
         qContextMenu.insertAdjacentHTML('beforeend', separatorHTML)
@@ -68,31 +66,19 @@ function addrepeatmsg_menu(event) {
 }
 
 async function onLoad() {
-
-    const observer = new MutationObserver((mutationsList, observer) => {
-        // 遍历每个变化
-        for (const mutation of mutationsList) {
-            const { target } = mutation
-            const { classList } = target
-            // 检查是否有新元素添加
-            if (mutation.type === 'childList' && classList[0]) {
-                // 遍历每个新增的节点
-                mutation.addedNodes.forEach(node => {
-                    // 判断节点是否为元素节点
-                    if (node.nodeType === Node.ELEMENT_NODE) {
-                        if (node.querySelector('.image.pic-element')) {
-                            node.querySelector('.image.pic-element').addEventListener('contextmenu', addrepeatmsg_menu)
-                        }
-                        if (node.querySelector('.image.market-face-element')) {
-                            node.querySelector('.image.market-face-element').addEventListener('contextmenu', addrepeatmsg_menu)
-                        }
-                    }
-                });
-            }
+    const script = document.createElement("script");
+    script.id = "sweetalert2"
+    script.defer = true;
+    script.src = "https://cdn.jsdelivr.net/npm/sweetalert2@10";
+    document.head.appendChild(script);
+    const Interval = setInterval(() => {
+        if (window.location.href.indexOf("#/main/message") == -1 && window.location.href.indexOf("#/chat/") == -1) return;
+        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.0.2")) {
+            Swal.fire('LLAPI版本过低，请安装最新版', '该提示并非QQ官方提示，请不要发给官方群', 'warning');
         }
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-    document.addEventListener('contextmenu', addrepeatmsg_menu)
+        clearInterval(Interval);
+    }, 1000);
+    window.LLAPI.on("context-msg-menu", addrepeatmsg_menu)
 }
 
 

@@ -4,8 +4,7 @@
     "name": "复读姬",
     "slug": "repeatmsg",
     "description": "复读姬",
-    "version": "1.0.2",
-    "thumbnail": "./icon.png",
+    "version": "1.0.3",
     "author": {
         "name": "Night-stars-1",
         "link": "https://github.com/Night-stars-1"

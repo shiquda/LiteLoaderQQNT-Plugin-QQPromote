@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-09 03:23:28
+ * @LastEditTime: 2023-08-10 18:22:17
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -39,11 +39,8 @@ function output(...args) {
 function addrepeatmsg_menu(event, target, msgIds) {
     const { classList } = target
     // ["text-normal", "ark-view-message", "image-content", "text-link", "message-content"].includes(classList[0])
-    if (!qContextMenu.innerText.includes("+1")) {
-        qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
-        // 插入分隔线
-        qContextMenu.insertAdjacentHTML('beforeend', separatorHTML)
-        qContextMenu.insertAdjacentHTML('beforeend', repeatmsgHTML)
+    if (qContextMenu.innerText.includes("+1")) {
+        //qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
         const repeatmsg = qContextMenu.querySelector('#repeatmsg')
         repeatmsg.addEventListener('click', async () => {
             const peer = await window.LLAPI.getPeer()
@@ -60,6 +57,12 @@ function addrepeatmsg_menu(event, target, msgIds) {
     }
 }
 
+function abc(qContextMenu) {
+    // 插入分隔线
+    qContextMenu.insertAdjacentHTML('beforeend', separatorHTML)
+    qContextMenu.insertAdjacentHTML('beforeend', repeatmsgHTML)
+}
+
 async function onLoad() {
     const script = document.createElement("script");
     script.id = "sweetalert2"
@@ -68,11 +71,12 @@ async function onLoad() {
     document.head.appendChild(script);
     const Interval = setInterval(() => {
         if (window.location.href.indexOf("#/main/message") == -1 && window.location.href.indexOf("#/chat/") == -1) return;
-        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.0.5")) {
+        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.0.7")) {
             Swal.fire('LLAPI版本过低，请安装最新版', '该提示并非QQ官方提示，请不要发给官方群', 'warning');
         }
         clearInterval(Interval);
     }, 1000);
+    window.LLAPI.add_qmenu(abc)
     window.LLAPI.on("context-msg-menu", addrepeatmsg_menu)
 }
 

@@ -1,0 +1,14 @@
+{
+  "name": "liteloaderqqnt-plugin-repeatmsg",
+  "version": "1.0.0",
+  "description": "该插件需要安装前置插件[LLAPI](https://github.com/Night-stars-1/LiteLoaderQQNT-Plugin-LLAPI)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0"
+  }
+}

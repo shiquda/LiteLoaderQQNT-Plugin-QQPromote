@@ -1,0 +1,13 @@
+.translate-input:focus {
+  padding-left: 5px;
+  background-color: var(--overlay_active);
+}
+
+.translate-input {
+  align-self: normal;
+  flex: 1;
+  border-radius: 4px;
+  margin-right: 16px;
+  transition: all 100ms ease-out;
+}
+

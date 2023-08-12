@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-10 18:22:17
+ * @LastEditTime: 2023-08-12 23:30:31
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -28,12 +28,15 @@ const repeatmsgHTML = `
   <!---->
 </a>
 `
-const qtab_sticker = `
-<div class="tabs-container-item" data-v-c829fb74="" id="custom_sticker"><i class="q-icon" title="我的收藏" is-bold="true" data-v-f2dd5ac7="" data-v-c829fb74="" style="--5fa79aa1: var(--icon_primary); --6ac3901c: 24px;"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="path-for-mask-18740" fill="white"><path fill-rule="evenodd" clip-rule="evenodd" d="M3.67368 4.75872C5.90524 2.41376 9.52333 2.41376 11.7549 4.75872L12 5.01628L12.2451 4.75872C14.4767 2.41376 18.0948 2.41376 20.3263 4.75872C22.5579 7.10368 22.5579 10.9056 20.3263 13.2506L12.7244 21.2388C12.3303 21.653 11.6697 21.653 11.2756 21.2388L3.67368 13.2506C1.44211 10.9056 1.44211 7.10368 3.67368 4.75872Z"></path></mask><path d="M11.7549 4.75872L12.8415 3.72466L12.8415 3.72466L11.7549 4.75872ZM3.67368 4.75872L4.76028 5.79278L4.76028 5.79278L3.67368 4.75872ZM12 5.01628L10.9134 6.05034L12 7.19217L13.0866 6.05034L12 5.01628ZM12.2451 4.75872L13.3317 5.79278L13.3317 5.79278L12.2451 4.75872ZM20.3263 4.75872L21.4129 3.72466L21.4129 3.72466L20.3263 4.75872ZM20.3263 13.2506L21.4129 14.2846L21.4129 14.2846L20.3263 13.2506ZM3.67368 13.2506L4.76028 12.2165L4.76028 12.2165L3.67368 13.2506ZM11.2756 21.2388L10.189 22.2728L11.2756 21.2388ZM12.8415 3.72466C10.0187 0.758447 5.40984 0.758447 2.58707 3.72466L4.76028 5.79278C6.40064 4.06907 9.02793 4.06907 10.6683 5.79278L12.8415 3.72466ZM13.0866 3.98222L12.8415 3.72466L10.6683 5.79278L10.9134 6.05034L13.0866 3.98222ZM11.1585 3.72466L10.9134 3.98222L13.0866 6.05034L13.3317 5.79278L11.1585 3.72466ZM21.4129 3.72466C18.5902 0.758447 13.9813 0.758447 11.1585 3.72466L13.3317 5.79278C14.9721 4.06907 17.5994 4.06907 19.2397 5.79278L21.4129 3.72466ZM21.4129 14.2846C24.1957 11.3605 24.1957 6.64882 21.4129 3.72466L19.2397 5.79278C20.9201 7.55855 20.9201 10.4508 19.2397 12.2165L21.4129 14.2846ZM2.58707 3.72466C-0.195689 6.64882 -0.195689 11.3605 2.58707 14.2846L4.76028 12.2165C3.07991 10.4508 3.07991 7.55855 4.76028 5.79278L2.58707 3.72466ZM13.811 22.2728L21.4129 14.2846L19.2397 12.2165L11.6378 20.2047L13.811 22.2728ZM2.58707 14.2846L10.189 22.2728L12.3622 20.2047L4.76028 12.2165L2.58707 14.2846ZM11.6378 20.2047C11.8349 19.9976 12.1651 19.9976 12.3622 20.2047L10.189 22.2728C11.1743 23.3083 12.8257 23.3083 13.811 22.2728L11.6378 20.2047Z" fill="currentColor" mask="url(#path-for-mask-18740)"></path></svg></i></div>
-`
+import { createApp, ref, reactive, watch } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+let translate_hover
 
 function output(...args) {
-    console.log("\x1b[32m[重读姬-渲染]\x1b[0m", ...args);
+    console.log("\x1b[32m[QQ增强-渲染]\x1b[0m", ...args);
+}
+
+async function setSettings(content) {
+    await qqpromote.setSettings(JSON.stringify(content))
 }
 
 function addrepeatmsg_menu(event, target, msgIds) {
@@ -43,13 +46,13 @@ function addrepeatmsg_menu(event, target, msgIds) {
         //qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
         const repeatmsg = qContextMenu.querySelector('#repeatmsg')
         repeatmsg.addEventListener('click', async () => {
-            const peer = await window.LLAPI.getPeer()
+            const peer = await LLAPI.getPeer()
             if (classList[0] == "ptt-element__progress") {
-                const msg = await window.LLAPI.getPreviousMessages(peer, 1, msgIds.toString())
+                const msg = await LLAPI.getPreviousMessages(peer, 1, msgIds.toString())
                 const elements = msg[0].elements
-                await window.LLAPI.sendMessage(peer, elements)
+                await LLAPI.sendMessage(peer, elements)
             } else {
-                await window.LLAPI.forwardMessage(peer, peer, [msgIds])
+                await LLAPI.forwardMessage(peer, peer, [msgIds])
             }
             // 关闭右键菜单
             qContextMenu.remove()
@@ -59,11 +62,13 @@ function addrepeatmsg_menu(event, target, msgIds) {
 
 function abc(qContextMenu) {
     // 插入分隔线
+    //qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
     qContextMenu.insertAdjacentHTML('beforeend', separatorHTML)
     qContextMenu.insertAdjacentHTML('beforeend', repeatmsgHTML)
 }
 
 async function onLoad() {
+    const setting_data = await qqpromote.getSettings()
     const script = document.createElement("script");
     script.id = "sweetalert2"
     script.defer = true;
@@ -71,16 +76,108 @@ async function onLoad() {
     document.head.appendChild(script);
     const Interval = setInterval(() => {
         if (window.location.href.indexOf("#/main/message") == -1 && window.location.href.indexOf("#/chat/") == -1) return;
-        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.0.7")) {
+        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.0.9")) {
             Swal.fire('LLAPI版本过低，请安装最新版', '该提示并非QQ官方提示，请不要发给官方群', 'warning');
         }
         clearInterval(Interval);
     }, 1000);
-    window.LLAPI.add_qmenu(abc)
-    window.LLAPI.on("context-msg-menu", addrepeatmsg_menu)
+    LLAPI.add_qmenu(abc)
+    LLAPI.on("context-msg-menu", addrepeatmsg_menu)
+    if (setting_data) {
+        LLAPI.on("dom-up-messages", (node) => {
+            const msgTime = node?.firstElementChild?.__VUE__?.[0]?.props?.msgRecord?.msgTime;
+            const date = new Date(msgTime * 1000);
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            const msg_content = node.querySelector(".msg-content-container")
+            const time_div = document.createElement("div")
+            time_div.style = `
+            position:absolute;
+            right:3px;
+            bottom:0px;
+            color: #c3e334;
+            font-size: 70%;
+            `
+            time_div.textContent = `${hours}:${String(minutes).padStart(2, '0')}`
+            const msg_text = node.querySelector(".text-normal")
+            if (msg_text) {
+                function translate(event) {
+                    const text = event.target.textContent
+                    translate_hover = setInterval(async () => {
+                        const setting_data = await qqpromote.getSettings()
+                        const SECRET_ID = setting_data.setting.translate_SECRET_ID
+                        const SECRET_KEY = setting_data.setting.translate_SECRET_KEY
+                        const translate_data = await qqpromote.translate(text, SECRET_ID, SECRET_KEY)
+                        const timeEl = document.createElement("div");
+                        timeEl.innerText = translate_data?.TargetText
+                        event.target.closest(".message-content.mix-message__inner").appendChild(timeEl)
+                        clearInterval(translate_hover);
+                        msg_text.removeEventListener("mouseover", translate);
+                    }, 1000);
+                }
+                msg_text.addEventListener("mouseover", translate);
+                
+                msg_text.addEventListener("mouseout", (event) => {
+                    if (translate_hover) {
+                        clearInterval(translate_hover);
+                    }
+                });
+                //msg_text.textContent+=" ".repeat(5)
+            }
+            msg_content.appendChild(time_div)
+        })
+    }
 }
 
+async function onConfigView(view){
+    const plugin_path = LiteLoader.plugins.qqpromote.path.plugin;
+    const html_file_path = `llqqnt://local-file/${plugin_path}/src/config/view.html`;
+    const css_file_path = `llqqnt://local-file/${plugin_path}/src/config/view.css`;
+    const setting_data = await qqpromote.getSettings()
+    // 插入设置页
+    const htmlText = await (await fetch(html_file_path)).text()
+    view.insertAdjacentHTML('afterbegin', htmlText)
+    // 插入设置页样式
+    const link = document.createElement('link')
+    link.rel = 'stylesheet'
+    link.href = css_file_path
+    document.head.appendChild(link)
+    function setting_vue(node) {
+        const htmlicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v1.5A1.75 1.75 0 0 1 14.25 6H1.75A1.75 1.75 0 0 1 0 4.25ZM1.75 7a.75.75 0 0 1 .75.75v5.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-5.5a.75.75 0 0 1 1.5 0v5.5A1.75 1.75 0 0 1 13.25 15H2.75A1.75 1.75 0 0 1 1 13.25v-5.5A.75.75 0 0 1 1.75 7Zm0-4.5a.25.25 0 0 0-.25.25v1.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-1.5a.25.25 0 0 0-.25-.25ZM6.25 8h3.5a.75.75 0 0 1 0 1.5h-3.5a.75.75 0 0 1 0-1.5Z"></path></svg>`
+        node.querySelector(".q-icon.icon").insertAdjacentHTML('afterbegin', htmlicon)
+        node.addEventListener("click", () => {
+            if (!document.querySelector("#qqpromote")?.__vue_app__) {
+                const app = createApp({
+                    setup() {
+                        if (!setting_data.setting) {
+                            setting_data.setting = {
+                                repeatmsg: true,
+                                translate: true,
+                                translate_SECRET_ID: 'SECRET_ID',
+                                translate_SECRET_KEY: 'SECRET_KEY'
+                            }
+                        }
+                        const setting_obj = reactive(setting_data.setting)
+                        watch(setting_obj, (newValue, oldValue) => {
+                            setting_data.setting = newValue
+                            setSettings(setting_data)
+                        })
+    
+                        return setting_obj
+                    }
+                })
+                app.mount('#qqpromote')
+            }
+        })
+    }
+    document.querySelectorAll(".nav-item.liteloader").forEach(node => {
+        if (node.textContent === "QQ增强") {
+            setting_vue(node)
+        }
+    })
+}
 
 export {
-    onLoad
+    onLoad,
+    onConfigView
 }

@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-12 23:30:31
+ * @LastEditTime: 2023-08-13 17:33:50
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -68,7 +68,6 @@ function abc(qContextMenu) {
 }
 
 async function onLoad() {
-    const setting_data = await qqpromote.getSettings()
     const script = document.createElement("script");
     script.id = "sweetalert2"
     script.defer = true;
@@ -83,8 +82,9 @@ async function onLoad() {
     }, 1000);
     LLAPI.add_qmenu(abc)
     LLAPI.on("context-msg-menu", addrepeatmsg_menu)
-    if (setting_data) {
-        LLAPI.on("dom-up-messages", (node) => {
+    LLAPI.on("dom-up-messages", async (node) => {
+        const setting_data = await qqpromote.getSettings()
+        if (setting_data?.setting?.show_time) {
             const msgTime = node?.firstElementChild?.__VUE__?.[0]?.props?.msgRecord?.msgTime;
             const date = new Date(msgTime * 1000);
             const hours = date.getHours();
@@ -99,34 +99,37 @@ async function onLoad() {
             font-size: 70%;
             `
             time_div.textContent = `${hours}:${String(minutes).padStart(2, '0')}`
-            const msg_text = node.querySelector(".text-normal")
-            if (msg_text) {
-                function translate(event) {
-                    const text = event.target.textContent
-                    translate_hover = setInterval(async () => {
-                        const setting_data = await qqpromote.getSettings()
-                        const SECRET_ID = setting_data.setting.translate_SECRET_ID
-                        const SECRET_KEY = setting_data.setting.translate_SECRET_KEY
-                        const translate_data = await qqpromote.translate(text, SECRET_ID, SECRET_KEY)
-                        const timeEl = document.createElement("div");
-                        timeEl.innerText = translate_data?.TargetText
-                        event.target.closest(".message-content.mix-message__inner").appendChild(timeEl)
-                        clearInterval(translate_hover);
-                        msg_text.removeEventListener("mouseover", translate);
-                    }, 1000);
-                }
-                msg_text.addEventListener("mouseover", translate);
-                
-                msg_text.addEventListener("mouseout", (event) => {
-                    if (translate_hover) {
-                        clearInterval(translate_hover);
-                    }
-                });
-                //msg_text.textContent+=" ".repeat(5)
-            }
             msg_content.appendChild(time_div)
-        })
-    }
+        }
+        const msg_text = node.querySelector(".text-normal")
+        if (msg_text) {
+            function translate(event) {
+                const text = event.target.textContent
+                translate_hover = setInterval(async () => {
+                    const SECRET_ID = setting_data.setting.translate_SECRET_ID
+                    const SECRET_KEY = setting_data.setting.translate_SECRET_KEY
+                    const translate_data = await qqpromote.translate(text, SECRET_ID, SECRET_KEY)
+                    const timeEl = document.createElement("div");
+                    timeEl.innerText = translate_data?.TargetText
+                    event.target.closest(".message-content.mix-message__inner").appendChild(timeEl)
+                    clearInterval(translate_hover);
+                    msg_text.removeEventListener("mouseover", translate);
+                }, 1000);
+            }
+            if (setting_data.setting.translate) {
+                msg_text.addEventListener("mouseover", translate);
+            } else {
+                msg_text.removeEventListener("mouseover", translate);
+            }
+            
+            msg_text.addEventListener("mouseout", (event) => {
+                if (translate_hover) {
+                    clearInterval(translate_hover);
+                }
+            });
+            //msg_text.textContent+=" ".repeat(5)
+        }
+    })
 }
 
 async function onConfigView(view){
@@ -151,8 +154,9 @@ async function onConfigView(view){
                     setup() {
                         if (!setting_data.setting) {
                             setting_data.setting = {
-                                repeatmsg: true,
-                                translate: true,
+                                repeatmsg: false,
+                                translate: false,
+                                show_time: false,
                                 translate_SECRET_ID: 'SECRET_ID',
                                 translate_SECRET_KEY: 'SECRET_KEY'
                             }

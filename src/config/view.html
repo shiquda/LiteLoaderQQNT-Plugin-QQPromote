@@ -9,6 +9,16 @@
         </div>
     </div>
     <hr class="horizontal-dividing-line">
+    <div class="vertical-list-item" @click="show_time = !show_time">
+        <div>
+            <h2>开启消息显示时间</h2>
+            <span class="secondary-text">开启消息显示时间</span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': show_time }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
+    <hr class="horizontal-dividing-line">
     <div class="vertical-list-item" @click="translate = !translate">
         <div>
             <h2>开启消息翻译</h2>
@@ -19,9 +29,9 @@
         </div>
     </div>
     <div class="vertical-list-item" v-if="translate">
-        <input class="translate-input" v-model="translate_SECRET_ID">
+        <input class="translate-input" spellcheck="false" v-model="translate_SECRET_ID">
     </div>
     <div class="vertical-list-item" v-if="translate">
-        <input class="translate-input" v-model="translate_SECRET_KEY">
+        <input class="translate-input" spellcheck="false" v-model="translate_SECRET_KEY">
     </div>
 </div>

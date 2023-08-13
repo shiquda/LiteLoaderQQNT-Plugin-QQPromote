@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-12 23:06:17
+ * @LastEditTime: 2023-08-13 17:27:15
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -52,23 +52,40 @@ async function post(url, data, config){
     return response
 }
 
+function checkAndCompleteKeys(json1, json2, check_key) {
+    const keys1 = Object.keys(json1[check_key]);
+    const keys2 = Object.keys(json2[check_key]);
+
+    for (const key of keys2) {
+        if (!keys1.includes(key)) {
+            json1[check_key][key] = json2[check_key][key]; // 补全缺少的 key
+        }
+    }
+    
+    return json1;
+}
+
 function onLoad(plugin, liteloader) {
     const pluginDataPath = plugin.path.data;
     const settingsPath = path.join(pluginDataPath, "settings.json");
-
+    const defaultSettings = {
+        "setting": {
+            repeatmsg: false,
+            translate: false,
+            show_time: false,
+            translate_SECRET_ID: 'SECRET_ID',
+            translate_SECRET_KEY: 'SECRET_KEY'
+        }
+    }
     //设置文件判断
     if (!fs.existsSync(pluginDataPath)) {
         fs.mkdirSync(pluginDataPath, { recursive: true });
     }
     if (!fs.existsSync(settingsPath)) {
-        fs.writeFileSync(settingsPath, JSON.stringify({
-            "setting": {
-                repeatmsg: true,
-                translate: true,
-                translate_SECRET_ID: 'SECRET_ID',
-                translate_SECRET_KEY: 'SECRET_KEY'
-            }
-        }));
+        fs.writeFileSync(settingsPath, JSON.stringify(defaultSettings));
+    } else {
+        const data = fs.readFileSync(settingsPath, "utf-8");
+        const config = checkAndCompleteKeys(JSON.parse(data), defaultSettings, "setting");
     }
 
     //获取设置
@@ -77,8 +94,7 @@ function onLoad(plugin, liteloader) {
         (event) => {
             try {
                 const data = fs.readFileSync(settingsPath, "utf-8");
-                const config = JSON.parse(data);
-                return config;
+                return JSON.parse(data);
             } catch (error) {
                 console.log(error);
                 return {};

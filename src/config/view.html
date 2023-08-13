@@ -9,6 +9,16 @@
         </div>
     </div>
     <hr class="horizontal-dividing-line">
+    <div class="vertical-list-item" @click="rpmsg_location = !rpmsg_location">
+        <div>
+            <h2>开启+1菜单顶置</h2>
+            <span class="secondary-text">开启+1菜单顶置</span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': rpmsg_location }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
+    <hr class="horizontal-dividing-line">
     <div class="vertical-list-item" @click="show_time = !show_time">
         <div>
             <h2>开启消息显示时间</h2>

@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-13 17:33:50
+ * @LastEditTime: 2023-08-13 17:51:55
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -11,7 +11,7 @@
 const separatorHTML = `
 <div class="q-context-menu-separator" role="separator"></div>
 `
-const repeatmsgHTML = `
+const repeatmsgLight = `
 <a 
  id="repeatmsg"
  class="q-context-menu-item q-context-menu-item--normal" 
@@ -28,6 +28,24 @@ const repeatmsgHTML = `
   <!---->
 </a>
 `
+const repeatmsgDark = `
+<a 
+ id="repeatmsg"
+ class="q-context-menu-item q-context-menu-item--normal" 
+ aria-disabled="false" 
+ role="menuitem" 
+ tabindex="-1">
+  <div class="q-context-menu-item__icon q-context-menu-item__head">
+    <i class="q-icon" data-v-717ec976="" style="--b4589f60: inherit; --6ef2e80d: 16px;">
+        <svg t="1691421273840" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1478" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M511.6 961.4c12.1 0 22.6-4.4 31.5-13.3s13.3-19.4 13.3-31.5V558.3h358.3c12.1 0 22.6-4.4 31.5-13.3s13.3-19.4 13.3-31.5c0-12.1-4.4-22.6-13.3-31.5s-19.4-13.3-31.5-13.3H556.4V110.3c0-12.1-4.4-22.6-13.3-31.5s-19.4-13.3-31.5-13.3c-12.1 0-22.6 4.4-31.5 13.3s-13.3 19.4-13.3 31.5v358.3H108.5c-12.1 0-22.6 4.4-31.5 13.3s-13.3 19.4-13.3 31.5c0 12.1 4.4 22.6 13.3 31.5s19.4 13.3 31.5 13.3h358.3v358.3c0 12.1 4.4 22.6 13.3 31.5s19.4 13.4 31.5 13.4z" p-id="1479" fill="#ffffff"></path></svg>
+    </i>
+  </div>
+  <!---->
+  <span class="q-context-menu-item__text">+1</span>
+  <!---->
+</a>
+`
+
 import { createApp, ref, reactive, watch } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
 let translate_hover
 
@@ -60,11 +78,18 @@ function addrepeatmsg_menu(event, target, msgIds) {
     }
 }
 
-function abc(qContextMenu) {
+async function abc(qContextMenu) {
     // 插入分隔线
     //qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
-    qContextMenu.insertAdjacentHTML('beforeend', separatorHTML)
-    qContextMenu.insertAdjacentHTML('beforeend', repeatmsgHTML)
+    const qThemeValue = document.body.getAttribute('q-theme');
+    const setting_data = await qqpromote.getSettings()
+    const location = setting_data.setting.rpmsg_location? 'afterbegin' : 'beforeend'
+    qContextMenu.insertAdjacentHTML(location, separatorHTML)
+    if (qThemeValue == "light") {
+        qContextMenu.insertAdjacentHTML(location, repeatmsgLight)
+    } else {
+        qContextMenu.insertAdjacentHTML(location, repeatmsgDark)
+    }
 }
 
 async function onLoad() {
@@ -152,15 +177,6 @@ async function onConfigView(view){
             if (!document.querySelector("#qqpromote")?.__vue_app__) {
                 const app = createApp({
                     setup() {
-                        if (!setting_data.setting) {
-                            setting_data.setting = {
-                                repeatmsg: false,
-                                translate: false,
-                                show_time: false,
-                                translate_SECRET_ID: 'SECRET_ID',
-                                translate_SECRET_KEY: 'SECRET_KEY'
-                            }
-                        }
                         const setting_obj = reactive(setting_data.setting)
                         watch(setting_obj, (newValue, oldValue) => {
                             setting_data.setting = newValue

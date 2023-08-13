@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-13 17:27:15
+ * @LastEditTime: 2023-08-13 17:40:23
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -73,6 +73,7 @@ function onLoad(plugin, liteloader) {
             repeatmsg: false,
             translate: false,
             show_time: false,
+            rpmsg_location: false,
             translate_SECRET_ID: 'SECRET_ID',
             translate_SECRET_KEY: 'SECRET_KEY'
         }
@@ -86,6 +87,7 @@ function onLoad(plugin, liteloader) {
     } else {
         const data = fs.readFileSync(settingsPath, "utf-8");
         const config = checkAndCompleteKeys(JSON.parse(data), defaultSettings, "setting");
+        fs.writeFileSync(settingsPath, JSON.stringify(config), "utf-8");
     }
 
     //获取设置

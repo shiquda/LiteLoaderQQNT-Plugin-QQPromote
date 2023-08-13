@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-13 17:51:55
+ * @LastEditTime: 2023-08-13 18:08:05
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -48,6 +48,7 @@ const repeatmsgDark = `
 
 import { createApp, ref, reactive, watch } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
 let translate_hover
+const setting_data = await qqpromote.getSettings()
 
 function output(...args) {
     console.log("\x1b[32m[QQ增强-渲染]\x1b[0m", ...args);
@@ -82,7 +83,6 @@ async function abc(qContextMenu) {
     // 插入分隔线
     //qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
     const qThemeValue = document.body.getAttribute('q-theme');
-    const setting_data = await qqpromote.getSettings()
     const location = setting_data.setting.rpmsg_location? 'afterbegin' : 'beforeend'
     qContextMenu.insertAdjacentHTML(location, separatorHTML)
     if (qThemeValue == "light") {
@@ -122,6 +122,7 @@ async function onLoad() {
             bottom:0px;
             color: #c3e334;
             font-size: 70%;
+            user-select: none;
             `
             time_div.textContent = `${hours}:${String(minutes).padStart(2, '0')}`
             msg_content.appendChild(time_div)

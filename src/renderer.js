@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-13 21:27:46
+ * @LastEditTime: 2023-08-13 21:32:04
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -243,7 +243,7 @@ async function decodeQR(image) {
             if (json.status == 1) {
                 return json.data.qrcode_content;
             } else {
-                throw json.message;
+                return json.message;
             }
         });
 }

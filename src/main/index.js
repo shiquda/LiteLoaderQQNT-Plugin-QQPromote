@@ -2,13 +2,13 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-13 17:40:23
+ * @LastEditTime: 2023-08-13 20:55:47
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
  */
 // 腾讯云TMT
-const { ipcMain } = require("electron");
+const { ipcMain, dialog } = require("electron");
 const { get_authorization } = require(`./tencent_tmt.js`);
 const axios = require('axios');
 const fs = require("fs");

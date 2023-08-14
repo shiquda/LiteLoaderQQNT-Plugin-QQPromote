@@ -1,0 +1,61 @@
+.msg-content-container .time {
+	visibility:hidden;
+	font-size: calc(var(--font_size_main_2) - 1px);
+	height: calc(var(--font_size_main_2) - 1px);
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	user-select:none;
+	line-height:1;
+	vertical-align:middle;
+	pointer-events:none;
+	display:inline-flex;
+	z-index:1;
+	direction:ltr;
+	float:right;
+	cursor:pointer
+}
+.msg-content-container .time i {
+	font-size:1.125rem;
+	margin-right:.375rem
+}
+
+.msg-content-container .time .inner {
+	pointer-events:all;
+	position:absolute;
+	bottom:0;
+	right:-7px;
+	display:flex;
+	align-items:center;
+	line-height:1;
+	padding:inherit;
+	white-space:nowrap;
+	height:calc(var(--font_size_main_2) - 1px);
+	visibility:visible;
+	color:#4fae4e
+}
+
+.msg-content-container .web .text {
+	word-break:break-word;
+	margin-top:1px
+}
+
+.msg-content-container .web .quote {
+	max-width:100%;
+	overflow:hidden;
+	width:100%;
+	display:flex;
+}
+.msg-content-container .web .quote-text {
+	width:100%;
+	max-width:100%;
+	padding-left:.625rem;
+	margin-left:-.625rem
+}
+.msg-content-container .web .quote:before {
+	flex:0 0 auto;
+	width:.125rem;
+	border-radius:.125rem;
+	background-color:#3390ec;
+	margin:.1875rem .5rem .125rem 0;
+	content:" "
+}

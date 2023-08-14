@@ -29,6 +29,26 @@
         </div>
     </div>
     <hr class="horizontal-dividing-line">
+    <div class="vertical-list-item" @click="replaceArk = !replaceArk">
+        <div>
+            <h2>开启小程序转卡片</h2>
+            <span class="secondary-text">开启小程序转卡片</span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': replaceArk }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
+    <hr class="horizontal-dividing-line">
+    <div class="vertical-list-item" @click="not_updata = !not_updata">
+        <div>
+            <h2>开启屏蔽更新</h2>
+            <span class="secondary-text">开启屏蔽更新</span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': not_updata }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
+    <hr class="horizontal-dividing-line">
     <div class="vertical-list-item" @click="translate = !translate">
         <div>
             <h2>开启消息翻译</h2>

@@ -2,11 +2,25 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-13 21:32:04
+ * @LastEditTime: 2023-08-15 00:53:04
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
  */
+const ogs = qqpromote.ogs
+// 自定义format用法
+String.prototype.format = function(params) {
+    return this.replace(/\{(\w+)\}/g, (match, key) => params[key] || match);
+};
+function check_only_img(children) {
+    for (const child of children) {
+        if (!child.classList.contains("image")) {
+            return false
+        }
+    }
+    return true
+}
+
 const separator_ele = document.createElement("div");
 separator_ele.innerHTML = `
 <div class="q-context-menu-separator" role="separator"></div>
@@ -21,7 +35,7 @@ repeatmsg_ele.innerHTML = `
  tabindex="-1">
   <div class="q-context-menu-item__icon q-context-menu-item__head">
     <i class="q-icon" data-v-717ec976="" style="--b4589f60: inherit; --6ef2e80d: 16px;">
-        <svg t="1691421273840" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1478" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><path d="M511.6 961.4c12.1 0 22.6-4.4 31.5-13.3s13.3-19.4 13.3-31.5V558.3h358.3c12.1 0 22.6-4.4 31.5-13.3s13.3-19.4 13.3-31.5c0-12.1-4.4-22.6-13.3-31.5s-19.4-13.3-31.5-13.3H556.4V110.3c0-12.1-4.4-22.6-13.3-31.5s-19.4-13.3-31.5-13.3c-12.1 0-22.6 4.4-31.5 13.3s-13.3 19.4-13.3 31.5v358.3H108.5c-12.1 0-22.6 4.4-31.5 13.3s-13.3 19.4-13.3 31.5c0 12.1 4.4 22.6 13.3 31.5s19.4 13.3 31.5 13.3h358.3v358.3c0 12.1 4.4 22.6 13.3 31.5s19.4 13.4 31.5 13.4z" p-id="1479"></path></svg>
+    <svg t="1691421273840" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1478" xmlns:xlink="http://www.w3.org/1999/xlink" height="1em"><path d="M511.6 961.4c12.1 0 22.6-4.4 31.5-13.3s13.3-19.4 13.3-31.5V558.3h358.3c12.1 0 22.6-4.4 31.5-13.3s13.3-19.4 13.3-31.5c0-12.1-4.4-22.6-13.3-31.5s-19.4-13.3-31.5-13.3H556.4V110.3c0-12.1-4.4-22.6-13.3-31.5s-19.4-13.3-31.5-13.3c-12.1 0-22.6 4.4-31.5 13.3s-13.3 19.4-13.3 31.5v358.3H108.5c-12.1 0-22.6 4.4-31.5 13.3s-13.3 19.4-13.3 31.5c0 12.1 4.4 22.6 13.3 31.5s19.4 13.3 31.5 13.3h358.3v358.3c0 12.1 4.4 22.6 13.3 31.5s19.4 13.4 31.5 13.4z" p-id="1479"></path></svg>
     </i>
   </div>
   <!---->
@@ -47,8 +61,34 @@ qrcode_ele.innerHTML = `
   <!---->
 </a>
 `
+const message_time = `
+<span class="time tgico">
+<span class="i18n" dir="auto">{time}</span>
+<div class="inner tgico" title="{detail_time}">
+  <span class="i18n" dir="auto">{time}</span>
+</div>
+</span>
+`
+const message_web = `
+<div class="web">
+  <div class="quote">
+    <div class="quote-text">
+      <div class="preview-resizer">
+        <div class="preview media-container">
+          <img class="media-photo" style="width: 100%;height: 100%;" src="{img}">
+        </div>
+      </div>
+      <div class="title">
+        <strong dir="auto">{title}</strong>
+      </div>
+      <div class="text" dir="auto">{text}</div>
+    </div>
+  </div>
+</div>
+`
 
 import { createApp, ref, reactive, watch } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.esm-browser.prod.min.js'
+
 let translate_hover
 const setting_data = await qqpromote.getSettings()
 
@@ -113,11 +153,18 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
 }
 
 async function onLoad() {
+    const plugin_path = LiteLoader.plugins.qqpromote.path.plugin;
     const script = document.createElement("script");
     script.id = "sweetalert2"
     script.defer = true;
     script.src = "https://cdn.jsdelivr.net/npm/sweetalert2@10";
     document.head.appendChild(script);
+    // CSS
+    const css_file_path = `llqqnt://local-file/${plugin_path}/src/config/message.css`;
+    const link_element = document.createElement("link");
+    link_element.rel = "stylesheet";
+    link_element.href = css_file_path;
+    document.head.appendChild(link_element);
     const Interval = setInterval(() => {
         if (window.location.href.indexOf("#/main/message") == -1 && window.location.href.indexOf("#/chat/") == -1) return;
         if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.1.0")) {
@@ -128,24 +175,7 @@ async function onLoad() {
     LLAPI.add_qmenu(addrepeatmsg_menu)
     LLAPI.on("dom-up-messages", async (node) => {
         const setting_data = await qqpromote.getSettings()
-        if (setting_data?.setting?.show_time) {
-            const msgTime = node?.firstElementChild?.__VUE__?.[0]?.props?.msgRecord?.msgTime;
-            const date = new Date(msgTime * 1000);
-            const hours = date.getHours();
-            const minutes = date.getMinutes();
-            const msg_content = node.querySelector(".msg-content-container")
-            const time_div = document.createElement("div")
-            time_div.style = `
-            position:absolute;
-            right:3px;
-            bottom:0px;
-            color: #c3e334;
-            font-size: 70%;
-            user-select: none;
-            `
-            time_div.textContent = `${hours}:${String(minutes).padStart(2, '0')}`
-            msg_content.appendChild(time_div)
-        }
+        // 识别二维码
         const msg_text = node.querySelector(".text-normal")
         if (msg_text) {
             function translate(event) {
@@ -173,6 +203,37 @@ async function onLoad() {
                 }
             });
             //msg_text.textContent+=" ".repeat(5)
+        }
+        // 链接识别，并生成预览
+        const msg_link = node.querySelector(".text-link")
+        if (msg_link) {
+            const link = msg_link.innerText
+            const link_data = await ogs(link)
+            if (link_data) {
+                const { result } = link_data; // 消息数据
+                const msg_content = node.querySelector(".msg-content-container").firstElementChild
+                msg_content.style.overflow = "visible";
+                msg_content.insertAdjacentHTML("beforeend", message_web.format({ url: link, img: result.ogImage?.[0]?.url, title: result.ogTitle, text: result.ogDescription}));
+            }
+        }
+        // 消息时间
+        if (setting_data?.setting?.show_time) {
+            const msgTime = node?.firstElementChild?.__VUE__?.[0]?.props?.msgRecord?.msgTime;
+            const date = new Date(msgTime * 1000);
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            const timestamp = `${hours}:${String(minutes).padStart(2, '0')}`
+            const msg_content = node.querySelector(".msg-content-container").firstElementChild
+            msg_content.style.overflow = "visible";
+            if (!check_only_img(msg_content.children)) {
+                msg_content.insertAdjacentHTML("beforeend", message_time.format({ time: timestamp, detail_time: date.toLocaleString() }));
+                if (msg_content.children[0].classList.contains("ark-view-message")) {
+                    const msg_content_ele = msg_content.querySelector(".time .inner.tgico")
+                    msg_content_ele.style.bottom = "15px"
+                    msg_content_ele.style.right = "3px"
+                }
+            } else {
+            }
         }
     })
 }

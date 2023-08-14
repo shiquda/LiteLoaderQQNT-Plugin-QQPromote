@@ -22,5 +22,9 @@ contextBridge.exposeInMainWorld("qqpromote", {
     translate: (text, SECRET_ID, SECRET_KEY) => ipcRenderer.invoke(
         "LiteLoader.qqpromote.translate",
         text, SECRET_ID, SECRET_KEY
+    ),
+    ogs: url => ipcRenderer.invoke(
+        "LiteLoader.qqpromote.ogs",
+        url
     )
 });

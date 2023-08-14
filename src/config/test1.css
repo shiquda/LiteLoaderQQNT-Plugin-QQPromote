@@ -1,0 +1,74 @@
+.bubble .message,.bubble .service-msg {
+	/* --custom-emoji-size:var(--messages-custom-emoji-size);
+	*/
+}
+.bubble .message {
+	font-size:var(--messages-text-size);
+	padding:0 .5rem .375rem .625rem;
+	max-width:100%;
+	color:var(--primary-text-color);
+	line-height:var(--line-height);
+	word-break:break-word;
+	white-space:pre-wrap;
+	position:relative
+}
+.bubble .message .custom-emoji {
+	display:inline-flex
+}
+.bubble .message:last-child {
+	padding-top:6px
+}
+.bubble .time {
+	visibility:hidden;
+	font-size:var(--messages-time-text-size);
+	height:var(--messages-time-text-size);
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	user-select:none;
+	line-height:1;
+	vertical-align:middle;
+	pointer-events:none;
+	display:inline-flex;
+	z-index:1;
+	direction:ltr;
+	float:right;
+	cursor:pointer
+}
+.bubble .time i {
+	font-size:1.125rem;
+	margin-right:.375rem
+}
+.bubble .time-icon {
+	pointer-events:none
+}
+.bubble .time-icon:not(:first-child) {
+	margin-left:2px
+}
+.bubble .time i.edited {
+	overflow:visible;
+	font-size:inherit
+}
+.bubble .time .inner {
+	pointer-events:all;
+	position:absolute;
+	bottom:0;
+	right:0;
+	display:flex;
+	align-items:center;
+	line-height:1;
+	padding:inherit;
+	white-space:nowrap;
+	height:var(--messages-time-text-size);
+	visibility:visible;
+	color:var(--message-time-color)
+}
+.bubble .time .inner:after {
+	color:var(--message-status-color)
+}
+.bubble .time .tgico-pinnedchat {
+	margin-right:.125rem
+}
+.bubble .time.is-block {
+	float:none;
+	display:block
+}

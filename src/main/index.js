@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-13 20:55:47
+ * @LastEditTime: 2023-08-15 00:43:21
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -13,6 +13,7 @@ const { get_authorization } = require(`./tencent_tmt.js`);
 const axios = require('axios');
 const fs = require("fs");
 const path = require("path");
+const ogs = require("open-graph-scraper");
 
 async function tencent_tmt(SourceText, SECRET_ID, SECRET_KEY){
     const data = {
@@ -74,6 +75,8 @@ function onLoad(plugin, liteloader) {
             translate: false,
             show_time: false,
             rpmsg_location: false,
+            replaceArk: false,
+            not_updata: false,
             translate_SECRET_ID: 'SECRET_ID',
             translate_SECRET_KEY: 'SECRET_KEY'
         }
@@ -112,7 +115,7 @@ function onLoad(plugin, liteloader) {
                 new_config = typeof content == "string"? content:JSON.stringify(content)
                 fs.writeFileSync(settingsPath, new_config, "utf-8");
             } catch (error) {
-                alert(error);
+                output(error);
             }
         }
     )
@@ -123,10 +126,99 @@ function onLoad(plugin, liteloader) {
             try {
                 return await tencent_tmt(text, SECRET_ID, SECRET_KEY)
             } catch (error) {
-                alert(error);
+                output(error);
             }
         }
     )
+    //ogs
+    ipcMain.handle(
+        "LiteLoader.qqpromote.ogs",
+        async (event, url) => {
+            try {
+                const options = { url: url };
+                return await ogs(options)
+            } catch (error) {
+                return false
+            }
+        }
+    )
+}
+
+function onBrowserWindowCreated(window, plugin) {
+    const pluginDataPath = plugin.path.data;
+    const settingsPath = path.join(pluginDataPath, "settings.json");
+    const data = JSON.parse(fs.readFileSync(settingsPath, "utf-8"));
+
+    // 复写并监听ipc通信内容
+    const original_send =
+        (window.webContents.__qqntim_original_object && window.webContents.__qqntim_original_object.send) ||
+        window.webContents.send;
+
+    const patched_send = function (channel, ...args) {
+        // 替换历史消息中的小程序卡片
+        if (args?.[1]?.msgList?.length > 0 && data.setting.replaceArk) {
+            const msgList = args?.[1]?.msgList;
+            msgList.forEach((msgItem) => {
+                let msg_seq = msgItem.msgSeq;
+                msgItem.elements.forEach((msgElements) => {
+                    if (msgElements.arkElement && msgElements.arkElement.bytesData) {
+                        const json = JSON.parse(msgElements.arkElement.bytesData);
+                        if (json?.meta?.detail_1?.appid) {
+                            msgElements.arkElement.bytesData = replaceArk(json, msg_seq);
+                        }
+                    }
+                });
+            });
+        } else if (args?.[1]?.[0]?.cmdName === "nodeIKernelUnitedConfigListener/onUnitedConfigUpdate" && data.setting.not_updata) {
+            args[1][0].payload.configData.content = ""
+            args[1][0].payload.configData.isSwitchOn = false
+        } else if (args?.[1]?.configData?.content?.length > 0) {
+            const content = JSON.parse(args[1].configData.content)
+            if (Array.isArray(content) && !(content.findIndex((item) => item.label === "空间"))) {
+                data.setting.sidebar_list=content
+                fs.writeFileSync(settingsPath, JSON.stringify(data), "utf-8");
+                // output(data);
+            }
+        }
+
+        return original_send.call(window.webContents, channel, ...args);
+    };
+
+    if (window.webContents.__qqntim_original_object) {
+        window.webContents.__qqntim_original_object.send = patched_send;
+    } else {
+        window.webContents.send = patched_send;
+    }
+}
+
+// 卡片替换函数
+function replaceArk(json, msg_seq) {
+    return JSON.stringify({
+        app: "com.tencent.structmsg",
+        config: json.config,
+        desc: "新闻",
+        extra: { app_type: 1, appid: 100951776, msg_seq, uin: json.meta.detail_1.host.uin },
+        meta: {
+            news: {
+                action: "",
+                android_pkg_name: "",
+                app_type: 1,
+                appid: 100951776,
+                ctime: json.config.ctime,
+                desc: json.meta.detail_1.desc,
+                jumpUrl: json.meta.detail_1.qqdocurl?.replace(/\\/g, ""),
+                preview: json.meta.detail_1.preview,
+                source_icon: json.meta.detail_1.icon,
+                source_url: "",
+                tag: json.meta.detail_1.desc,
+                title: json.meta.detail_1.title,
+                uin: json.meta.detail_1.host.uin,
+            },
+        },
+        prompt: "[分享]" + json.desc,
+        ver: "0.0.0.1",
+        view: "news",
+    });
 }
 
 function output(...args) {
@@ -134,5 +226,6 @@ function output(...args) {
 }
 
 module.exports = {
-    onLoad
+    onLoad,
+    onBrowserWindowCreated
 }

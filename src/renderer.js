@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-15 00:53:04
+ * @LastEditTime: 2023-08-15 01:24:29
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -227,7 +227,7 @@ async function onLoad() {
             msg_content.style.overflow = "visible";
             if (!check_only_img(msg_content.children)) {
                 msg_content.insertAdjacentHTML("beforeend", message_time.format({ time: timestamp, detail_time: date.toLocaleString() }));
-                if (msg_content.children[0].classList.contains("ark-view-message")) {
+                if (msg_content.children[0].classList.contains("ark-view-message") || msg_content.children[0].classList.contains("ark-loading")) {
                     const msg_content_ele = msg_content.querySelector(".time .inner.tgico")
                     msg_content_ele.style.bottom = "15px"
                     msg_content_ele.style.right = "3px"

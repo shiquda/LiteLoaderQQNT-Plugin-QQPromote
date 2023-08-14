@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-15 00:43:21
+ * @LastEditTime: 2023-08-15 01:10:38
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -77,6 +77,7 @@ function onLoad(plugin, liteloader) {
             rpmsg_location: false,
             replaceArk: false,
             not_updata: false,
+            link_preview: false,
             translate_SECRET_ID: 'SECRET_ID',
             translate_SECRET_KEY: 'SECRET_KEY'
         }

@@ -49,6 +49,16 @@
         </div>
     </div>
     <hr class="horizontal-dividing-line">
+    <div class="vertical-list-item" @click="link_preview = !link_preview">
+        <div>
+            <h2>开启链接预览</h2>
+            <span class="secondary-text">开启链接预览</span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': link_preview }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
+    <hr class="horizontal-dividing-line">
     <div class="vertical-list-item" @click="translate = !translate">
         <div>
             <h2>开启消息翻译</h2>

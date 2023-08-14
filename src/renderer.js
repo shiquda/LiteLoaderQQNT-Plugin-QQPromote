@@ -206,7 +206,7 @@ async function onLoad() {
         }
         // 链接识别，并生成预览
         const msg_link = node.querySelector(".text-link")
-        if (msg_link) {
+        if (msg_link && setting_data?.setting?.link_preview) {
             const link = msg_link.innerText
             const link_data = await ogs(link)
             if (link_data) {

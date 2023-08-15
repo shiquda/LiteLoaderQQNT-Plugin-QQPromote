@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-15 19:40:05
+ * @LastEditTime: 2023-08-15 20:04:33
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -109,29 +109,31 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
     const qThemeValue = document.body.getAttribute('q-theme');
     //qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
     const location = setting_data.setting.rpmsg_location? 'afterbegin' : 'beforeend'
-    // 插入分隔线
-    // qContextMenu.insertAdjacentHTML(location, separatorHTML)
-    qContextMenu.insertBefore(separator_ele, qContextMenu.firstChild);
     // +1
-    const repeatmsg = repeatmsg_ele.cloneNode(true);
-    repeatmsg.addEventListener('click', async () => {
-        const peer = await LLAPI.getPeer()
-        if (classList[0] == "ptt-element__progress") {
-            const msg = await LLAPI.getPreviousMessages(peer, 1, msgIds.toString())
-            const elements = msg[0].elements
-            await LLAPI.sendMessage(peer, elements)
+    if (!setting_data?.setting?.repeatmsg) {
+        // 插入分隔线
+        // qContextMenu.insertAdjacentHTML(location, separatorHTML)
+        qContextMenu.insertBefore(separator_ele, qContextMenu.firstChild);
+        const repeatmsg = repeatmsg_ele.cloneNode(true);
+        repeatmsg.addEventListener('click', async () => {
+            const peer = await LLAPI.getPeer()
+            if (classList[0] == "ptt-element__progress") {
+                const msg = await LLAPI.getPreviousMessages(peer, 1, msgIds.toString())
+                const elements = msg[0].elements
+                await LLAPI.sendMessage(peer, elements)
+            } else {
+                await LLAPI.forwardMessage(peer, peer, [msgIds])
+            }
+            // 关闭右键菜单
+            qContextMenu.remove()
+        })
+        if (qThemeValue == "light") {
+            qContextMenu.insertBefore(repeatmsg, qContextMenu.firstChild);
+            // qContextMenu.insertAdjacentHTML(location, repeatmsgLight)
         } else {
-            await LLAPI.forwardMessage(peer, peer, [msgIds])
+            repeatmsg.querySelector("svg").setAttribute("fill", "#ffffff")
+            qContextMenu.insertBefore(repeatmsg, qContextMenu.firstChild);
         }
-        // 关闭右键菜单
-        qContextMenu.remove()
-    })
-    if (qThemeValue == "light") {
-        qContextMenu.insertBefore(repeatmsg, qContextMenu.firstChild);
-        // qContextMenu.insertAdjacentHTML(location, repeatmsgLight)
-    } else {
-        repeatmsg.querySelector("svg").setAttribute("fill", "#ffffff")
-        qContextMenu.insertBefore(repeatmsg, qContextMenu.firstChild);
     }
 
     // 识别二维码
@@ -267,33 +269,43 @@ async function onLoad() {
         // 消息时间
         if (setting_data?.setting?.show_time) {
             const msgTime = node?.firstElementChild?.__VUE__?.[0]?.props?.msgRecord?.msgTime;
+            const msgId = node?.firstElementChild?.__VUE__?.[0]?.props?.msgRecord?.msgId;
             const date = new Date(msgTime * 1000);
             const hours = date.getHours();
             const minutes = date.getMinutes();
             const timestamp = `${hours}:${String(minutes).padStart(2, '0')}`
             const msg_content = node.querySelector(".msg-content-container").firstElementChild
             msg_content.style.overflow = "visible";
+            const msg_time_ele = document.createElement("div");
+            msg_time_ele.innerHTML = message_time.format({ time: timestamp, detail_time: date.toLocaleString() })
             if (!check_only_img(msg_content.children)) {
-                msg_content.insertAdjacentHTML("beforeend", message_time.format({ time: timestamp, detail_time: date.toLocaleString() }));
+                //msg_content.insertAdjacentHTML("beforeend", message_time.format({ time: timestamp, detail_time: date.toLocaleString() }));
                 if (msg_content.children[0].classList.contains("ark-view-message") || msg_content.children[0].classList.contains("ark-loading")) {
-                    const msg_content_ele = msg_content.querySelector(".time .inner.tgico")
+                    const msg_content_ele = msg_time_ele.querySelector(".time .inner.tgico")
                     msg_content_ele.style.bottom = "15px"
                     msg_content_ele.style.right = "3px"
                 }
             } else {
-                const message_time_img = `<div class="message spoilers-container __web-inspector-hide-shortcut__" dir="auto" style="
+                msg_time_ele.style=`
                     position: absolute;
                     bottom: 5px;
                     right: 0px;
                     border-radius: 3.75rem;
                     background-color: rgb(0 0 0 / 35%);
                     padding: 0.1rem 0.3125rem;
-                ">${message_time}</div>`
-                msg_content.insertAdjacentHTML("beforeend", message_time_img.format({ time: timestamp, detail_time: date.toLocaleString() }));
-                const msg_content_ele = msg_content.querySelector(".time .inner.tgico")
+                `
+                //msg_content.insertAdjacentHTML("beforeend", message_time_img.format({ time: timestamp, detail_time: date.toLocaleString() }));
+                const msg_content_ele = msg_time_ele.querySelector(".time .inner.tgico")
                 msg_content_ele.style.bottom = "auto"
                 msg_content_ele.style.right = "auto"
             }
+            msg_time_ele.addEventListener("click", async (event) => {
+                if (setting_data?.setting?.repeatmsg) {
+                    const peer = await LLAPI.getPeer()
+                    await LLAPI.forwardMessage(peer, peer, [msgId])
+                }
+            })
+            msg_content.appendChild(msg_time_ele);
         }
     })
 }

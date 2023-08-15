@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-15 20:28:05
+ * @LastEditTime: 2023-08-15 20:49:53
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -200,9 +200,6 @@ function onBrowserWindowCreated(window, plugin) {
         } else if (args?.[1]?.[0]?.cmdName === "nodeIKernelUnitedConfigListener/onUnitedConfigUpdate" && data.setting.not_updata) {
             args[1][0].payload.configData.content = ""
             args[1][0].payload.configData.isSwitchOn = false
-        } else if (args?.[1]?.[0]?.cmdName === "nodeIKernelAVSDKListener/onGroupAudioMemNumChange" && data.setting.not_updata) {
-            args = false
-            // [{"type":"request","eventName":"ns-ntApi-2"},[{"cmdName":"nodeIKernelAVSDKListener/onGroupAudioMemNumChange","cmdType":"event","payload":{"notifyInfo":{"group_code":"437136493","onlineCount":1,"expireTimestamp":1692102399,"memberUins":["1042633805"],"seq":"1692102339140","businessType":1,"isNativeTimeout":false}}}]]
         } else if (args?.[1]?.configData?.content?.length > 0) {
             const content = JSON.parse(args[1].configData.content)
             if (Array.isArray(content) && !(content.findIndex((item) => item.label === "空间"))) {

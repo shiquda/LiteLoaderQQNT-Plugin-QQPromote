@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-15 20:04:33
+ * @LastEditTime: 2023-08-15 20:11:23
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -299,6 +299,8 @@ async function onLoad() {
                 msg_content_ele.style.bottom = "auto"
                 msg_content_ele.style.right = "auto"
             }
+            const time_inner_ele = msg_time_ele.querySelector(".time .inner")
+            time_inner_ele.style.color = setting_data?.setting?.time_color
             msg_time_ele.addEventListener("click", async (event) => {
                 if (setting_data?.setting?.repeatmsg) {
                     const peer = await LLAPI.getPeer()

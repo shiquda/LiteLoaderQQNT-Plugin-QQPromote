@@ -28,6 +28,10 @@
             <span class="q-switch__handle"></span>
         </div>
     </div>
+    <div class="vertical-list-item" v-if="show_time">
+        <div style="width: 15%;">自定义颜色:</div>
+        <input class="translate-input" type="color" v-model="time_color">
+    </div>
     <hr class="horizontal-dividing-line">
     <div class="vertical-list-item" @click="replaceArk = !replaceArk">
         <div>

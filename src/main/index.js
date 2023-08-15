@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-15 01:10:38
+ * @LastEditTime: 2023-08-15 19:14:12
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -50,6 +50,17 @@ async function tencent_tmt(SourceText, SECRET_ID, SECRET_KEY){
  */
 async function post(url, data, config){
     const response = await axios.post(url, data, config);
+    return response
+}
+
+/**
+ * @description get请求封装
+ * @param {string} url 请求地址
+ * @param {object} config 配置信息
+ * @returns {Promise} Promise对象
+ */
+async function get(url, config){
+    const response = await axios.get(url, config);
     return response
 }
 
@@ -138,6 +149,21 @@ function onLoad(plugin, liteloader) {
             try {
                 const options = { url: url };
                 return await ogs(options)
+            } catch (error) {
+                return false
+            }
+        }
+    )
+    //img_base64
+    ipcMain.handle(
+        "LiteLoader.qqpromote.get_imgbase64",
+        async (event, url, config) => {
+            try {
+                const response = await get(url, config);
+                const img_data = response.data;
+                const base64_data = Buffer.from(img_data).toString('base64');
+                const base64ImageUrl = `data:image/jpeg;base64,${base64_data}`;
+                return base64ImageUrl
             } catch (error) {
                 return false
             }

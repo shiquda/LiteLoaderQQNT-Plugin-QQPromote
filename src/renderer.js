@@ -2,12 +2,14 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-15 01:24:29
+ * @LastEditTime: 2023-08-15 19:40:05
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
  */
 const ogs = qqpromote.ogs
+const get_imgbase64 = qqpromote.get_imgbase64
+
 // 自定义format用法
 String.prototype.format = function(params) {
     return this.replace(/\{(\w+)\}/g, (match, key) => params[key] || match);
@@ -88,6 +90,7 @@ const message_web = `
 `
 
 import { createApp, ref, reactive, watch } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.esm-browser.prod.min.js'
+//import axios from 'https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/esm/axios.js'
 
 let translate_hover
 const setting_data = await qqpromote.getSettings()
@@ -137,7 +140,7 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
         const content = await decodeQR(message_element)
         Swal.fire({
             title: '识别结果',
-            html: `<input id="swal-input1" class="swal2-input" value="${content}">`,
+            html: `<a href="http://i2.hdslb.com/bfs/archive/0b9b97ec1cbed58c3e9786ba5c6971c6691f5f06.jpg">${content}</a><input id="swal-input1" class="swal2-input" value="${content}">`,
         });
         // 关闭右键菜单
         qContextMenu.remove()
@@ -150,6 +153,45 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
             qContextMenu.insertBefore(qrcode, qContextMenu.firstChild);
         }
     }
+}
+
+async function get_link_data(url) {
+    const patterns = {
+        "https://www\\.bilibili\\.com/video/av(\\d+)": "https://api.bilibili.com/x/web-interface/view?aid={key}"
+    };
+    for (const pattern in patterns) {
+        // 自定义链接消息获取
+        const regex = new RegExp(pattern);
+        const match = url.match(regex);
+        if (match) {
+            try {
+                const key = match[1];
+                const api_url = patterns[pattern].format({ key:key })
+                const response = await fetch(api_url);
+                const data = await response.json();
+                const headers = {
+                    'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) QQ/9.9.1-15717 Chrome/114.0.5735.243 Electron/25.3.1 Safari/537.36"
+                }
+                const imgbase64 = await get_imgbase64(data.data.pic, { headers, responseType: 'arraybuffer' });
+                const url_data = {
+                    result: {
+                        ogTitle: data.data.title,
+                        ogDescription: data.data.desc,
+                        ogImage: [
+                            {
+                                url: imgbase64
+                            }
+                        ]
+                    }
+                };
+                return url_data
+            } catch (error) {
+                return false
+            }
+        }
+    }
+    const url_data = await ogs(url)
+    return url_data
 }
 
 async function onLoad() {
@@ -175,7 +217,7 @@ async function onLoad() {
     LLAPI.add_qmenu(addrepeatmsg_menu)
     LLAPI.on("dom-up-messages", async (node) => {
         const setting_data = await qqpromote.getSettings()
-        // 识别二维码
+        // 翻译
         const msg_text = node.querySelector(".text-normal")
         if (msg_text) {
             function translate(event) {
@@ -207,13 +249,19 @@ async function onLoad() {
         // 链接识别，并生成预览
         const msg_link = node.querySelector(".text-link")
         if (msg_link && setting_data?.setting?.link_preview) {
-            const link = msg_link.innerText
-            const link_data = await ogs(link)
-            if (link_data) {
-                const { result } = link_data; // 消息数据
+            const url = msg_link.innerText
+            const url_data = await get_link_data(url)
+            if (url_data) {
+                const { result } = url_data; // 消息数据
                 const msg_content = node.querySelector(".msg-content-container").firstElementChild
                 msg_content.style.overflow = "visible";
-                msg_content.insertAdjacentHTML("beforeend", message_web.format({ url: link, img: result.ogImage?.[0]?.url, title: result.ogTitle, text: result.ogDescription}));
+                const web_ele = document.createElement("div");
+                web_ele.innerHTML = message_web.format({ url: url, img: result.ogImage?.[0]?.url, title: result.ogTitle, text: result.ogDescription})
+                const img_ele = web_ele.querySelector(".media-photo")
+                img_ele.onerror = function() {
+                    img_ele.style.display = "none"
+                };
+                msg_content.appendChild(web_ele);
             }
         }
         // 消息时间
@@ -233,6 +281,18 @@ async function onLoad() {
                     msg_content_ele.style.right = "3px"
                 }
             } else {
+                const message_time_img = `<div class="message spoilers-container __web-inspector-hide-shortcut__" dir="auto" style="
+                    position: absolute;
+                    bottom: 5px;
+                    right: 0px;
+                    border-radius: 3.75rem;
+                    background-color: rgb(0 0 0 / 35%);
+                    padding: 0.1rem 0.3125rem;
+                ">${message_time}</div>`
+                msg_content.insertAdjacentHTML("beforeend", message_time_img.format({ time: timestamp, detail_time: date.toLocaleString() }));
+                const msg_content_ele = msg_content.querySelector(".time .inner.tgico")
+                msg_content_ele.style.bottom = "auto"
+                msg_content_ele.style.right = "auto"
             }
         }
     })

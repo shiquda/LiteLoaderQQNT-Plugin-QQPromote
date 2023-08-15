@@ -31,7 +31,7 @@
 	white-space:nowrap;
 	height:calc(var(--font_size_main_2) - 1px);
 	visibility:visible;
-	color:#4fae4e
+	color:rgba(0,0,0,.5)
 }
 
 .msg-content-container .web .text {

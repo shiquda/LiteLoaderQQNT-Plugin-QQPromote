@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-15 20:11:23
+ * @LastEditTime: 2023-08-15 20:34:31
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -257,8 +257,9 @@ async function onLoad() {
                 const { result } = url_data; // 消息数据
                 const msg_content = node.querySelector(".msg-content-container").firstElementChild
                 msg_content.style.overflow = "visible";
-                const web_ele = document.createElement("div");
-                web_ele.innerHTML = message_web.format({ url: url, img: result.ogImage?.[0]?.url, title: result.ogTitle, text: result.ogDescription})
+                const web_ele1 = document.createElement("div");
+                web_ele1.innerHTML = message_web.format({ url: url, img: result.ogImage?.[0]?.url, title: result.ogTitle, text: result.ogDescription})
+                const web_ele = web_ele1.lastElementChild
                 const img_ele = web_ele.querySelector(".media-photo")
                 img_ele.onerror = function() {
                     img_ele.style.display = "none"
@@ -267,7 +268,7 @@ async function onLoad() {
             }
         }
         // 消息时间
-        if (setting_data?.setting?.show_time) {
+        if (setting_data?.setting?.show_time && node.querySelector(".msg-content-container")) {
             const msgTime = node?.firstElementChild?.__VUE__?.[0]?.props?.msgRecord?.msgTime;
             const msgId = node?.firstElementChild?.__VUE__?.[0]?.props?.msgRecord?.msgId;
             const date = new Date(msgTime * 1000);
@@ -276,8 +277,9 @@ async function onLoad() {
             const timestamp = `${hours}:${String(minutes).padStart(2, '0')}`
             const msg_content = node.querySelector(".msg-content-container").firstElementChild
             msg_content.style.overflow = "visible";
-            const msg_time_ele = document.createElement("div");
-            msg_time_ele.innerHTML = message_time.format({ time: timestamp, detail_time: date.toLocaleString() })
+            const msg_time_ele1 = document.createElement("div");
+            msg_time_ele1.innerHTML = message_time.format({ time: timestamp, detail_time: date.toLocaleString() })
+            const msg_time_ele = msg_time_ele1.lastElementChild
             if (!check_only_img(msg_content.children)) {
                 //msg_content.insertAdjacentHTML("beforeend", message_time.format({ time: timestamp, detail_time: date.toLocaleString() }));
                 if (msg_content.children[0].classList.contains("ark-view-message") || msg_content.children[0].classList.contains("ark-loading")) {

@@ -14,6 +14,9 @@
 	float:right;
 	cursor:pointer
 }
+.av-msg .inner {
+    right: 2px!important;
+}
 .msg-content-container .time i {
 	font-size:1.125rem;
 	margin-right:.375rem

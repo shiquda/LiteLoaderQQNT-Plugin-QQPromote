@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-05 13:44:33
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-15 19:13:28
+ * @LastEditTime: 2023-08-16 15:23:54
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -19,9 +19,9 @@ contextBridge.exposeInMainWorld("qqpromote", {
         "LiteLoader.qqpromote.setSettings",
         content
     ),
-    translate: (text, SECRET_ID, SECRET_KEY) => ipcRenderer.invoke(
+    translate: (text, data) => ipcRenderer.invoke(
         "LiteLoader.qqpromote.translate",
-        text, SECRET_ID, SECRET_KEY
+        text, data
     ),
     ogs: url => ipcRenderer.invoke(
         "LiteLoader.qqpromote.ogs",

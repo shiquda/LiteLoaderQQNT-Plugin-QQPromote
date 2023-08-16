@@ -1,13 +1,14 @@
 /*
  * @Author: Night-stars-1 nujj1042633805@gmail.com
- * @Date: 2023-08-12 15:41:47
+ * @Date: 2023-08-12 15:56:56
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-12 23:13:06
+ * @LastEditTime: 2023-08-16 14:59:59
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
  */
 const crypto = require('crypto');
+const axios = require('axios');
 
 function sha256(message, secret = '', encoding) {
     const hmac = crypto.createHmac('sha256', secret)
@@ -75,10 +76,36 @@ function get_authorization(params, timestamp, SECRET_ID, SECRET_KEY){
     return authorization
 }
 
+async function tencent_tmt(SourceText, SECRET_ID, SECRET_KEY){
+    const data = {
+        'SourceText': SourceText,
+        'Source': 'en',
+        'Target': 'zh',
+        'ProjectId': 0
+    }
+    const timestamp = Math.floor(Date.now() / 1000)
+    const authorization = get_authorization(data, timestamp, SECRET_ID, SECRET_KEY)
+    const url = 'https://tmt.tencentcloudapi.com'
+    const config = {
+        headers: {
+            'Authorization':authorization,
+            'Content-Type': 'application/json; charset=utf-8',
+            'Host': 'tmt.tencentcloudapi.com',
+            'X-TC-Action': 'TextTranslate',
+            'X-TC-Timestamp': timestamp,
+            'X-TC-Version': '2018-03-21',
+            'X-TC-Region': 'ap-guangzhou'
+        }
+    }
+    const tmt_response = await axios.post(url, data, config)
+    const tmt_data = tmt_response.data.Response
+    return tmt_data
+}
+
 function output(...args) {
     console.log("\x1b[32m[QQ增强-腾讯翻译]\x1b[0m", ...args);
 }
 
 module.exports = {
-    get_authorization: get_authorization
+    tencent_tmt: tencent_tmt
 };

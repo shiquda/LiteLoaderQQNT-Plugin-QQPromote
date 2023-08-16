@@ -11,3 +11,18 @@
   transition: all 100ms ease-out;
 }
 
+.qqpromote input {
+  appearance: auto;
+}
+
+.liteloader .column-list-item {
+  margin: 12px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+
+.liteloader .column-list-item input {
+  padding: 5px;
+}

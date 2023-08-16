@@ -2,67 +2,19 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-15 20:49:53
+ * @LastEditTime: 2023-08-16 16:20:44
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
  */
 // 腾讯云TMT
 const { ipcMain, dialog } = require("electron");
-const { get_authorization } = require(`./tencent_tmt.js`);
+const { tencent_tmt } = require(`./tencent_tmt.js`);
+const { baidu_fanyi } = require(`./baidu_fanyi.js`);
 const axios = require('axios');
 const fs = require("fs");
 const path = require("path");
 const ogs = require("open-graph-scraper");
-
-async function tencent_tmt(SourceText, SECRET_ID, SECRET_KEY){
-    const data = {
-        'SourceText': SourceText,
-        'Source': 'en',
-        'Target': 'zh',
-        'ProjectId': 0
-    }
-    const timestamp = Math.floor(Date.now() / 1000)
-    const authorization = get_authorization(data, timestamp, SECRET_ID, SECRET_KEY)
-    const url = 'https://tmt.tencentcloudapi.com'
-    const config = {
-        headers: {
-            'Authorization':authorization,
-            'Content-Type': 'application/json; charset=utf-8',
-            'Host': 'tmt.tencentcloudapi.com',
-            'X-TC-Action': 'TextTranslate',
-            'X-TC-Timestamp': timestamp,
-            'X-TC-Version': '2018-03-21',
-            'X-TC-Region': 'ap-guangzhou'
-        }
-    }
-    const tmt_response = await post(url, data, config)
-    const tmt_data = tmt_response.data.Response
-    return tmt_data
-}
-
-/**
- * @description post请求封装
- * @param {string} url 请求地址
- * @param {object} data 请求数据
- * @param {object} config 配置信息
- * @returns {Promise} Promise对象
- */
-async function post(url, data, config){
-    const response = await axios.post(url, data, config);
-    return response
-}
-
-/**
- * @description get请求封装
- * @param {string} url 请求地址
- * @param {object} config 配置信息
- * @returns {Promise} Promise对象
- */
-async function get(url, config){
-    const response = await axios.get(url, config);
-    return response
-}
 
 function checkAndCompleteKeys(json1, json2, check_key) {
     const keys1 = Object.keys(json1[check_key]);
@@ -89,9 +41,12 @@ function onLoad(plugin, liteloader) {
             replaceArk: false,
             not_updata: false,
             link_preview: false,
+            translate_type: "腾讯翻译",
             time_color: "rgba(0,0,0,.5)",
             translate_SECRET_ID: 'SECRET_ID',
-            translate_SECRET_KEY: 'SECRET_KEY'
+            translate_SECRET_KEY: 'SECRET_KEY',
+            translate_baidu_appid: 'appid',
+            translate_baidu_key: 'key'
         }
     }
     //设置文件判断
@@ -125,7 +80,7 @@ function onLoad(plugin, liteloader) {
         "LiteLoader.qqpromote.setSettings",
         (event, content) => {
             try {
-                new_config = typeof content == "string"? content:JSON.stringify(content)
+                new_config = typeof content == "string"? content:JSON.stringify(content, null, 4)
                 fs.writeFileSync(settingsPath, new_config, "utf-8");
             } catch (error) {
                 output(error);
@@ -135,9 +90,18 @@ function onLoad(plugin, liteloader) {
     //翻译
     ipcMain.handle(
         "LiteLoader.qqpromote.translate",
-        async (event, text, SECRET_ID, SECRET_KEY) => {
+        async (event, text, data) => {
             try {
-                return await tencent_tmt(text, SECRET_ID, SECRET_KEY)
+                const SECRET_ID = data.translate_SECRET_ID
+                const SECRET_KEY = data.translate_SECRET_KEY
+                const type = data.translate_type
+                if (type == "百度翻译") {
+                    const appid = data.translate_baidu_appid
+                    const key = data.translate_baidu_key
+                    return await baidu_fanyi(text, appid, key)
+                } else if (type == "腾讯翻译") {
+                    return await tencent_tmt(text, SECRET_ID, SECRET_KEY)
+                }
             } catch (error) {
                 output(error);
             }
@@ -160,7 +124,7 @@ function onLoad(plugin, liteloader) {
         "LiteLoader.qqpromote.get_imgbase64",
         async (event, url, config) => {
             try {
-                const response = await get(url, config);
+                const response = await axios.get(url, config);
                 const img_data = response.data;
                 const base64_data = Buffer.from(img_data).toString('base64');
                 const base64ImageUrl = `data:image/jpeg;base64,${base64_data}`;

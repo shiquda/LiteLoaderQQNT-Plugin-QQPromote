@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-15 20:34:31
+ * @LastEditTime: 2023-08-16 15:24:33
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -88,8 +88,12 @@ const message_web = `
   </div>
 </div>
 `
+// 插件本体的路径
+const plugin_path = LiteLoader.plugins.qqpromote.path;
 
-import { createApp, ref, reactive, watch } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.esm-browser.prod.min.js'
+// 导入工具函数
+const { createApp, ref, reactive, watch } = await import(`llqqnt://local-file/${plugin_path.plugin}/src/cdnjs.cloudflare.com_ajax_libs_vue_3.3.4_vue.esm-browser.prod.min.js`);
+//import { createApp, ref, reactive, watch } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.esm-browser.prod.min.js'
 //import axios from 'https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/esm/axios.js'
 
 let translate_hover
@@ -108,12 +112,15 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
     const msgIds = message_element?.closest(".msg-content-container")?.closest(".message")?.__VUE__?.[0]?.props?.msgRecord.msgId;
     const qThemeValue = document.body.getAttribute('q-theme');
     //qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
-    const location = setting_data.setting.rpmsg_location? 'afterbegin' : 'beforeend'
     // +1
     if (!setting_data?.setting?.repeatmsg) {
         // 插入分隔线
         // qContextMenu.insertAdjacentHTML(location, separatorHTML)
-        qContextMenu.insertBefore(separator_ele, qContextMenu.firstChild);
+        if (setting_data.setting.rpmsg_location) {
+            qContextMenu.insertBefore(separator_ele, qContextMenu.firstChild);
+        } else {
+            qContextMenu.appendChild(separator_ele);
+        }
         const repeatmsg = repeatmsg_ele.cloneNode(true);
         repeatmsg.addEventListener('click', async () => {
             const peer = await LLAPI.getPeer()
@@ -127,12 +134,13 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
             // 关闭右键菜单
             qContextMenu.remove()
         })
-        if (qThemeValue == "light") {
-            qContextMenu.insertBefore(repeatmsg, qContextMenu.firstChild);
-            // qContextMenu.insertAdjacentHTML(location, repeatmsgLight)
-        } else {
+        if (qThemeValue != "light") {
             repeatmsg.querySelector("svg").setAttribute("fill", "#ffffff")
+        }
+        if (setting_data.setting.rpmsg_location) {
             qContextMenu.insertBefore(repeatmsg, qContextMenu.firstChild);
+        } else {
+            qContextMenu.appendChild(repeatmsg);
         }
     }
 
@@ -225,12 +233,10 @@ async function onLoad() {
             function translate(event) {
                 const text = event.target.textContent
                 translate_hover = setInterval(async () => {
-                    const SECRET_ID = setting_data.setting.translate_SECRET_ID
-                    const SECRET_KEY = setting_data.setting.translate_SECRET_KEY
-                    const translate_data = await qqpromote.translate(text, SECRET_ID, SECRET_KEY)
+                    const translate_data = await qqpromote.translate(text, setting_data.setting)
                     const timeEl = document.createElement("div");
                     timeEl.innerText = translate_data?.TargetText
-                    event.target.closest(".message-content.mix-message__inner").appendChild(timeEl)
+                    event.target.closest(".message-content.mix-message__inner").appendChild(timeEl);
                     clearInterval(translate_hover);
                     msg_text.removeEventListener("mouseover", translate);
                 }, 1000);

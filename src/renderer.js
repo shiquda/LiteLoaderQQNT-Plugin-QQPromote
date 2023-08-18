@@ -2,13 +2,14 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-16 15:24:33
+ * @LastEditTime: 2023-08-16 18:06:46
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
  */
 const ogs = qqpromote.ogs
 const get_imgbase64 = qqpromote.get_imgbase64
+const chatgpt = qqpromote.chatgpt
 
 // 自定义format用法
 String.prototype.format = function(params) {
@@ -63,6 +64,26 @@ qrcode_ele.innerHTML = `
   <!---->
 </a>
 `
+
+const chatgpt_ele = document.createElement("div");
+chatgpt_ele.innerHTML = `
+<a 
+ id="chatgpt"
+ class="q-context-menu-item q-context-menu-item--normal" 
+ aria-disabled="false" 
+ role="menuitem" 
+ tabindex="-1">
+  <div class="q-context-menu-item__icon q-context-menu-item__head">
+    <i class="q-icon" data-v-717ec976="" style="--b4589f60: inherit; --6ef2e80d: 16px;">
+    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M160 368c26.5 0 48 21.5 48 48v16l72.5-54.4c8.3-6.2 18.4-9.6 28.8-9.6H448c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16V352c0 8.8 7.2 16 16 16h96zm48 124l-.2 .2-5.1 3.8-17.1 12.8c-4.8 3.6-11.3 4.2-16.8 1.5s-8.8-8.2-8.8-14.3V474.7v-6.4V468v-4V416H112 64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H448c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H309.3L208 492z"/></svg>
+    </i>
+  </div>
+  <!---->
+  <span class="q-context-menu-item__text">CHATGPT</span>
+  <!---->
+</a>
+`
+
 const message_time = `
 <span class="time tgico">
 <span class="i18n" dir="auto">{time}</span>
@@ -110,20 +131,17 @@ async function setSettings(content) {
 async function addrepeatmsg_menu(qContextMenu, message_element) {
     const { classList } = message_element
     const msgIds = message_element?.closest(".msg-content-container")?.closest(".message")?.__VUE__?.[0]?.props?.msgRecord.msgId;
+    const content = message_element?.innerText;
     const qThemeValue = document.body.getAttribute('q-theme');
     //qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
     // +1
     if (!setting_data?.setting?.repeatmsg) {
         // 插入分隔线
         // qContextMenu.insertAdjacentHTML(location, separatorHTML)
-        if (setting_data.setting.rpmsg_location) {
-            qContextMenu.insertBefore(separator_ele, qContextMenu.firstChild);
-        } else {
-            qContextMenu.appendChild(separator_ele);
-        }
         const repeatmsg = repeatmsg_ele.cloneNode(true);
         repeatmsg.addEventListener('click', async () => {
             const peer = await LLAPI.getPeer()
+            /**
             if (classList[0] == "ptt-element__progress") {
                 const msg = await LLAPI.getPreviousMessages(peer, 1, msgIds.toString())
                 const elements = msg[0].elements
@@ -131,6 +149,8 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
             } else {
                 await LLAPI.forwardMessage(peer, peer, [msgIds])
             }
+             */
+            LLAPI.add_message_list(peer, "151554515")
             // 关闭右键菜单
             qContextMenu.remove()
         })
@@ -141,6 +161,25 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
             qContextMenu.insertBefore(repeatmsg, qContextMenu.firstChild);
         } else {
             qContextMenu.appendChild(repeatmsg);
+        }
+    }
+
+    // chatgpt对话
+    if (setting_data?.setting?.chatgpt) {
+        const chatgpt_msg = chatgpt_ele.cloneNode(true);
+        chatgpt_msg.addEventListener('click', async () => {
+            const msg = await chatgpt(content, setting_data.setting.chatgpt_key)
+            await LLAPI.set_message(msg)
+            // 关闭右键菜单
+            qContextMenu.remove()
+        })
+        if (qThemeValue != "light") {
+            chatgpt_msg.querySelector("svg").setAttribute("fill", "#ffffff")
+        }
+        if (setting_data.setting.chatgpt_location) {
+            qContextMenu.insertBefore(chatgpt_msg, qContextMenu.firstChild);
+        } else {
+            qContextMenu.appendChild(chatgpt_msg);
         }
     }
 
@@ -282,7 +321,7 @@ async function onLoad() {
             const minutes = date.getMinutes();
             const timestamp = `${hours}:${String(minutes).padStart(2, '0')}`
             const msg_content = node.querySelector(".msg-content-container").firstElementChild
-            msg_content.style.overflow = "visible";
+            //msg_content.style.overflow = "visible";
             const msg_time_ele1 = document.createElement("div");
             msg_time_ele1.innerHTML = message_time.format({ time: timestamp, detail_time: date.toLocaleString() })
             const msg_time_ele = msg_time_ele1.lastElementChild
@@ -304,8 +343,8 @@ async function onLoad() {
                 `
                 //msg_content.insertAdjacentHTML("beforeend", message_time_img.format({ time: timestamp, detail_time: date.toLocaleString() }));
                 const msg_content_ele = msg_time_ele.querySelector(".time .inner.tgico")
-                msg_content_ele.style.bottom = "auto"
-                msg_content_ele.style.right = "auto"
+                //msg_content_ele.style.bottom = "auto"
+                msg_content_ele.style.right = "-1px"
             }
             const time_inner_ele = msg_time_ele.querySelector(".time .inner")
             time_inner_ele.style.color = setting_data?.setting?.time_color

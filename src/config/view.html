@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 20:16:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-16 16:07:31
+ * @LastEditTime: 2023-08-16 18:04:21
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -86,11 +86,33 @@
     <input type="radio" value="百度翻译" v-model="translate_type">
     <label>百度翻译</label>
     <div class="column-list-item" v-if="translate && translate_type=='腾讯翻译'">
-        <input class="translate-input" type="password" spellcheck="false" v-model="translate_SECRET_ID">
-        <input class="translate-input" type="password" spellcheck="false" v-model="translate_SECRET_KEY">
+        <input class="translate-input" type="password" spellcheck="false" v-model="translate_SECRET_ID" placeholder="SECRET_ID">
+        <input class="translate-input" type="password" spellcheck="false" v-model="translate_SECRET_KEY" placeholder="SECRET_KEY">
     </div>
     <div class="column-list-item" v-if="translate && translate_type=='百度翻译'">
-        <input class="translate-input" type="password" spellcheck="false" v-model="translate_baidu_appid">
-        <input class="translate-input" type="password" spellcheck="false" v-model="translate_baidu_key">
+        <input class="translate-input" type="password" spellcheck="false" v-model="translate_baidu_appid" placeholder="appid">
+        <input class="translate-input" type="password" spellcheck="false" v-model="translate_baidu_key" placeholder="key">
+    </div>
+    <hr class="horizontal-dividing-line">
+    <div class="vertical-list-item" @click="chatgpt = !chatgpt">
+        <div>
+            <h2>开启CHATGPT协助聊天</h2>
+            <span class="secondary-text">重启生效</span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': chatgpt }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
+    <div class="vertical-list-item" @click="chatgpt_location = !chatgpt_location" v-if="chatgpt">
+        <div>
+            <h2>开启CHATGPT协助聊天置顶</h2>
+            <span class="secondary-text">重启生效</span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': chatgpt_location }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
+    <div class="column-list-item" v-if="chatgpt">
+        <input class="translate-input" type="password" spellcheck="false" v-model="chatgpt_key" placeholder="chatgpt_key">
     </div>
 </div>

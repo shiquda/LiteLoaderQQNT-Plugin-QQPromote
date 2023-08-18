@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:56:56
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-16 14:59:59
+ * @LastEditTime: 2023-08-18 15:43:52
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -79,7 +79,7 @@ function get_authorization(params, timestamp, SECRET_ID, SECRET_KEY){
 async function tencent_tmt(SourceText, SECRET_ID, SECRET_KEY){
     const data = {
         'SourceText': SourceText,
-        'Source': 'en',
+        'Source': 'auto',
         'Target': 'zh',
         'ProjectId': 0
     }

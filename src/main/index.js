@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-16 16:20:44
+ * @LastEditTime: 2023-08-16 18:05:17
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -41,12 +41,15 @@ function onLoad(plugin, liteloader) {
             replaceArk: false,
             not_updata: false,
             link_preview: false,
+            chatgpt: false,
+            chatgpt_location: false,
+            chatgpt_key: "",
             translate_type: "腾讯翻译",
             time_color: "rgba(0,0,0,.5)",
-            translate_SECRET_ID: 'SECRET_ID',
-            translate_SECRET_KEY: 'SECRET_KEY',
-            translate_baidu_appid: 'appid',
-            translate_baidu_key: 'key'
+            translate_SECRET_ID: '',
+            translate_SECRET_KEY: '',
+            translate_baidu_appid: '',
+            translate_baidu_key: ''
         }
     }
     //设置文件判断
@@ -129,6 +132,35 @@ function onLoad(plugin, liteloader) {
                 const base64_data = Buffer.from(img_data).toString('base64');
                 const base64ImageUrl = `data:image/jpeg;base64,${base64_data}`;
                 return base64ImageUrl
+            } catch (error) {
+                return false
+            }
+        }
+    )
+    ipcMain.handle(
+        "LiteLoader.qqpromote.chatgpt",
+        async (event, content, OPENAI_API_KEY) => {
+            try {
+                const response = await axios.post(
+                    'https://api.openai.com/v1/chat/completions',
+                    {
+                        'model': 'gpt-3.5-turbo',
+                        'messages': [
+                        {
+                            'role': 'user',
+                            'content': content
+                        }
+                        ],
+                        'temperature': 0.7
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + OPENAI_API_KEY
+                        }
+                    }
+                );
+                return response?.data?.choices?.[0]?.message?.content
             } catch (error) {
                 return false
             }

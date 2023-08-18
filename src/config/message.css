@@ -1,5 +1,4 @@
 .msg-content-container .time {
-	visibility:hidden;
 	font-size: calc(var(--font_size_main_2) - 1px);
 	height: calc(var(--font_size_main_2) - 1px);
 	-webkit-user-select:none;
@@ -12,8 +11,13 @@
 	z-index:1;
 	direction:ltr;
 	float:right;
-	cursor:pointer
+	cursor:pointer;
 }
+
+.msg-content-container .time .i18n:not(.inner .i18n) {
+	visibility:hidden;
+}
+
 .av-msg .inner {
     right: 2px!important;
 }
@@ -26,7 +30,7 @@
 	pointer-events:all;
 	position:absolute;
 	bottom:0;
-	right:-7px;
+	/*right:-7px;*/
 	display:flex;
 	align-items:center;
 	line-height:1;

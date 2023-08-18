@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-16 14:59:49
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-16 15:25:35
+ * @LastEditTime: 2023-08-18 15:43:44
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -25,7 +25,7 @@ async function baidu_fanyi(SourceText, appid, key){
                 q: SourceText,
                 appid: appid,
                 salt: salt,
-                from: 'en',
+                from: 'auto',
                 to: 'zh',
                 sign: sign
             }

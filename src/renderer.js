@@ -141,7 +141,6 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
         const repeatmsg = repeatmsg_ele.cloneNode(true);
         repeatmsg.addEventListener('click', async () => {
             const peer = await LLAPI.getPeer()
-            /**
             if (classList[0] == "ptt-element__progress") {
                 const msg = await LLAPI.getPreviousMessages(peer, 1, msgIds.toString())
                 const elements = msg[0].elements
@@ -149,8 +148,7 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
             } else {
                 await LLAPI.forwardMessage(peer, peer, [msgIds])
             }
-             */
-            LLAPI.add_message_list(peer, "151554515")
+            //LLAPI.add_message_list(peer, "151554515")
             // 关闭右键菜单
             qContextMenu.remove()
         })

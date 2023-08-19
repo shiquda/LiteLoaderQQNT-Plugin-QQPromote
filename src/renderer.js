@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-16 18:06:46
+ * @LastEditTime: 2023-08-19 23:58:28
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -130,7 +130,10 @@ async function setSettings(content) {
 
 async function addrepeatmsg_menu(qContextMenu, message_element) {
     const { classList } = message_element
-    const msgIds = message_element?.closest(".msg-content-container")?.closest(".message")?.__VUE__?.[0]?.props?.msgRecord.msgId;
+    const msgprops = message_element?.closest(".msg-content-container")?.closest(".message")?.__VUE__?.[0]?.props
+    const uid = msgprops?.uid
+    const msgIds = msgprops?.msgRecord.msgId;
+    const senderUid = msgprops?.msgRecord.senderUid;
     const content = message_element?.innerText;
     const qThemeValue = document.body.getAttribute('q-theme');
     //qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
@@ -200,6 +203,23 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
             qContextMenu.insertBefore(qrcode, qContextMenu.firstChild);
         }
     }
+
+    // 回复点击监听
+    qContextMenu.childNodes.forEach((element) => {
+        if (element.textContent === "回复") {
+            if (senderUid != uid && setting_data?.setting?.reply_at) {
+                element.addEventListener('click', async () => {
+                    const interval = setInterval(async () => {
+                        let editor = await LLAPI.get_editor()
+                        if (editor) {
+                            editor = editor.replace(/<msg-at.*<\/msg-at>&nbsp;/, '');
+                            LLAPI.set_editor(editor)
+                            clearInterval(interval);
+                        }
+                    });
+                })
+            }
+    }})
 }
 
 async function get_link_data(url) {

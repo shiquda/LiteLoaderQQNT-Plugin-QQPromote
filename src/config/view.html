@@ -137,7 +137,7 @@
     <ul v-if="test_show" v-for="(sidebar_status, sidebar) in sidebar_list">
         <div class="vertical-list-item" @click="sidebar_list[sidebar]=!sidebar_status">
             <div>
-                <h2>显示{{sidebar}}</h2>
+                <h2>隐藏{{sidebar}}</h2>
                 <span class="secondary-text">重启生效</span>
             </div>
             <div class="switchBackgroundImage q-switch" :class="{ 'is-active': sidebar_status }">

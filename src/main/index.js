@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-20 13:39:51
+ * @LastEditTime: 2023-08-20 13:53:35
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -207,7 +207,7 @@ function onBrowserWindowCreated(window, plugin) {
                 const new_content = []
                 content.forEach((item) => {
                     if (!(item.label in data.setting.sidebar_list)) {
-                        data.setting.sidebar_list[item.label] = true
+                        data.setting.sidebar_list[item.label] = false
                     }
                     if (!data.setting.sidebar_list[item.label]){
                         new_content.push(item)

@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-16 18:05:17
+ * @LastEditTime: 2023-08-20 13:39:51
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -53,19 +53,19 @@ function onLoad(plugin, liteloader) {
             translate_baidu_key: ''
         }
     }
-    //设置文件判断
+    // 设置文件判断
     if (!fs.existsSync(pluginDataPath)) {
         fs.mkdirSync(pluginDataPath, { recursive: true });
     }
     if (!fs.existsSync(settingsPath)) {
-        fs.writeFileSync(settingsPath, JSON.stringify(defaultSettings));
+        fs.writeFileSync(settingsPath, JSON.stringify(defaultSettings, null, 4));
     } else {
         const data = fs.readFileSync(settingsPath, "utf-8");
         const config = checkAndCompleteKeys(JSON.parse(data), defaultSettings, "setting");
-        fs.writeFileSync(settingsPath, JSON.stringify(config), "utf-8");
+        fs.writeFileSync(settingsPath, JSON.stringify(config, null, 4), "utf-8");
     }
 
-    //获取设置
+    // 获取设置
     ipcMain.handle(
         "LiteLoader.qqpromote.getSettings",
         (event) => {
@@ -79,19 +79,19 @@ function onLoad(plugin, liteloader) {
         }
     );
 
-    //保存设置
+    // 保存设置
     ipcMain.handle(
         "LiteLoader.qqpromote.setSettings",
         (event, content) => {
             try {
-                new_config = typeof content == "string"? content:JSON.stringify(content, null, 4)
+                new_config = typeof content == "string"? JSON.stringify(JSON.parse(content), null, 4):JSON.stringify(content, null, 4)
                 fs.writeFileSync(settingsPath, new_config, "utf-8");
             } catch (error) {
                 output(error);
             }
         }
     )
-    //翻译
+    // 翻译
     ipcMain.handle(
         "LiteLoader.qqpromote.translate",
         async (event, text, data) => {
@@ -111,7 +111,7 @@ function onLoad(plugin, liteloader) {
             }
         }
     )
-    //ogs
+    // ogs
     ipcMain.handle(
         "LiteLoader.qqpromote.ogs",
         async (event, url) => {
@@ -123,7 +123,7 @@ function onLoad(plugin, liteloader) {
             }
         }
     )
-    //img_base64
+    // img_base64
     ipcMain.handle(
         "LiteLoader.qqpromote.get_imgbase64",
         async (event, url, config) => {
@@ -138,12 +138,13 @@ function onLoad(plugin, liteloader) {
             }
         }
     )
+    // chatgpt
     ipcMain.handle(
         "LiteLoader.qqpromote.chatgpt",
         async (event, content, OPENAI_API_KEY) => {
             try {
                 const response = await axios.post(
-                    'https://api.openai.com/v1/chat/completions',
+                    'https://gpt.srap.link/v1/chat/completions',
                     {
                         'model': 'gpt-3.5-turbo',
                         'messages': [
@@ -200,9 +201,20 @@ function onBrowserWindowCreated(window, plugin) {
         } else if (args?.[1]?.configData?.content?.length > 0) {
             const content = JSON.parse(args[1].configData.content)
             if (Array.isArray(content) && !(content.findIndex((item) => item.label === "空间"))) {
-                data.setting.sidebar_list=content
-                fs.writeFileSync(settingsPath, JSON.stringify(data), "utf-8");
-                // output(data);
+                if (Array.isArray(data.setting.sidebar_list)) {
+                    data.setting.sidebar_list = {}
+                }
+                const new_content = []
+                content.forEach((item) => {
+                    if (!(item.label in data.setting.sidebar_list)) {
+                        data.setting.sidebar_list[item.label] = true
+                    }
+                    if (!data.setting.sidebar_list[item.label]){
+                        new_content.push(item)
+                    }
+                })
+                args[1].configData.content = JSON.stringify(new_content)
+                fs.writeFileSync(settingsPath, JSON.stringify(data, null, 4), "utf-8");
             }
         }
 

@@ -277,7 +277,7 @@ async function onLoad() {
     const Interval = setInterval(() => {
         if (window.location.href.indexOf("#/main/message") == -1 && window.location.href.indexOf("#/chat/") == -1) return;
         if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.1.0")) {
-            Swal.fire('LLAPI版本过低，请安装最新版', '该提示并非QQ官方提示，请不要发给官方群', 'warning');
+            Swal.fire('LLAPI版本过低，请在插件商城安装最新版', '该提示并非QQ官方提示，请不要发给官方群', 'warning');
         }
         clearInterval(Interval);
     }, 1000);

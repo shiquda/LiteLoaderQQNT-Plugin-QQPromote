@@ -44,6 +44,7 @@ function onLoad(plugin, liteloader) {
             chatgpt: false,
             chatgpt_location: false,
             chatgpt_key: "",
+            sidebar_list: {},
             reply_at: false,
             auto_ptt2Text: false,
             translate_type: "腾讯翻译",

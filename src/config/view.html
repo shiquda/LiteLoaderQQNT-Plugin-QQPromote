@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 20:16:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-20 13:19:55
+ * @LastEditTime: 2023-08-21 21:19:54
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -126,6 +126,16 @@
         </div>
     </div>
     <hr class="horizontal-dividing-line">
+    <div class="vertical-list-item" @click="auto_ptt2Text = !auto_ptt2Text">
+        <div>
+            <h2>开启自动语音转文字</h2>
+            <span class="secondary-text">有一点小瑕疵，不影响使用</span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': auto_ptt2Text }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
+    <hr class="horizontal-dividing-line">
 </div>
 <div class="wrap" id="sidebar">
     <div class="vertical-list-item title" @click="test_show = !test_show">
@@ -147,3 +157,4 @@
         <hr class="horizontal-dividing-line">
     </ul>
 </div>
+<h1 class="version" id="qqpromote_version">当前版本<a class="link">v{{ version }}</a></h1>

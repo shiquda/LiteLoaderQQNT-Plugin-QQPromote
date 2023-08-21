@@ -1,9 +1,17 @@
-.translate-input:focus {
+.qqpromote .translate-input:focus {
   padding-left: 5px;
   background-color: var(--overlay_active);
 }
 
-.translate-input {
+.qqpromote .vertical-list-item {
+  cursor: pointer;
+  margin: 12px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.qqpromote .translate-input {
   align-self: normal;
   flex: 1;
   border-radius: 4px;
@@ -13,9 +21,10 @@
 
 .qqpromote input {
   appearance: auto;
+  cursor:pointer;
 }
 
-.liteloader .column-list-item {
+.liteloader .qqpromote .column-list-item {
   margin: 12px 0px;
   display: flex;
   justify-content: space-between;
@@ -23,6 +32,6 @@
   flex-direction: column;
 }
 
-.liteloader .column-list-item input {
+.liteloader .qqpromote .column-list-item input {
   padding: 5px;
 }

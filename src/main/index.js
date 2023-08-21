@@ -45,6 +45,7 @@ function onLoad(plugin, liteloader) {
             chatgpt_location: false,
             chatgpt_key: "",
             reply_at: false,
+            auto_ptt2Text: false,
             translate_type: "腾讯翻译",
             time_color: "rgba(0,0,0,.5)",
             translate_SECRET_ID: '',

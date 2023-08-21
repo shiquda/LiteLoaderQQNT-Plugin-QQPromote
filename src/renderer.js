@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-20 13:23:11
+ * @LastEditTime: 2023-08-21 22:17:55
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -10,6 +10,7 @@
 const ogs = qqpromote.ogs
 const get_imgbase64 = qqpromote.get_imgbase64
 const chatgpt = qqpromote.chatgpt
+//import { readFile, writeFile } from 'llapi';
 
 // 自定义format用法
 String.prototype.format = function(params) {
@@ -109,6 +110,7 @@ const message_web = `
   </div>
 </div>
 `
+
 // 插件本体的路径
 const plugin_path = LiteLoader.plugins.qqpromote.path;
 
@@ -138,7 +140,7 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
     const qThemeValue = document.body.getAttribute('q-theme');
     //qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
     // +1
-    if (!setting_data?.setting?.repeatmsg) {
+    if (!setting_data?.setting.repeatmsg) {
         // 插入分隔线
         // qContextMenu.insertAdjacentHTML(location, separatorHTML)
         const repeatmsg = repeatmsg_ele.cloneNode(true);
@@ -151,7 +153,6 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
             } else {
                 await LLAPI.forwardMessage(peer, peer, [msgIds])
             }
-            //LLAPI.add_message_list(peer, "151554515")
             // 关闭右键菜单
             qContextMenu.remove()
         })
@@ -166,7 +167,7 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
     }
 
     // chatgpt对话
-    if (setting_data?.setting?.chatgpt) {
+    if (setting_data?.setting.chatgpt) {
         const chatgpt_msg = chatgpt_ele.cloneNode(true);
         chatgpt_msg.addEventListener('click', async () => {
             const msg = await chatgpt(content, setting_data.setting.chatgpt_key)
@@ -207,7 +208,7 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
     // 回复点击监听
     qContextMenu.childNodes.forEach((element) => {
         if (element.textContent === "回复") {
-            if (senderUid != uid && setting_data?.setting?.reply_at) {
+            if (senderUid != uid && setting_data?.setting.reply_at) {
                 element.addEventListener('click', async () => {
                     const interval = setInterval(async () => {
                         let editor = await LLAPI.get_editor()
@@ -276,7 +277,7 @@ async function onLoad() {
     document.head.appendChild(link_element);
     const Interval = setInterval(() => {
         if (window.location.href.indexOf("#/main/message") == -1 && window.location.href.indexOf("#/chat/") == -1) return;
-        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.1.0")) {
+        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.1.3")) {
             Swal.fire('LLAPI版本过低，请在插件商城安装最新版', '该提示并非QQ官方提示，请不要发给官方群', 'warning');
         }
         clearInterval(Interval);
@@ -284,6 +285,11 @@ async function onLoad() {
     LLAPI.add_qmenu(addrepeatmsg_menu)
     LLAPI.on("dom-up-messages", async (node) => {
         const setting_data = await qqpromote.getSettings()
+        const peer = await LLAPI.getPeer()
+        const msgprops = node?.firstElementChild?.__VUE__?.[0]?.props
+        const msgId = msgprops.msgRecord.msgId;
+        const msgTime = msgprops.msgRecord.msgTime;
+        const elements = msgprops.msgRecord.elements[0];
         // 翻译
         const msg_text = node.querySelector(".text-normal")
         if (msg_text) {
@@ -313,7 +319,7 @@ async function onLoad() {
         }
         // 链接识别，并生成预览
         const msg_link = node.querySelector(".text-link")
-        if (msg_link && setting_data?.setting?.link_preview) {
+        if (msg_link && setting_data?.setting.link_preview) {
             const url = msg_link.innerText
             const url_data = await get_link_data(url)
             if (url_data) {
@@ -331,9 +337,7 @@ async function onLoad() {
             }
         }
         // 消息时间
-        if (setting_data?.setting?.show_time && node.querySelector(".msg-content-container")) {
-            const msgTime = node?.firstElementChild?.__VUE__?.[0]?.props?.msgRecord?.msgTime;
-            const msgId = node?.firstElementChild?.__VUE__?.[0]?.props?.msgRecord?.msgId;
+        if (setting_data?.setting.show_time && node.querySelector(".msg-content-container")) {
             const date = new Date(msgTime * 1000);
             const hours = date.getHours();
             const minutes = date.getMinutes();
@@ -365,14 +369,20 @@ async function onLoad() {
                 msg_content_ele.style.right = "-1px"
             }
             const time_inner_ele = msg_time_ele.querySelector(".time .inner")
-            time_inner_ele.style.color = setting_data?.setting?.time_color
+            time_inner_ele.style.color = setting_data?.setting.time_color
             msg_time_ele.addEventListener("click", async (event) => {
-                if (setting_data?.setting?.repeatmsg) {
+                if (setting_data?.setting.repeatmsg) {
                     const peer = await LLAPI.getPeer()
                     await LLAPI.forwardMessage(peer, peer, [msgId])
                 }
             })
             msg_content.appendChild(msg_time_ele);
+        }
+        // 自动语音转文字
+        const ptt_area = node.querySelector(".ptt-element__bottom-area")
+        if (ptt_area && setting_data?.setting.auto_ptt2Text) {
+            await LLAPI.Ptt2Text(msgId, peer, elements)
+            ptt_area.style.display = "block"
         }
     })
 }
@@ -419,6 +429,16 @@ async function onConfigView(view){
                     }
                 })
                 app.mount('#sidebar')
+            }
+            if (!document.querySelector("#qqpromote_version")?.__vue_app__) {
+                const app = createApp({
+                    setup() {
+                        return {
+                            version: LiteLoader.plugins.qqpromote.manifest.version
+                        }
+                    }
+                })
+                app.mount('#qqpromote_version')
             }
         })
     }

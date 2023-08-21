@@ -1,4 +1,4 @@
-.msg-content-container .time {
+.message-content__wrapper .time {
 	font-size: calc(var(--font_size_main_2) - 1px);
 	height: calc(var(--font_size_main_2) - 1px);
 	-webkit-user-select:none;
@@ -14,19 +14,19 @@
 	cursor:pointer;
 }
 
-.msg-content-container .time .i18n:not(.inner .i18n) {
+.message-content__wrapper .time .i18n:not(.inner .i18n) {
 	visibility:hidden;
 }
 
 .av-msg .inner {
     right: 2px!important;
 }
-.msg-content-container .time i {
+.message-content__wrapper .time i {
 	font-size:1.125rem;
 	margin-right:.375rem
 }
 
-.msg-content-container .time .inner {
+.message-content__wrapper .time .inner {
 	pointer-events:all;
 	position:absolute;
 	bottom:0;
@@ -41,24 +41,24 @@
 	color:rgba(0,0,0,.5)
 }
 
-.msg-content-container .web .text {
+.message-content__wrapper .web .text {
 	word-break:break-word;
 	margin-top:1px
 }
 
-.msg-content-container .web .quote {
+.message-content__wrapper .web .quote {
 	max-width:100%;
 	overflow:hidden;
 	width:100%;
 	display:flex;
 }
-.msg-content-container .web .quote-text {
+.message-content__wrapper .web .quote-text {
 	width:100%;
 	max-width:100%;
 	padding-left:.625rem;
 	margin-left:-.625rem
 }
-.msg-content-container .web .quote:before {
+.message-content__wrapper .web .quote:before {
 	flex:0 0 auto;
 	width:.125rem;
 	border-radius:.125rem;

@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-22 15:41:17
+ * @LastEditTime: 2023-08-23 00:00:03
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -53,6 +53,8 @@ function onLoad(plugin, liteloader) {
             messagebar_list: {},
             reply_at: false,
             auto_ptt2Text: false,
+            auto_login: false,
+            call_barring: false,
             translate_type: "腾讯翻译",
             time_color: "rgba(0,0,0,.5)",
             translate_SECRET_ID: '',
@@ -188,8 +190,11 @@ function onBrowserWindowCreated(window, plugin) {
 
     const patched_send = function (channel, ...args) {
         const data = JSON.parse(fs.readFileSync(settingsPath, "utf-8"));
+        const cdata = fs.readFileSync(settingsPath, "utf-8");
+        const cccc = JSON.parse(cdata);
         // 替换历史消息中的小程序卡片
         if (args?.[1]?.msgList?.length > 0 && data.setting.replaceArk) {
+            // 替换小程序卡片
             const msgList = args?.[1]?.msgList;
             msgList.forEach((msgItem) => {
                 let msg_seq = msgItem.msgSeq;
@@ -203,9 +208,11 @@ function onBrowserWindowCreated(window, plugin) {
                 });
             });
         } else if (args?.[1]?.[0]?.cmdName === "nodeIKernelUnitedConfigListener/onUnitedConfigUpdate" && data.setting.not_updata) {
+            // 屏蔽更新
             args[1][0].payload.configData.content = ""
             args[1][0].payload.configData.isSwitchOn = false
         } else if (args?.[1]?.configData?.content?.length > 0) {
+            // 侧边栏管理
             const content = JSON.parse(args[1].configData.content)
             if (Array.isArray(content) && !(content.findIndex((item) => item.label === "空间"))) {
                 if (Array.isArray(data.setting.sidebar_list)) {
@@ -223,6 +230,9 @@ function onBrowserWindowCreated(window, plugin) {
                 args[1].configData.content = JSON.stringify(new_content)
                 setSettings(settingsPath, data)
             }
+        } else if (args?.[1]?.[0]?.cmdName === "onOpenParamChange" && data.setting.call_barring) {
+            // 禁止通话
+            args = null
         }
 
         return original_send.call(window.webContents, channel, ...args);

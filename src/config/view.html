@@ -140,6 +140,26 @@
         </div>
     </div>
     <hr class="horizontal-dividing-line">
+    <div class="vertical-list-item" @click="auto_login = !auto_login">
+        <div>
+            <h2>开启自动登录</h2>
+            <span class="secondary-text">自动登录</span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': auto_login }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
+    <hr class="horizontal-dividing-line">
+    <div class="vertical-list-item" @click="call_barring = !call_barring">
+        <div>
+            <h2>开启禁止通话</h2>
+            <span class="secondary-text">屏蔽通话弹窗</span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': call_barring }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
+    <hr class="horizontal-dividing-line">
 </div>
 <div class="wrap" id="sidebar">
     <div class="vertical-list-item title" @click="sidebar_show = !sidebar_show">

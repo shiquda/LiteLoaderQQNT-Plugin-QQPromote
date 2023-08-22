@@ -66,3 +66,6 @@
 	margin:.1875rem .5rem .125rem 0;
 	content:" "
 }
+.message-content__wrapper .web:hover {
+    background-color: var(--overlay_hover);
+}

@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-22 16:07:45
+ * @LastEditTime: 2023-08-22 22:56:13
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -119,7 +119,7 @@ const { createApp, ref, reactive, watch } = await import(`llqqnt://local-file/${
 //import { createApp, ref, reactive, watch } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.esm-browser.prod.min.js'
 //import axios from 'https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/esm/axios.js'
 
-let translate_hover
+let translate_hover, login_time = 3;
 const setting_data = await qqpromote.getSettings()
 
 function output(...args) {
@@ -277,7 +277,17 @@ async function onLoad() {
     link_element.href = css_file_path;
     document.head.appendChild(link_element);
     const Interval = setInterval(() => {
-        if (window.location.href.indexOf("#/main/message") == -1 && window.location.href.indexOf("#/chat/") == -1) return;
+        if (location.pathname === "/renderer/login.html" && setting_data.setting.auto_login) {
+            const loginBtnText = document.querySelector(".auto-login .q-button span");
+            if (!loginBtnText) return;
+            if (login_time>=0) {
+                loginBtnText.innerText = `${login_time} 秒后自动登录`;
+                login_time--;
+            } else {
+                loginBtnText.click();
+            }
+        }
+        if (location.href.indexOf("#/main/message") == -1 && location.href.indexOf("#/chat/") == -1) return;
         if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.1.4")) {
             Swal.fire('LLAPI版本过低，请在插件商城安装最新版', '该提示并非QQ官方提示，请不要发给官方群', 'warning');
         }
@@ -386,19 +396,21 @@ async function onLoad() {
             ptt_area.style.display = "block"
         }
     })
-    LLAPI.on("change_href", () => {
-        document.querySelectorAll(".func-menu__item").forEach(
-            (node)=> {
-                const aria_label = node.firstChild.getAttribute("aria-label")
-                if (aria_label && !(aria_label in setting_data.setting.sidebar_list)) {
-                    setting_data.setting.sidebar_list[aria_label] = false
-                    setSettings(setting_data)
+    LLAPI.on("change_href", (location) => {
+        if (location.hash == "#/main/message") {
+            document.querySelectorAll(".func-menu__item").forEach(
+                (node)=> {
+                    const aria_label = node.firstChild.getAttribute("aria-label")
+                    if (aria_label && !(aria_label in setting_data.setting.sidebar_list)) {
+                        setting_data.setting.sidebar_list[aria_label] = false
+                        setSettings(setting_data)
+                    }
+                    if (setting_data.setting.sidebar_list[aria_label]){
+                        node.remove()
+                    }
                 }
-                if (setting_data.setting.sidebar_list[aria_label]){
-                    node.remove()
-                }
-            }
-        )
+            )
+        }
     })
     LLAPI.on("set_message", () => {
         document.querySelectorAll(".q-tooltips").forEach(

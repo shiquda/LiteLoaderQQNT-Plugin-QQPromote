@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-21 22:17:55
+ * @LastEditTime: 2023-08-22 16:07:45
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -263,6 +263,7 @@ async function get_link_data(url) {
 }
 
 async function onLoad() {
+    const setting_data = await qqpromote.getSettings()
     const plugin_path = LiteLoader.plugins.qqpromote.path.plugin;
     const script = document.createElement("script");
     script.id = "sweetalert2"
@@ -277,7 +278,7 @@ async function onLoad() {
     document.head.appendChild(link_element);
     const Interval = setInterval(() => {
         if (window.location.href.indexOf("#/main/message") == -1 && window.location.href.indexOf("#/chat/") == -1) return;
-        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.1.3")) {
+        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.1.4")) {
             Swal.fire('LLAPI版本过低，请在插件商城安装最新版', '该提示并非QQ官方提示，请不要发给官方群', 'warning');
         }
         clearInterval(Interval);
@@ -287,9 +288,9 @@ async function onLoad() {
         const setting_data = await qqpromote.getSettings()
         const peer = await LLAPI.getPeer()
         const msgprops = node?.firstElementChild?.__VUE__?.[0]?.props
-        const msgId = msgprops.msgRecord.msgId;
-        const msgTime = msgprops.msgRecord.msgTime;
-        const elements = msgprops.msgRecord.elements[0];
+        const msgId = msgprops?.msgRecord.msgId;
+        const msgTime = msgprops?.msgRecord.msgTime;
+        const elements = msgprops?.msgRecord.elements[0];
         // 翻译
         const msg_text = node.querySelector(".text-normal")
         if (msg_text) {
@@ -385,6 +386,34 @@ async function onLoad() {
             ptt_area.style.display = "block"
         }
     })
+    LLAPI.on("change_href", () => {
+        document.querySelectorAll(".func-menu__item").forEach(
+            (node)=> {
+                const aria_label = node.firstChild.getAttribute("aria-label")
+                if (aria_label && !(aria_label in setting_data.setting.sidebar_list)) {
+                    setting_data.setting.sidebar_list[aria_label] = false
+                    setSettings(setting_data)
+                }
+                if (setting_data.setting.sidebar_list[aria_label]){
+                    node.remove()
+                }
+            }
+        )
+    })
+    LLAPI.on("set_message", () => {
+        document.querySelectorAll(".q-tooltips").forEach(
+            (node)=> {
+                const content = node?.__VUE__?.[0]?.props?.content
+                if (content && !(content in setting_data.setting.messagebar_list)) {
+                    setting_data.setting.messagebar_list[content] = false
+                    setSettings(setting_data)
+                }
+                if (setting_data.setting.messagebar_list[content]){
+                    node.parentNode.remove()
+                }
+            }
+        )
+    })
 }
 
 async function onConfigView(view){
@@ -421,14 +450,27 @@ async function onConfigView(view){
                 const app = createApp({
                     setup() {
                         const sidebar_list = reactive(setting_data.setting.sidebar_list)
-                        const test_show = ref(false)
+                        const sidebar_show = ref(false)
                         return {
-                            test_show, 
+                            sidebar_show, 
                             sidebar_list
                         }
                     }
                 })
                 app.mount('#sidebar')
+            }
+            if (!document.querySelector("#messagebar")?.__vue_app__) {
+                const app = createApp({
+                    setup() {
+                        const messagebar_list = reactive(setting_data.setting.messagebar_list)
+                        const messagebar = ref(false)
+                        return {
+                            messagebar, 
+                            messagebar_list
+                        }
+                    }
+                })
+                app.mount('#messagebar')
             }
             if (!document.querySelector("#qqpromote_version")?.__vue_app__) {
                 const app = createApp({

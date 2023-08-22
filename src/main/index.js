@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-20 13:53:35
+ * @LastEditTime: 2023-08-22 15:41:17
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -29,6 +29,11 @@ function checkAndCompleteKeys(json1, json2, check_key) {
     return json1;
 }
 
+function setSettings(settingsPath, content) {
+    const new_config = typeof content == "string"? JSON.stringify(JSON.parse(content), null, 4):JSON.stringify(content, null, 4)
+    fs.writeFileSync(settingsPath, new_config, "utf-8");
+}
+
 function onLoad(plugin, liteloader) {
     const pluginDataPath = plugin.path.data;
     const settingsPath = path.join(pluginDataPath, "settings.json");
@@ -45,6 +50,7 @@ function onLoad(plugin, liteloader) {
             chatgpt_location: false,
             chatgpt_key: "",
             sidebar_list: {},
+            messagebar_list: {},
             reply_at: false,
             auto_ptt2Text: false,
             translate_type: "腾讯翻译",
@@ -86,8 +92,7 @@ function onLoad(plugin, liteloader) {
         "LiteLoader.qqpromote.setSettings",
         (event, content) => {
             try {
-                new_config = typeof content == "string"? JSON.stringify(JSON.parse(content), null, 4):JSON.stringify(content, null, 4)
-                fs.writeFileSync(settingsPath, new_config, "utf-8");
+                setSettings(settingsPath, content)
             } catch (error) {
                 output(error);
             }
@@ -175,7 +180,6 @@ function onLoad(plugin, liteloader) {
 function onBrowserWindowCreated(window, plugin) {
     const pluginDataPath = plugin.path.data;
     const settingsPath = path.join(pluginDataPath, "settings.json");
-    const data = JSON.parse(fs.readFileSync(settingsPath, "utf-8"));
 
     // 复写并监听ipc通信内容
     const original_send =
@@ -183,6 +187,7 @@ function onBrowserWindowCreated(window, plugin) {
         window.webContents.send;
 
     const patched_send = function (channel, ...args) {
+        const data = JSON.parse(fs.readFileSync(settingsPath, "utf-8"));
         // 替换历史消息中的小程序卡片
         if (args?.[1]?.msgList?.length > 0 && data.setting.replaceArk) {
             const msgList = args?.[1]?.msgList;
@@ -216,7 +221,7 @@ function onBrowserWindowCreated(window, plugin) {
                     }
                 })
                 args[1].configData.content = JSON.stringify(new_content)
-                fs.writeFileSync(settingsPath, JSON.stringify(data, null, 4), "utf-8");
+                setSettings(settingsPath, data)
             }
         }
 

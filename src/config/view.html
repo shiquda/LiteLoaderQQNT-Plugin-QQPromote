@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 20:16:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-21 21:19:54
+ * @LastEditTime: 2023-08-22 16:03:04
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -37,10 +37,12 @@
             <span class="q-switch__handle"></span>
         </div>
     </div>
-    <div class="vertical-list-item" v-if="show_time">
-        <div style="width: 15%;">自定义颜色:</div>
-        <input class="translate-input" type="color" v-model="time_color">
-    </div>
+    <Transition duration="500" name="nested">
+        <div v-if="show_time" class="vertical-list-item">
+            <div class="translate-div" style="width: 15%;">自定义颜色:</div>
+            <input class="translate-input" type="color" v-model="time_color">
+        </div>
+    </Transition>
     <hr class="horizontal-dividing-line">
     <div class="vertical-list-item" @click="replaceArk = !replaceArk">
         <div>
@@ -81,10 +83,12 @@
             <span class="q-switch__handle"></span>
         </div>
     </div>
-    <input type="radio" value="腾讯翻译" v-model="translate_type">
-    <label>腾讯翻译</label>
-    <input type="radio" value="百度翻译" v-model="translate_type">
-    <label>百度翻译</label>
+    <div v-if="translate">
+        <input type="radio" value="腾讯翻译" v-model="translate_type">
+        <label>腾讯翻译</label>
+        <input type="radio" value="百度翻译" v-model="translate_type">
+        <label>百度翻译</label>
+    </div>
     <div class="column-list-item" v-if="translate && translate_type=='腾讯翻译'">
         <input class="translate-input" type="password" spellcheck="false" v-model="translate_SECRET_ID" placeholder="SECRET_ID">
         <input class="translate-input" type="password" spellcheck="false" v-model="translate_SECRET_KEY" placeholder="SECRET_KEY">
@@ -138,19 +142,39 @@
     <hr class="horizontal-dividing-line">
 </div>
 <div class="wrap" id="sidebar">
-    <div class="vertical-list-item title" @click="test_show = !test_show">
+    <div class="vertical-list-item title" @click="sidebar_show = !sidebar_show">
         <h2>侧边栏管理</h2>
-        <svg class="icon" :class="{ 'is-fold': !test_show }" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="icon" :class="{ 'is-fold': !sidebar_show }" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M21 8L12 17L3 8" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
         </svg>
     </div>
-    <ul v-if="test_show" v-for="(sidebar_status, sidebar) in sidebar_list">
-        <div class="vertical-list-item" @click="sidebar_list[sidebar]=!sidebar_status">
+    <ul v-if="sidebar_show" v-for="(bar_status, bar) in sidebar_list">
+        <div class="vertical-list-item" @click="sidebar_list[bar]=!bar_status">
             <div>
-                <h2>隐藏{{sidebar}}</h2>
+                <h2>隐藏{{bar}}</h2>
                 <span class="secondary-text">重启生效</span>
             </div>
-            <div class="switchBackgroundImage q-switch" :class="{ 'is-active': sidebar_status }">
+            <div class="switchBackgroundImage q-switch" :class="{ 'is-active': bar_status }">
+                <span class="q-switch__handle"></span>
+            </div>
+        </div>
+        <hr class="horizontal-dividing-line">
+    </ul>
+</div>
+<div class="wrap" id="messagebar">
+    <div class="vertical-list-item title" @click="messagebar = !messagebar">
+        <h2>聊天栏管理</h2>
+        <svg class="icon" :class="{ 'is-fold': !messagebar }" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 8L12 17L3 8" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+        </svg>
+    </div>
+    <ul v-if="messagebar" v-for="(bar_status, bar) in messagebar_list">
+        <div class="vertical-list-item" @click="messagebar_list[bar]=!bar_status">
+            <div>
+                <h2>隐藏{{bar}}</h2>
+                <span class="secondary-text">重启生效</span>
+            </div>
+            <div class="switchBackgroundImage q-switch" :class="{ 'is-active': bar_status }">
                 <span class="q-switch__handle"></span>
             </div>
         </div>

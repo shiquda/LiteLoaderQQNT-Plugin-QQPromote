@@ -9,6 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition:width 2s;
 }
 
 .qqpromote .translate-input {
@@ -24,7 +25,7 @@
   cursor:pointer;
 }
 
-.liteloader .qqpromote .column-list-item {
+.qqpromote .column-list-item {
   margin: 12px 0px;
   display: flex;
   justify-content: space-between;
@@ -32,6 +33,25 @@
   flex-direction: column;
 }
 
-.liteloader .qqpromote .column-list-item input {
+.qqpromote .column-list-item input {
   padding: 5px;
+}
+
+.nested-enter-active {
+  transition-delay: 0.25s;
+}
+
+.nested-enter-active .translate-input,
+.nested-leave-active .translate-input,
+.nested-enter-active .translate-div,
+.nested-leave-active .translate-div { 
+  transition: all 0.3s ease-in-out;
+}
+
+.nested-enter-from .translate-input,
+.nested-leave-to .translate-input,
+.nested-enter-from .translate-div,
+.nested-leave-to .translate-div {
+  transform: translateX(30px);
+  opacity: 0.001;
 }

@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-05 13:44:33
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-16 16:40:15
+ * @LastEditTime: 2023-08-26 18:36:33
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -31,8 +31,8 @@ contextBridge.exposeInMainWorld("qqpromote", {
         "LiteLoader.qqpromote.get_imgbase64",
         url, config
     ),
-    chatgpt: (content, OPENAI_API_KEY) => ipcRenderer.invoke(
+    chatgpt: (content, data) => ipcRenderer.invoke(
         "LiteLoader.qqpromote.chatgpt",
-        content, OPENAI_API_KEY
+        content, data
     )
 });

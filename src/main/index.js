@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-23 00:00:03
+ * @LastEditTime: 2023-08-26 18:44:40
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -49,6 +49,7 @@ function onLoad(plugin, liteloader) {
             chatgpt: false,
             chatgpt_location: false,
             chatgpt_key: "",
+            chatgpt_url: "https://gpt.srap.link/v1/chat/completions",
             sidebar_list: {},
             messagebar_list: {},
             reply_at: false,
@@ -150,10 +151,10 @@ function onLoad(plugin, liteloader) {
     // chatgpt
     ipcMain.handle(
         "LiteLoader.qqpromote.chatgpt",
-        async (event, content, OPENAI_API_KEY) => {
+        async (event, content, data) => {
             try {
                 const response = await axios.post(
-                    'https://gpt.srap.link/v1/chat/completions',
+                    data.chatgpt_url,
                     {
                         'model': 'gpt-3.5-turbo',
                         'messages': [
@@ -167,7 +168,7 @@ function onLoad(plugin, liteloader) {
                     {
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': 'Bearer ' + OPENAI_API_KEY
+                            'Authorization': 'Bearer ' + data.chatgpt_key
                         }
                     }
                 );

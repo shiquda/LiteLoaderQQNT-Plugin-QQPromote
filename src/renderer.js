@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-22 22:56:13
+ * @LastEditTime: 2023-08-26 18:37:21
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -170,7 +170,7 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
     if (setting_data?.setting.chatgpt) {
         const chatgpt_msg = chatgpt_ele.cloneNode(true);
         chatgpt_msg.addEventListener('click', async () => {
-            const msg = await chatgpt(content, setting_data.setting.chatgpt_key)
+            const msg = await chatgpt(content, setting_data.setting)
             await LLAPI.set_editor(msg)
             // 关闭右键菜单
             qContextMenu.remove()

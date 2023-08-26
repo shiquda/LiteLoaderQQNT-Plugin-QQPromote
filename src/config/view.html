@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 20:16:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-22 16:03:04
+ * @LastEditTime: 2023-08-26 18:34:27
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -38,9 +38,11 @@
         </div>
     </div>
     <Transition duration="500" name="nested">
-        <div v-if="show_time" class="vertical-list-item">
-            <div class="translate-div" style="width: 15%;">自定义颜色:</div>
-            <input class="translate-input" type="color" v-model="time_color">
+        <div v-if="show_time">
+            <div class="vertical-list-item">
+                <div class="translate-div" style="width: 15%;">自定义颜色:</div>
+                <input class="translate-input" type="color" v-model="time_color">
+            </div>
         </div>
     </Transition>
     <hr class="horizontal-dividing-line">
@@ -83,20 +85,22 @@
             <span class="q-switch__handle"></span>
         </div>
     </div>
-    <div v-if="translate">
-        <input type="radio" value="腾讯翻译" v-model="translate_type">
-        <label>腾讯翻译</label>
-        <input type="radio" value="百度翻译" v-model="translate_type">
-        <label>百度翻译</label>
-    </div>
-    <div class="column-list-item" v-if="translate && translate_type=='腾讯翻译'">
-        <input class="translate-input" type="password" spellcheck="false" v-model="translate_SECRET_ID" placeholder="SECRET_ID">
-        <input class="translate-input" type="password" spellcheck="false" v-model="translate_SECRET_KEY" placeholder="SECRET_KEY">
-    </div>
-    <div class="column-list-item" v-if="translate && translate_type=='百度翻译'">
-        <input class="translate-input" type="password" spellcheck="false" v-model="translate_baidu_appid" placeholder="appid">
-        <input class="translate-input" type="password" spellcheck="false" v-model="translate_baidu_key" placeholder="key">
-    </div>
+    <Transition duration="500" name="nested">
+        <div v-if="translate">
+            <input type="radio" value="腾讯翻译" v-model="translate_type">
+            <label>腾讯翻译</label>
+            <input type="radio" value="百度翻译" v-model="translate_type">
+            <label>百度翻译</label>
+            <div class="column-list-item" v-if="translate && translate_type=='腾讯翻译'">
+                <input class="translate-input" type="password" spellcheck="false" v-model="translate_SECRET_ID" placeholder="SECRET_ID">
+                <input class="translate-input" type="password" spellcheck="false" v-model="translate_SECRET_KEY" placeholder="SECRET_KEY">
+            </div>
+            <div class="column-list-item" v-if="translate && translate_type=='百度翻译'">
+                <input class="translate-input" type="password" spellcheck="false" v-model="translate_baidu_appid" placeholder="appid">
+                <input class="translate-input" type="password" spellcheck="false" v-model="translate_baidu_key" placeholder="key">
+            </div>    
+        </div>
+    </Transition>
     <hr class="horizontal-dividing-line">
     <div class="vertical-list-item" @click="chatgpt = !chatgpt">
         <div>
@@ -107,18 +111,25 @@
             <span class="q-switch__handle"></span>
         </div>
     </div>
-    <div class="vertical-list-item" @click="chatgpt_location = !chatgpt_location" v-if="chatgpt">
-        <div>
-            <h2>开启CHATGPT协助聊天置顶</h2>
-            <span class="secondary-text">重启生效</span>
+    <Transition duration="500" name="nested">
+        <div v-if="chatgpt">
+            <div class="vertical-list-item" @click="chatgpt_location = !chatgpt_location">
+                <div>
+                    <h2>开启CHATGPT协助聊天置顶</h2>
+                    <span class="secondary-text">重启生效</span>
+                </div>
+                <div class="switchBackgroundImage q-switch" :class="{ 'is-active': chatgpt_location }">
+                    <span class="q-switch__handle"></span>
+                </div>
+            </div>
+            <div class="column-list-item">
+                <div class="vertical-list-item">
+                    API服务器:<input class="translate-input" type="text" spellcheck="false" v-model="chatgpt_url" placeholder="API服务器">
+                </div>
+                <input class="translate-input" type="password" spellcheck="false" v-model="chatgpt_key" placeholder="chatgpt_key">
+            </div>
         </div>
-        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': chatgpt_location }">
-            <span class="q-switch__handle"></span>
-        </div>
-    </div>
-    <div class="column-list-item" v-if="chatgpt">
-        <input class="translate-input" type="password" spellcheck="false" v-model="chatgpt_key" placeholder="chatgpt_key">
-    </div>
+    </Transition>
     <hr class="horizontal-dividing-line">
     <div class="vertical-list-item" @click="reply_at = !reply_at">
         <div>

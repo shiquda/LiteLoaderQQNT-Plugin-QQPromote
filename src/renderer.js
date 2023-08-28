@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-26 18:37:21
+ * @LastEditTime: 2023-08-28 20:26:47
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -191,7 +191,7 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
         const content = await decodeQR(message_element)
         Swal.fire({
             title: '识别结果',
-            html: `<a href="http://i2.hdslb.com/bfs/archive/0b9b97ec1cbed58c3e9786ba5c6971c6691f5f06.jpg">${content}</a><input id="swal-input1" class="swal2-input" value="${content}">`,
+            html: `<input id="swal-input1" class="swal2-input" value="${content}">`,
         });
         // 关闭右键菜单
         qContextMenu.remove()

@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-26 18:44:40
+ * @LastEditTime: 2023-08-31 22:26:12
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -172,8 +172,10 @@ function onLoad(plugin, liteloader) {
                         }
                     }
                 );
+                output(response?.data)
                 return response?.data?.choices?.[0]?.message?.content
             } catch (error) {
+                output(error)
                 return false
             }
         }
@@ -233,9 +235,10 @@ function onBrowserWindowCreated(window, plugin) {
             }
         } else if (args?.[1]?.[0]?.cmdName === "onOpenParamChange" && data.setting.call_barring) {
             // 禁止通话
-            args = null
+            if (args?.[1][0]?.payload?.avSdkData) {
+                args = null
+            }
         }
-
         return original_send.call(window.webContents, channel, ...args);
     };
 

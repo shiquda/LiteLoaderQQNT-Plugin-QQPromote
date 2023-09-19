@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-09-19 14:32:53
+ * @LastEditTime: 2023-09-19 20:01:10
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -399,13 +399,6 @@ async function onLoad() {
                 msg_content.appendChild(msg_time_ele);
             }
         }
-        // 名称扩展
-        if (setting_data?.setting.friendsinfo && node.querySelector(".msg-content-container")) {
-            const friendItem = friendslist.find(item => item.uid === senderUid);
-            const friend_info = `<${friendItem.nickName}>(${friendItem.uin})`
-            const user_name = node.querySelector(".user-name .text-ellipsis")
-            user_name.innerText = user_name.innerText+friend_info
-        }
         // 自动语音转文字
         const ptt_area = node.querySelector(".ptt-element__bottom-area")
         if (ptt_area && setting_data?.setting.auto_ptt2Text) {
@@ -427,6 +420,13 @@ async function onLoad() {
                     }
                 });
             })
+        }
+        // 名称扩展
+        if (setting_data?.setting.friendsinfo && node.querySelector(".msg-content-container")) {
+            const friendItem = friendslist.find(item => item.uid === senderUid);
+            const friend_info = `<${friendItem.nickName}>(${friendItem.uin})`
+            const user_name = node.querySelector(".user-name .text-ellipsis")
+            user_name.textContent = user_name.textContent+friend_info
         }
     })
     LLAPI.on("change_href", (location) => {

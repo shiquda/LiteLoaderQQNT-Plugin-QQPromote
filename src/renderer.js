@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-28 20:26:47
+ * @LastEditTime: 2023-09-19 14:22:23
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -297,10 +297,12 @@ async function onLoad() {
     LLAPI.on("dom-up-messages", async (node) => {
         const setting_data = await qqpromote.getSettings()
         const peer = await LLAPI.getPeer()
+        const friendslist = await LLAPI.getFriendsList()
         const msgprops = node?.firstElementChild?.__VUE__?.[0]?.props
         const msgId = msgprops?.msgRecord.msgId;
         const msgTime = msgprops?.msgRecord.msgTime;
         const elements = msgprops?.msgRecord.elements[0];
+        const senderUid = msgprops?.msgRecord.senderUid;
         // 翻译
         const msg_text = node.querySelector(".text-normal")
         if (msg_text) {
@@ -354,46 +356,62 @@ async function onLoad() {
             const minutes = date.getMinutes();
             const timestamp = `${hours}:${String(minutes).padStart(2, '0')}`
             const msg_content = node.querySelector(".msg-content-container").firstElementChild
-            //msg_content.style.overflow = "visible";
-            const msg_time_ele1 = document.createElement("div");
-            msg_time_ele1.innerHTML = message_time.format({ time: timestamp, detail_time: date.toLocaleString() })
-            const msg_time_ele = msg_time_ele1.lastElementChild
-            if (!check_only_img(msg_content.children)) {
-                //msg_content.insertAdjacentHTML("beforeend", message_time.format({ time: timestamp, detail_time: date.toLocaleString() }));
-                if (msg_content.children[0].classList.contains("ark-view-message") || msg_content.children[0].classList.contains("ark-loading")) {
-                    const msg_content_ele = msg_time_ele.querySelector(".time .inner.tgico")
-                    msg_content_ele.style.bottom = "15px"
-                    msg_content_ele.style.right = "3px"
-                }
+            if (setting_data?.setting.show_time_up) {
+                const user_name = node.querySelector(".user-name")
+                const user_name_time = document.createElement("div");
+                user_name_time.innerText = " "+date.toLocaleString()
+                user_name.appendChild(user_name_time);
             } else {
-                msg_time_ele.style=`
-                    position: absolute;
-                    bottom: 5px;
-                    right: 0px;
-                    border-radius: 3.75rem;
-                    background-color: rgb(0 0 0 / 35%);
-                    padding: 0.1rem 0.3125rem;
-                `
-                //msg_content.insertAdjacentHTML("beforeend", message_time_img.format({ time: timestamp, detail_time: date.toLocaleString() }));
-                const msg_content_ele = msg_time_ele.querySelector(".time .inner.tgico")
-                //msg_content_ele.style.bottom = "auto"
-                msg_content_ele.style.right = "-1px"
-            }
-            const time_inner_ele = msg_time_ele.querySelector(".time .inner")
-            time_inner_ele.style.color = setting_data?.setting.time_color
-            msg_time_ele.addEventListener("click", async (event) => {
-                if (setting_data?.setting.repeatmsg) {
-                    const peer = await LLAPI.getPeer()
-                    await LLAPI.forwardMessage(peer, peer, [msgId])
+                //msg_content.style.overflow = "visible";
+                const msg_time_ele1 = document.createElement("div");
+                msg_time_ele1.innerHTML = message_time.format({ time: timestamp, detail_time: date.toLocaleString() })
+                const msg_time_ele = msg_time_ele1.lastElementChild
+                if (!check_only_img(msg_content.children)) {
+                    //msg_content.insertAdjacentHTML("beforeend", message_time.format({ time: timestamp, detail_time: date.toLocaleString() }));
+                    if (msg_content.children[0].classList.contains("ark-view-message") || msg_content.children[0].classList.contains("ark-loading")) {
+                        const msg_content_ele = msg_time_ele.querySelector(".time .inner.tgico")
+                        msg_content_ele.style.bottom = "15px"
+                        msg_content_ele.style.right = "3px"
+                    }
+                } else {
+                    msg_time_ele.style=`
+                        position: absolute;
+                        bottom: 5px;
+                        right: 0px;
+                        border-radius: 3.75rem;
+                        background-color: rgb(0 0 0 / 35%);
+                        padding: 0.1rem 0.3125rem;
+                    `
+                    //msg_content.insertAdjacentHTML("beforeend", message_time_img.format({ time: timestamp, detail_time: date.toLocaleString() }));
+                    const msg_content_ele = msg_time_ele.querySelector(".time .inner.tgico")
+                    //msg_content_ele.style.bottom = "auto"
+                    msg_content_ele.style.right = "-1px"
                 }
-            })
-            msg_content.appendChild(msg_time_ele);
+                const time_inner_ele = msg_time_ele.querySelector(".time .inner")
+                time_inner_ele.style.color = setting_data?.setting.time_color
+                msg_time_ele.addEventListener("click", async (event) => {
+                    if (setting_data?.setting.repeatmsg) {
+                        const peer = await LLAPI.getPeer()
+                        await LLAPI.forwardMessage(peer, peer, [msgId])
+                    }
+                })
+                msg_content.appendChild(msg_time_ele);
+            }
+        }
+        // 名称扩展
+        if (setting_data?.setting.friendsinfo && node.querySelector(".msg-content-container")) {
+            const friendItem = friendslist.find(item => item.uid === senderUid);
+            const friend_info = `<${friendItem.nickName}>(${friendItem.uin})`
+            const user_name = node.querySelector(".user-name .text-ellipsis")
+            user_name.innerText = user_name.innerText+friend_info
         }
         // 自动语音转文字
         const ptt_area = node.querySelector(".ptt-element__bottom-area")
         if (ptt_area && setting_data?.setting.auto_ptt2Text) {
-            await LLAPI.Ptt2Text(msgId, peer, elements)
-            ptt_area.style.display = "block"
+            if (!ptt_area.closest(".message-container--self")) {
+                await LLAPI.Ptt2Text(msgId, peer, elements)
+                ptt_area.style.display = "block"
+            }
         }
     })
     LLAPI.on("change_href", (location) => {
@@ -401,6 +419,18 @@ async function onLoad() {
             document.querySelectorAll(".func-menu__item").forEach(
                 (node)=> {
                     const aria_label = node.firstChild.getAttribute("aria-label")
+                    if (aria_label && !(aria_label in setting_data.setting.sidebar_list)) {
+                        setting_data.setting.sidebar_list[aria_label] = false
+                        setSettings(setting_data)
+                    }
+                    if (setting_data.setting.sidebar_list[aria_label]){
+                        node.remove()
+                    }
+                }
+            )
+            document.querySelectorAll(".nav-item").forEach(
+                (node)=> {
+                    const aria_label = node.getAttribute("aria-label")
                     if (aria_label && !(aria_label in setting_data.setting.sidebar_list)) {
                         setting_data.setting.sidebar_list[aria_label] = false
                         setSettings(setting_data)

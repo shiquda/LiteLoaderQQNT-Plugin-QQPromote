@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 20:16:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-26 18:34:27
+ * @LastEditTime: 2023-09-19 14:17:21
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -42,6 +42,15 @@
             <div class="vertical-list-item">
                 <div class="translate-div" style="width: 15%;">自定义颜色:</div>
                 <input class="translate-input" type="color" v-model="time_color">
+            </div>
+            <div class="vertical-list-item" @click="show_time_up = !show_time_up">
+                <div>
+                    <h2>在名称后面显示时间</h2>
+                    <span class="secondary-text">将时间的显示位置移动到名称后面</span>
+                </div>
+                <div class="switchBackgroundImage q-switch" :class="{ 'is-active': show_time_up }">
+                    <span class="q-switch__handle"></span>
+                </div>
             </div>
         </div>
     </Transition>
@@ -171,6 +180,15 @@
         </div>
     </div>
     <hr class="horizontal-dividing-line">
+    <div class="vertical-list-item" @click="friendsinfo = !friendsinfo">
+        <div>
+            <h2>群聊好友名称补全</h2>
+            <span class="secondary-text">群聊显示备注和QQ号功能 </span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': friendsinfo }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
 </div>
 <div class="wrap" id="sidebar">
     <div class="vertical-list-item title" @click="sidebar_show = !sidebar_show">

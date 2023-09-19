@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-09-19 14:22:23
+ * @LastEditTime: 2023-09-19 14:32:53
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -205,10 +205,10 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
         }
     }
 
-    // 回复点击监听
+    // 回复点击监听 点击回复按钮
     qContextMenu.childNodes.forEach((element) => {
         if (element.textContent === "回复") {
-            if (senderUid != uid && setting_data?.setting.reply_at) {
+            if (senderUid != uid && setting_data?.setting.reply_at && !setting_data?.setting.reply_at_click) {
                 element.addEventListener('click', async () => {
                     const interval = setInterval(async () => {
                         let editor = await LLAPI.get_editor()
@@ -220,7 +220,8 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
                     });
                 })
             }
-    }})
+        }
+    })
 }
 
 async function get_link_data(url) {
@@ -412,6 +413,20 @@ async function onLoad() {
                 await LLAPI.Ptt2Text(msgId, peer, elements)
                 ptt_area.style.display = "block"
             }
+        }
+        // 回复点击监听 点击空白
+        if (setting_data?.setting.reply_at && setting_data?.setting.reply_at_click) {
+            const message_container = node.querySelector(".message-container")
+            message_container.addEventListener('click', async () => {
+                const interval = setInterval(async () => {
+                    let editor = await LLAPI.get_editor()
+                    if (editor) {
+                        editor = editor.replace(/<msg-at.*<\/msg-at>&nbsp;/, '');
+                        LLAPI.set_editor(editor)
+                        clearInterval(interval);
+                    }
+                });
+            })
         }
     })
     LLAPI.on("change_href", (location) => {

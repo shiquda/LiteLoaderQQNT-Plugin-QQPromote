@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-31 22:26:12
+ * @LastEditTime: 2023-09-19 14:37:57
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -54,6 +54,7 @@ function onLoad(plugin, liteloader) {
             sidebar_list: {},
             messagebar_list: {},
             reply_at: false,
+            reply_at_click: false,
             auto_ptt2Text: false,
             auto_login: false,
             call_barring: false,

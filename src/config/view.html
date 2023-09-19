@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 20:16:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-09-19 14:17:21
+ * @LastEditTime: 2023-09-19 14:35:58
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -149,6 +149,19 @@
             <span class="q-switch__handle"></span>
         </div>
     </div>
+    <Transition duration="500" name="nested">
+        <div v-if="reply_at">
+            <div class="vertical-list-item" @click="reply_at_click = !reply_at_click">
+                <div>
+                    <h2>禁止双击空白回复自动AT</h2>
+                    <span class="secondary-text">禁止双击空白地方回复自动AT</span>
+                </div>
+                <div class="switchBackgroundImage q-switch" :class="{ 'is-active': reply_at_click }">
+                    <span class="q-switch__handle"></span>
+                </div>
+            </div>
+        </div>
+    </Transition>
     <hr class="horizontal-dividing-line">
     <div class="vertical-list-item" @click="auto_ptt2Text = !auto_ptt2Text">
         <div>

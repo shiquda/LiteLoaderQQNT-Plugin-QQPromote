@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-09-19 20:01:10
+ * @LastEditTime: 2023-09-20 21:24:16
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -360,7 +360,9 @@ async function onLoad() {
             if (setting_data?.setting.show_time_up) {
                 const user_name = node.querySelector(".user-name")
                 const user_name_time = document.createElement("div");
-                user_name_time.innerText = " "+date.toLocaleString()
+                user_name_time.classList.add("user_name_time")
+                user_name_time.innerText = date.toLocaleString()
+                user_name_time.style.color = setting_data?.setting.time_color
                 user_name.appendChild(user_name_time);
             } else {
                 //msg_content.style.overflow = "visible";

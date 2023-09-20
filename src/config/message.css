@@ -69,3 +69,7 @@
 .message-content__wrapper .web:hover {
     background-color: var(--overlay_hover);
 }
+
+.user_name_time {
+	margin-left: 10px;
+}

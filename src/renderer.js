@@ -278,7 +278,7 @@ async function onLoad() {
     link_element.href = css_file_path;
     document.head.appendChild(link_element);
     const Interval = setInterval(() => {
-        if (location.pathname === "/renderer/login.html" && setting_data.setting.auto_login) {
+        if ((location.pathname === "/renderer/login.html" || location.hash == "#/login") && setting_data.setting.auto_login) {
             const loginBtnText = document.querySelector(".auto-login .q-button span");
             if (!loginBtnText) return;
             if (login_time>=0) {

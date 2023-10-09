@@ -132,6 +132,7 @@ function onLoad(plugin, liteloader) {
                 const options = { url: url };
                 return await ogs(options)
             } catch (error) {
+                output(error)
                 return false
             }
         }

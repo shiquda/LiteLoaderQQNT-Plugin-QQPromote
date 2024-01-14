@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-09 00:46:00
+ * @LastEditTime: 2024-01-14 23:18:23
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -197,8 +197,6 @@ function onBrowserWindowCreated(window) {
 
     const patched_send = function (channel, ...args) {
         const data = JSON.parse(fs.readFileSync(settingsPath, "utf-8"));
-        const cdata = fs.readFileSync(settingsPath, "utf-8");
-        const cccc = JSON.parse(cdata);
         // 替换历史消息中的小程序卡片
         if (args?.[1]?.msgList?.length > 0 && data.setting.replaceArk) {
             // 替换小程序卡片

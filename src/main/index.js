@@ -2,13 +2,13 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-09-19 14:37:57
+ * @LastEditTime: 2024-01-09 00:46:00
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
  */
 // 腾讯云TMT
-const { ipcMain, dialog } = require("electron");
+const { ipcMain } = require("electron");
 const { tencent_tmt } = require(`./tencent_tmt.js`);
 const { baidu_fanyi } = require(`./baidu_fanyi.js`);
 const axios = require('axios');
@@ -34,8 +34,8 @@ function setSettings(settingsPath, content) {
     fs.writeFileSync(settingsPath, new_config, "utf-8");
 }
 
-function onLoad(plugin, liteloader) {
-    const pluginDataPath = plugin.path.data;
+function onLoad() {
+    const pluginDataPath = LiteLoader.plugins.qqpromote.path.data;
     const settingsPath = path.join(pluginDataPath, "settings.json");
     const defaultSettings = {
         "setting": {
@@ -186,8 +186,8 @@ function onLoad(plugin, liteloader) {
     )
 }
 
-function onBrowserWindowCreated(window, plugin) {
-    const pluginDataPath = plugin.path.data;
+function onBrowserWindowCreated(window) {
+    const pluginDataPath = LiteLoader.plugins.qqpromote.path.data;
     const settingsPath = path.join(pluginDataPath, "settings.json");
 
     // 复写并监听ipc通信内容
@@ -287,7 +287,8 @@ function output(...args) {
     console.log("\x1b[32m[QQ增强]\x1b[0m", ...args);
 }
 
+onLoad()
+
 module.exports = {
-    onLoad,
     onBrowserWindowCreated
 }

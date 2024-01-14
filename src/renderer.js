@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-10-06 16:51:03
+ * @LastEditTime: 2024-01-14 22:46:24
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -115,7 +115,7 @@ const message_web = `
 const plugin_path = LiteLoader.plugins.qqpromote.path;
 
 // 导入工具函数
-const { createApp, ref, reactive, watch } = await import(`llqqnt://local-file/${plugin_path.plugin}/src/cdnjs.cloudflare.com_ajax_libs_vue_3.3.4_vue.esm-browser.prod.min.js`);
+const { createApp, ref, reactive, watch } = await import(`${plugin_path.plugin}/src/cdnjs.cloudflare.com_ajax_libs_vue_3.3.4_vue.esm-browser.prod.min.js`);
 //import { createApp, ref, reactive, watch } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.esm-browser.prod.min.js'
 //import axios from 'https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/esm/axios.js'
 
@@ -475,10 +475,10 @@ async function onLoad() {
     })
 }
 
-async function onConfigView(view){
+async function onSettingWindowCreated(view){
     const plugin_path = LiteLoader.plugins.qqpromote.path.plugin;
-    const html_file_path = `llqqnt://local-file/${plugin_path}/src/config/view.html`;
-    const css_file_path = `llqqnt://local-file/${plugin_path}/src/config/view.css`;
+    const html_file_path = `${plugin_path}/src/config/view.html`;
+    const css_file_path = `${plugin_path}/src/config/view.css`;
     const setting_data = await qqpromote.getSettings()
     // 插入设置页
     const htmlText = await (await fetch(html_file_path)).text()
@@ -581,7 +581,8 @@ async function decodeQR(image) {
         });
 }
 
+onLoad()
+
 export {
-    onLoad,
-    onConfigView
+    onSettingWindowCreated
 }

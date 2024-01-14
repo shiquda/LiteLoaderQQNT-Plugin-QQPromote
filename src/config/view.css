@@ -1,3 +1,137 @@
+/* 外边距 */
+.qqpromote .plugin-config-view {
+  margin: 20px;
+}
+
+
+
+/* 每节的标题 */
+.qqpromote h1 {
+  color: var(--text_primary);
+  font-weight: var(--font-bold);
+  font-size: min(var(--font_size_3), 18px);
+  line-height: min(var(--line_height_3), 24px);
+  padding: 0px 16px;
+  margin-bottom: 8px;
+}
+
+.qqpromote .wrap {
+  /* Linux样式兼容：--fg_white */
+  background-color: var(--fill_light_primary, var(--fg_white));
+  border-radius: 8px;
+  font-size: min(var(--font_size_3), 18px);
+  line-height: min(var(--line_height_3), 24px);
+  margin-bottom: 20px;
+  overflow: hidden;
+  padding: 0px 16px;
+}
+
+.qqpromote .wrap .title {
+  cursor: pointer;
+  font-size: min(var(--font_size_3), 18px);
+  line-height: min(var(--line_height_3), 24px);
+}
+
+.qqpromote .wrap .title .icon {
+  width: 1em;
+  height: 1em;
+  transform: rotate(-180deg);
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+  transition-delay: 0s;
+  transition-property: transform;
+}
+
+.qqpromote .wrap .title .icon.is-fold {
+  transform: rotate(0deg);
+}
+
+/* 纵向列表条目 */
+.qqpromote .vertical-list-item {
+  margin: 12px 0px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+
+/* 水平分割线 */
+.qqpromote .horizontal-dividing-line {
+  border: unset;
+  margin: unset;
+  height: 1px;
+  background-color: rgba(127, 127, 127, 0.15);
+}
+
+/* 纵向分割线 */
+.qqpromote .vertical-dividing-line {
+  border: unset;
+  margin: unset;
+  width: 1px;
+  background-color: rgba(127, 127, 127, 0.15);
+}
+
+
+
+/* 按钮布局 */
+.qqpromote .ops-btns {
+  display: flex;
+}
+
+/* 副文本 */
+.qqpromote .secondary-text {
+  color: var(--text_secondary);
+  font-size: min(var(--font_size_2), 16px);
+  line-height: min(var(--line_height_2), 22px);
+  margin-top: 4px;
+}
+
+
+
+/* 隐藏 */
+.qqpromote .hidden {
+  display: none !important;
+}
+
+/* 禁用 */
+.qqpromote .disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+
+
+/* 选择框按钮-文本 */
+.qqpromote .q-pulldown-menu-button .content {
+  width: 80px;
+}
+
+/* 选择框按钮-图标 */
+.qqpromote .q-pulldown-menu-button .icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* 选择框选项菜单 */
+.qqpromote .q-context-menu {
+  z-index: 4000;
+  margin-top: 5px;
+  width: 122px;
+}
+
+/* 选择框选项菜单-图标 */
+.qqpromote .q-context-menu .icon {
+  display: none;
+  width: 1em;
+  height: 1em;
+}
+
+/* 选择框选项菜单-选择后图标 */
+.qqpromote .q-context-menu .selected .icon {
+  display: block !important;
+}
+
 .qqpromote .translate-input:focus {
   padding-left: 5px;
   background-color: var(--overlay_active);

@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-15 16:27:23
+ * @LastEditTime: 2024-01-15 19:50:49
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -217,10 +217,9 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
                 element.addEventListener('click', async () => {
                     const interval = setInterval(async () => {
                         let editor = await LLAPI.get_editor()
-                        if (editor) {
-                            editor = editor.replace(/<msg-at.*<\/msg-at>&nbsp;/, '');
-                            LLAPI.set_editor(editor)
+                        if (editor.includes("</msg-at>")) {
                             clearInterval(interval);
+                            LLAPI.del_editor("msg-at", true)
                         }
                     });
                 })

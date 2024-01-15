@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-14 22:46:24
+ * @LastEditTime: 2024-01-15 16:27:23
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -130,6 +130,11 @@ async function setSettings(content) {
     await qqpromote.setSettings(JSON.stringify(content))
 }
 
+/**
+ * 右键打开菜单
+ * @param {*} qContextMenu 
+ * @param {*} message_element 
+ */
 async function addrepeatmsg_menu(qContextMenu, message_element) {
     const { classList } = message_element
     const msgprops = message_element?.closest(".msg-content-container")?.closest(".message")?.__VUE__?.[0]?.props
@@ -272,11 +277,12 @@ async function onLoad() {
     script.src = "https://cdn.jsdelivr.net/npm/sweetalert2@10";
     document.head.appendChild(script);
     // CSS
-    const css_file_path = `llqqnt://local-file/${plugin_path}/src/config/message.css`;
+    const css_file_path = `${plugin_path}/src/config/message.css`;
     const link_element = document.createElement("link");
     link_element.rel = "stylesheet";
     link_element.href = css_file_path;
     document.head.appendChild(link_element);
+    // 自动登录和依赖检测
     const Interval = setInterval(() => {
         if ((location.pathname === "/renderer/login.html" || location.hash == "#/login") && setting_data.setting.auto_login) {
             const loginBtnText = document.querySelector(".auto-login .q-button span");
@@ -295,6 +301,7 @@ async function onLoad() {
         clearInterval(Interval);
     }, 1000);
     LLAPI.add_qmenu(addrepeatmsg_menu)
+
     LLAPI.on("dom-up-messages", async (node) => {
         const setting_data = await qqpromote.getSettings()
         const peer = await LLAPI.getPeer()
@@ -431,6 +438,7 @@ async function onLoad() {
             user_name.textContent = user_name.textContent+friend_info
         }
     })
+
     LLAPI.on("change_href", (location) => {
         if (location.hash == "#/main/message") {
             document.querySelectorAll(".func-menu__item").forEach(
@@ -459,6 +467,7 @@ async function onLoad() {
             )
         }
     })
+
     LLAPI.on("set_message", () => {
         document.querySelectorAll(".q-tooltips").forEach(
             (node)=> {

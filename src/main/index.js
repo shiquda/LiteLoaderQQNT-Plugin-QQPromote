@@ -191,9 +191,7 @@ function onBrowserWindowCreated(window) {
     const settingsPath = path.join(pluginDataPath, "settings.json");
 
     // 复写并监听ipc通信内容
-    const original_send =
-        (window.webContents.__qqntim_original_object && window.webContents.__qqntim_original_object.send) ||
-        window.webContents.send;
+    const original_send = window.webContents.send;
 
     const patched_send = function (channel, ...args) {
         const data = JSON.parse(fs.readFileSync(settingsPath, "utf-8"));
@@ -244,11 +242,7 @@ function onBrowserWindowCreated(window) {
         return original_send.call(window.webContents, channel, ...args);
     };
 
-    if (window.webContents.__qqntim_original_object) {
-        window.webContents.__qqntim_original_object.send = patched_send;
-    } else {
-        window.webContents.send = patched_send;
-    }
+    window.webContents.send = patched_send;
 }
 
 // 卡片替换函数

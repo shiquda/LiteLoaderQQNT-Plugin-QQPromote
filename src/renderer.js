@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-15 19:50:49
+ * @LastEditTime: 2024-01-15 20:04:59
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -440,7 +440,7 @@ async function onLoad() {
 
     LLAPI.on("change_href", (location) => {
         if (location.hash == "#/main/message") {
-            document.querySelectorAll(".func-menu__item").forEach(
+            document.querySelectorAll(".sidebar__menu .func-menu__item").forEach(
                 (node)=> {
                     const aria_label = node.firstChild.getAttribute("aria-label")
                     if (aria_label && !(aria_label in setting_data.setting.sidebar_list)) {
@@ -457,7 +457,7 @@ async function onLoad() {
                     const aria_label = node.getAttribute("aria-label")
                     if (aria_label && !(aria_label in setting_data.setting.sidebar_list)) {
                         setting_data.setting.sidebar_list[aria_label] = false
-                        setSettings(setting_data)
+                        //setSettings(setting_data)
                     }
                     if (setting_data.setting.sidebar_list[aria_label]){
                         node.remove()
@@ -468,7 +468,7 @@ async function onLoad() {
     })
 
     LLAPI.on("set_message", () => {
-        document.querySelectorAll(".q-tooltips").forEach(
+        document.querySelectorAll(".bar-icon .q-tooltips").forEach(
             (node)=> {
                 const content = node?.__VUE__?.[0]?.props?.content
                 if (content && !(content in setting_data.setting.messagebar_list)) {

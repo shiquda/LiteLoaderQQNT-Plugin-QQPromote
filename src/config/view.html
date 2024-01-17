@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 20:16:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-09 17:29:15
+ * @LastEditTime: 2024-01-17 17:15:57
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -199,6 +199,16 @@
             <span class="secondary-text">群聊显示备注和QQ号功能 </span>
         </div>
         <div class="switchBackgroundImage q-switch" :class="{ 'is-active': friendsinfo }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
+    <hr class="horizontal-dividing-line">
+    <div class="vertical-list-item" @click="resetLogin = !resetLogin">
+        <div>
+            <h2>自动忘记密码</h2>
+            <span class="secondary-text">在登录后自动重置账号信息，下次登录需要重新扫码或者输入密码登录 </span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': resetLogin }">
             <span class="q-switch__handle"></span>
         </div>
     </div>

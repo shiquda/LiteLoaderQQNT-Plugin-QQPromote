@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-15 20:04:59
+ * @LastEditTime: 2024-01-17 17:54:42
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -65,7 +65,6 @@ qrcode_ele.innerHTML = `
   <!---->
 </a>
 `
-
 const chatgpt_ele = document.createElement("div");
 chatgpt_ele.innerHTML = `
 <a 
@@ -120,6 +119,7 @@ const { createApp, ref, reactive, watch } = await import(`${plugin_path.plugin}/
 //import axios from 'https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/esm/axios.js'
 
 let translate_hover, login_time = 3;
+let login = false;
 const setting_data = await qqpromote.getSettings()
 
 function output(...args) {
@@ -294,12 +294,22 @@ async function onLoad() {
             }
         }
         if (location.href.indexOf("#/main/message") == -1 && location.href.indexOf("#/chat/") == -1) return;
-        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.1.4")) {
-            Swal.fire('LLAPI版本过低，请在插件商城安装最新版', '该提示并非QQ官方提示，请不要发给官方群', 'warning');
+        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.1.9")) {
+            Swal.fire('LLAPI版本过低，请在插件市场安装最新版', '该提示并非QQ官方提示，请不要发给官方群', 'warning');
         }
         clearInterval(Interval);
     }, 1000);
     LLAPI.add_qmenu(addrepeatmsg_menu)
+    /**
+    if (location.pathname === "/renderer/index.html" && !login) {
+        login = true
+        const accountInfo = await LLAPI.getAccountInfo()
+        output(accountInfo)
+    }
+    */
+    LLAPI.on("user-login", async (account) => {
+        if (setting_data.setting.resetLogin) LLAPI.resetLoginInfo(account.uin)
+    })
 
     LLAPI.on("dom-up-messages", async (node) => {
         const setting_data = await qqpromote.getSettings()

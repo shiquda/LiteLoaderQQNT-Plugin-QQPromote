@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-07 21:07:34
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-17 17:54:42
+ * @LastEditTime: 2024-01-17 20:40:23
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -119,7 +119,7 @@ const { createApp, ref, reactive, watch } = await import(`${plugin_path.plugin}/
 //import axios from 'https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/esm/axios.js'
 
 let translate_hover, login_time = 3;
-let login = false;
+let resetLogin = false;
 const setting_data = await qqpromote.getSettings()
 
 function output(...args) {
@@ -267,6 +267,50 @@ async function get_link_data(url) {
     return url_data
 }
 
+function userLogin() {
+    if (location.pathname === "/renderer/login.html") {
+        const loginView = document.querySelector(".draggable-view__container.login-container")
+        const loginEle = document.createElement("label")
+        loginEle.title = "忘记密码"
+        loginEle.classList.add("q-checkbox")
+        loginEle.innerHTML = `
+        <input type="checkbox">
+        <span class="q-checkbox__input">
+        </span>
+        `
+        loginEle.style = `
+            app-region: no-drag;
+            padding-top: 6px;
+            position: absolute;
+            left: 8px;
+            z-index: 99;
+        `
+        function reLogin() {
+            if (resetLogin) {
+                const resetLoginInterval = setInterval(async () => {
+                    const account = await LLAPI.getAccountInfo()
+                    if (!account.uin) return;
+                    clearInterval(resetLoginInterval);
+                    LLAPI.resetLoginInfo(account.uin)
+                }, 100);
+            }
+        }
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') reLogin();
+        });
+        document.querySelector(".login-btn")?.addEventListener("click", reLogin)
+        loginEle.querySelector(".q-checkbox__input").addEventListener("click", async (event) => {
+            const qCheckbox = event.target.parentElement
+            resetLogin = !resetLogin
+            qCheckbox.classList.toggle("is-checked", resetLogin)
+        })
+        loginView.insertBefore(loginEle, loginView.firstChild)
+    }
+    LLAPI.on("user-login", async (account) => {
+        if (setting_data.setting.resetLogin) LLAPI.resetLoginInfo(account.uin)
+    })
+}
+
 async function onLoad() {
     const setting_data = await qqpromote.getSettings()
     const plugin_path = LiteLoader.plugins.qqpromote.path.plugin;
@@ -300,16 +344,7 @@ async function onLoad() {
         clearInterval(Interval);
     }, 1000);
     LLAPI.add_qmenu(addrepeatmsg_menu)
-    /**
-    if (location.pathname === "/renderer/index.html" && !login) {
-        login = true
-        const accountInfo = await LLAPI.getAccountInfo()
-        output(accountInfo)
-    }
-    */
-    LLAPI.on("user-login", async (account) => {
-        if (setting_data.setting.resetLogin) LLAPI.resetLoginInfo(account.uin)
-    })
+    userLogin()
 
     LLAPI.on("dom-up-messages", async (node) => {
         const setting_data = await qqpromote.getSettings()

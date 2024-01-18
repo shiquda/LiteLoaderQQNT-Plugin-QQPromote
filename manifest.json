@@ -5,10 +5,12 @@
     "slug": "qqpromote",
     "description": "复读姬，二维码识别，时间显示，翻译，屏蔽更新，链接预览，ChatGPT，禁止回复自动AT，侧边栏管理，自动登录，屏蔽通话，群聊名称扩展",
     "version": "1.2.3",
-    "author": {
-        "name": "Night-stars-1",
-        "link": "https://github.com/Night-stars-1"
-    },
+    "authors": [
+        {
+            "name": "Night-stars-1",
+            "link": "https://github.com/Night-stars-1"
+        }
+    ],
     "repository": {
         "repo": "Night-stars-1/LiteLoaderQQNT-Plugin-RepeatMsg",
         "branch": "master"

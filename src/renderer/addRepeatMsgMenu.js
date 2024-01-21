@@ -33,9 +33,11 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
             // 关闭右键菜单
             qContextMenu.remove()
         })
+        /*
         if (qThemeValue != "light") {
             repeatmsg.querySelector("svg").setAttribute("fill", "#ffffff")
         }
+        */
         if (setting_data.setting.rpmsg_location) {
             qContextMenu.insertBefore(repeatmsg, qContextMenu.firstChild);
         } else {
@@ -52,9 +54,11 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
             // 关闭右键菜单
             qContextMenu.remove()
         })
+        /*
         if (qThemeValue != "light") {
             chatgpt_msg.querySelector("svg").setAttribute("fill", "#ffffff")
         }
+        */
         if (setting_data.setting.chatgpt_location) {
             qContextMenu.insertBefore(chatgpt_msg, qContextMenu.firstChild);
         } else {
@@ -74,12 +78,15 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
         qContextMenu.remove()
     })
     if (classList?.[0] === "image-content") {
+        qContextMenu.insertBefore(qrcode, qContextMenu.firstChild);
+        /*
         if (qThemeValue == "light") {            
             qContextMenu.insertBefore(qrcode, qContextMenu.firstChild);
         } else {
             qrcode.querySelector("svg").setAttribute("fill", "#ffffff")
             qContextMenu.insertBefore(qrcode, qContextMenu.firstChild);
         }
+         */
     }
 
     // 回复点击监听 点击回复按钮

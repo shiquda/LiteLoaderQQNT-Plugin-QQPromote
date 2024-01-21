@@ -22,6 +22,6 @@ jobs:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GAYHUB_TOKEN }}"
-          automatic_release_tag: "latest"
+          automatic_release_tag: "test"
           prerelease: true
           title: "预构建版本"

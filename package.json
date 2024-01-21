@@ -9,9 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ant-design-vue": "^4.1.0",
     "axios": "^1.4.0",
-    "open-graph-scraper": "^6.2.2",
-    "vue": "^3.4.6"
+    "open-graph-scraper": "^6.2.2"
   }
 }

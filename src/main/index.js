@@ -60,6 +60,7 @@ function onLoad() {
             call_barring: false,
             friendsinfo: false,
             resetLogin: false,
+            display_style: false,
             translate_type: "腾讯翻译",
             time_color: "rgba(0,0,0,.5)",
             translate_SECRET_ID: '',

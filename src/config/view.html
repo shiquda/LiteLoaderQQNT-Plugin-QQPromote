@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 20:16:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-17 17:15:57
+ * @LastEditTime: 2024-01-22 19:07:23
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -206,9 +206,19 @@
     <div class="vertical-list-item" @click="resetLogin = !resetLogin">
         <div>
             <h2>自动忘记密码</h2>
-            <span class="secondary-text">在登录后自动重置账号信息，下次登录需要重新扫码或者输入密码登录 </span>
+            <span class="secondary-text">在登录后自动重置账号信息，下次登录需要重新扫码或者输入密码登录</span>
         </div>
         <div class="switchBackgroundImage q-switch" :class="{ 'is-active': resetLogin }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
+    <hr class="horizontal-dividing-line">
+    <div class="vertical-list-item" @click="display_style = !display_style">
+        <div>
+            <h2>隐藏未加载的插件</h2>
+            <span class="secondary-text">隐藏设置里未加载的插件</span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': display_style }">
             <span class="q-switch__handle"></span>
         </div>
     </div>

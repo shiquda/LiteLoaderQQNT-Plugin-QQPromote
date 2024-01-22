@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-09 00:35:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-19 16:56:17
+ * @LastEditTime: 2024-01-22 19:04:39
  */
 import { domUpMessages } from "./renderer/domUpMessages.js"
 import { changeHref } from "./renderer/changeHref.js"
@@ -57,9 +57,18 @@ async function onLoad() {
 }
 
 async function onSettingWindowCreated(view){
+    const setting_data = await qqpromote.getSettings()
     const plugin_path = LiteLoader.plugins.qqpromote.path.plugin;
     const html_file_path = `local:///${plugin_path}/src/config/view.html`;
     const css_file_path = `local:///${plugin_path}/src/config/view.css`;
+    const displayCss_file_path = `local:///${plugin_path}/src/config/display.css`;
+    if (setting_data.setting.display_style) {
+        // 插入设置页样式
+        const displayLink = document.createElement('link')
+        displayLink.rel = 'stylesheet'
+        displayLink.href = displayCss_file_path
+        document.head.appendChild(displayLink)
+    }
     // 插入设置页
     const htmlText = await (await fetch(html_file_path)).text()
     view.insertAdjacentHTML('afterbegin', htmlText)
@@ -68,7 +77,6 @@ async function onSettingWindowCreated(view){
     link.rel = 'stylesheet'
     link.href = css_file_path
     document.head.appendChild(link)
-
     document.querySelectorAll(".nav-item.liteloader").forEach(node => {
         if (node.textContent === "QQ增强") {
             setting_vue(node)

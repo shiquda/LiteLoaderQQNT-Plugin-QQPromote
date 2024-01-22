@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-19 16:55:53
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-22 00:51:38
+ * @LastEditTime: 2024-01-22 23:30:46
  */
 // 导入工具函数
 import { setSettings } from "./utils.js"
@@ -50,6 +50,19 @@ async function setting_vue(node) {
                 }
             })
             app.mount('#messagebar')
+        }
+        if (!document.querySelector("#upbar")?.__vue_app__) {
+            const app = createApp({
+                setup() {
+                    const upbar_list = reactive(setting_data.setting.upbar_list)
+                    const upbar = ref(false)
+                    return {
+                        upbar, 
+                        upbar_list
+                    }
+                }
+            })
+            app.mount('#upbar')
         }
         if (!document.querySelector("#qqpromote_version")?.__vue_app__) {
             const app = createApp({

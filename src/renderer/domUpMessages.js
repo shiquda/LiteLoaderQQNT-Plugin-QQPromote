@@ -76,10 +76,10 @@ async function domUpMessages(node) {
             const msg_time_ele1 = document.createElement("div");
             msg_time_ele1.innerHTML = message_time.format({ time: timestamp, detail_time: date.toLocaleString() })
             const msg_time_ele = msg_time_ele1.lastElementChild
+            const msg_content_ele = msg_time_ele.querySelector(".time .inner.tgico")
             if (!check_only_img(msg_content.children)) {
                 //msg_content.insertAdjacentHTML("beforeend", message_time.format({ time: timestamp, detail_time: date.toLocaleString() }));
                 if (msg_content.children[0].classList.contains("ark-view-message") || msg_content.children[0].classList.contains("ark-loading")) {
-                    const msg_content_ele = msg_time_ele.querySelector(".time .inner.tgico")
                     msg_content_ele.style.bottom = "15px"
                     msg_content_ele.style.right = "3px"
                 }
@@ -93,9 +93,9 @@ async function domUpMessages(node) {
                     padding: 0.1rem 0.3125rem;
                 `
                 //msg_content.insertAdjacentHTML("beforeend", message_time_img.format({ time: timestamp, detail_time: date.toLocaleString() }));
-                const msg_content_ele = msg_time_ele.querySelector(".time .inner.tgico")
+                msg_time_ele.classList.add("time_img")
                 //msg_content_ele.style.bottom = "auto"
-                msg_content_ele.style.right = "-1px"
+                //msg_content_ele.style.right = "-1px"
             }
             const time_inner_ele = msg_time_ele.querySelector(".time .inner")
             time_inner_ele.style.color = setting_data?.setting.time_color

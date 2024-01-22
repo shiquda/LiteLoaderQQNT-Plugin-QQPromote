@@ -16,6 +16,13 @@
 
 .message-content__wrapper .time .i18n:not(.inner .i18n) {
 	visibility:hidden;
+	padding-left: 4px;
+}
+
+/* 图片时间 */
+.message-content__wrapper .time.time_img .i18n:not(.inner .i18n) {
+	visibility:hidden;
+	padding-left: 0px;
 }
 
 .av-msg .inner {
@@ -26,6 +33,7 @@
 	margin-right:.375rem
 }
 
+/* 时间样式 */
 .message-content__wrapper .time .inner {
 	pointer-events:all;
 	position:absolute;
@@ -38,7 +46,13 @@
 	white-space:nowrap;
 	height:calc(var(--font_size_main_2) - 1px);
 	visibility:visible;
-	color:rgba(0,0,0,.5)
+	color:rgba(0,0,0,.5);
+	padding-left: 4px;
+}
+
+/* 图片时间 */
+.message-content__wrapper .time.time_img .inner {
+	padding-left: 0px;
 }
 
 .message-content__wrapper .web .text {

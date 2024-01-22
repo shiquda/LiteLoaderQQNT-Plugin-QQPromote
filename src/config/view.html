@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 20:16:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-22 19:07:23
+ * @LastEditTime: 2024-01-22 23:30:18
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -252,6 +252,26 @@
     </div>
     <ul v-if="messagebar" v-for="(bar_status, bar) in messagebar_list">
         <div class="vertical-list-item" @click="messagebar_list[bar]=!bar_status">
+            <div>
+                <h2>隐藏{{bar}}</h2>
+                <span class="secondary-text">重启生效</span>
+            </div>
+            <div class="switchBackgroundImage q-switch" :class="{ 'is-active': bar_status }">
+                <span class="q-switch__handle"></span>
+            </div>
+        </div>
+        <hr class="horizontal-dividing-line">
+    </ul>
+</div>
+<div class="wrap" id="upbar">
+    <div class="vertical-list-item title" @click="upbar = !upbar">
+        <h2>顶栏管理</h2>
+        <svg class="icon" :class="{ 'is-fold': !upbar }" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 8L12 17L3 8" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+        </svg>
+    </div>
+    <ul v-if="upbar" v-for="(bar_status, bar) in upbar_list">
+        <div class="vertical-list-item" @click="upbar_list[bar]=!bar_status">
             <div>
                 <h2>隐藏{{bar}}</h2>
                 <span class="secondary-text">重启生效</span>

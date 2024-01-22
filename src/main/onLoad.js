@@ -45,6 +45,7 @@ function onLoad() {
             chatgpt_url: "https://gpt.srap.link/v1/chat/completions",
             sidebar_list: {},
             messagebar_list: {},
+            upbar_list: {},
             reply_at: false,
             reply_at_click: false,
             auto_ptt2Text: false,

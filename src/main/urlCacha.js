@@ -1,34 +1,26 @@
-const fs = require("fs");
-const levelup = require('levelup');
-const leveldown = require('leveldown');
+/*
+ * @Date: 2024-01-23 01:14:13
+ * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
+ * @LastEditTime: 2024-01-23 02:20:34
+ */
+const { LowSync, JSONFileSync } = require('@commonify/lowdb');
 const pluginDataPath = LiteLoader.plugins.qqpromote.path.data;
-const db = levelup(leveldown(`${pluginDataPath}/urlCache`));
 
-function setUrlData(url, data) {
-    data = JSON.stringify(data);
-    // 写入数据
-    db.put(url, data, (err) => {
-        if (err) {
-            outputer(err);
-        }
-    });
+const adapter = new JSONFileSync(`${pluginDataPath}/db.json`)
+const db = new LowSync(adapter)
+if (db.read()) {
+    db.data = {}
+    db.write()
+}
+
+async function setUrlData(url, data) {
+    db.data[url] = data;
+    db.write()
 }
 
 async function getUrlData(url) {
-    // 读取数据
-    db.get(url, (err, value) => {
-        if (err) {
-            outputer(err);
-            return {};
-        } else {
-            try {
-                return JSON.parse(value.toString())
-            } catch (error) {
-                outputer(error);
-                return {};
-            }
-        }
-    });
+    db.read()
+    return db.data[url]
 }
 
 function output(...args) {

@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-09 00:35:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-22 22:44:08
+ * @LastEditTime: 2024-01-23 01:08:46
  */
 import { domUpMessages } from "./renderer/domUpMessages.js"
 import { changeHref } from "./renderer/changeHref.js"
@@ -50,11 +50,11 @@ async function onLoad() {
                     cancelButtonText: '确定',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                    try {
-                        StoreAPI.openStore("LLAPI");
-                    } catch (error) {
-                        Swal.fire('未安装插件市场', '该提示并非QQ官方提示，请不要发给官方群', 'warning');
-                    }
+                        try {
+                            StoreAPI.openStore("LLAPI");
+                        } catch (error) {
+                            Swal.fire('未安装插件市场', '该提示并非QQ官方提示，请不要发给官方群', 'warning');
+                        }
                     }
                 });
             }, 1000);

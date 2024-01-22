@@ -9,9 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@commonify/lowdb": "^3.0.0",
     "axios": "^1.4.0",
-    "leveldown": "^6.1.1",
-    "levelup": "^5.1.1",
     "open-graph-scraper": "^6.2.2"
   }
 }

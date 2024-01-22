@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-09 00:35:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-22 20:06:32
+ * @LastEditTime: 2024-01-22 22:44:08
  */
 import { domUpMessages } from "./renderer/domUpMessages.js"
 import { changeHref } from "./renderer/changeHref.js"
@@ -39,7 +39,7 @@ async function onLoad() {
             }
         }
         if (location.href.indexOf("#/main/message") == -1 && location.href.indexOf("#/chat/") == -1) return;
-        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.1.9")) {
+        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.2.0")) {
             setTimeout(() => {
                 Swal.fire({
                     title: 'LLAPI版本过低，请在插件市场安装最新版',

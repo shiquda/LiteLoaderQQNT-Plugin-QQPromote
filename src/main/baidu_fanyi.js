@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-16 14:59:49
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2023-08-18 15:43:44
+ * @LastEditTime: 2024-01-22 20:39:28
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -42,5 +42,5 @@ function output(...args) {
 }
 
 module.exports = {
-    baidu_fanyi: baidu_fanyi
+    baidu_fanyi
 };

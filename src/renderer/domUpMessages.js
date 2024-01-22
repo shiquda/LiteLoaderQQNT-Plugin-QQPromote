@@ -43,13 +43,12 @@ async function domUpMessages(node) {
     const msg_link = node.querySelector(".text-link")
     if (msg_link && setting_data?.setting.link_preview) {
         const url = msg_link.innerText
-        const url_data = await get_link_data(url)
+        const url_data = await get_link_data(url) // 消息数据
         if (url_data) {
-            const { result } = url_data; // 消息数据
             const msg_content = node.querySelector(".msg-content-container").firstElementChild
             msg_content.style.overflow = "visible";
             const web_ele1 = document.createElement("div");
-            web_ele1.innerHTML = message_web.format({ url: url, img: result.ogImage?.[0]?.url, title: result.ogTitle, text: result.ogDescription})
+            web_ele1.innerHTML = message_web.format({ url: url, img: url_data.ogImage?.[0]?.url, title: url_data.ogTitle, text: url_data.ogDescription})
             const web_ele = web_ele1.lastElementChild
             const img_ele = web_ele.querySelector(".media-photo")
             img_ele.onerror = function() {

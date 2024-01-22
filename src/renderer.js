@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-09 00:35:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-22 19:04:39
+ * @LastEditTime: 2024-01-22 20:06:32
  */
 import { domUpMessages } from "./renderer/domUpMessages.js"
 import { changeHref } from "./renderer/changeHref.js"
@@ -40,7 +40,24 @@ async function onLoad() {
         }
         if (location.href.indexOf("#/main/message") == -1 && location.href.indexOf("#/chat/") == -1) return;
         if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.1.9")) {
-            Swal.fire('LLAPI版本过低，请在插件市场安装最新版', '该提示并非QQ官方提示，请不要发给官方群', 'warning');
+            setTimeout(() => {
+                Swal.fire({
+                    title: 'LLAPI版本过低，请在插件市场安装最新版',
+                    text: '该提示并非QQ官方提示，请不要发给官方群',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: '前往插件市场',
+                    cancelButtonText: '确定',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                    try {
+                        StoreAPI.openStore("LLAPI");
+                    } catch (error) {
+                        Swal.fire('未安装插件市场', '该提示并非QQ官方提示，请不要发给官方群', 'warning');
+                    }
+                    }
+                });
+            }, 1000);
         }
         clearInterval(Interval);
     }, 1000);

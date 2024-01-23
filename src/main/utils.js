@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-22 20:33:56
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-23 21:05:30
+ * @LastEditTime: 2024-01-23 23:13:12
  */
 const fs = require("fs");
 const path = require("path");
@@ -12,7 +12,8 @@ const emojiPath = path.join(pluginDataPath, "emoji");
 const remotesPath = path.join(emojiPath, "remotes.txt");
 const defaultSettings = {
     "setting": {
-        repeatmsg: false,
+        repeat_msg: false,
+        repeat_msg_time: false,
         translate: false,
         show_time: false,
         show_time_up: false,
@@ -36,6 +37,7 @@ const defaultSettings = {
         resetLogin: false,
         display_style: false,
         local_emoji: false,
+        qrcode: false,
         emoji_folder: emojiPath,
         translate_type: "腾讯翻译",
         time_color: "rgba(0,0,0,.5)",

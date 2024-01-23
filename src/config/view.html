@@ -2,28 +2,51 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 20:16:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-23 19:31:06
+ * @LastEditTime: 2024-01-23 23:13:37
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
 -->
 <div class="wrap" id="qqpromote">
-    <div class="vertical-list-item" @click="repeatmsg = !repeatmsg">
+    <div class="vertical-list-item" @click="repeat_msg = !repeat_msg">
+        <div>
+            <h2>开启右键消息复读</h2>
+            <span class="secondary-text">右键菜单添加+1选项, 重启生效</span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': repeat_msg }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
+    <Transition duration="500" name="nested">
+        <div v-if="repeat_msg">
+            <div class="vertical-list-item" @click="rpmsg_location = !rpmsg_location">
+                <div>
+                    <h2>开启+1菜单顶置</h2>
+                    <span class="secondary-text">重启生效</span>
+                </div>
+                <div class="switchBackgroundImage q-switch" :class="{ 'is-active': rpmsg_location }">
+                    <span class="q-switch__handle"></span>
+                </div>
+            </div>
+        </div>
+    </Transition>
+    <hr class="horizontal-dividing-line">
+    <div class="vertical-list-item" @click="repeat_msg_time = !repeat_msg_time">
         <div>
             <h2>开启点击消息时间复读</h2>
-            <span class="secondary-text">该功能必须开启消息显示时间(重启后右键的+1会隐藏)</span>
+            <span class="secondary-text">该功能必须开启消息显示时间, 重启生效</span>
         </div>
-        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': repeatmsg }">
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': repeat_msg_time }">
             <span class="q-switch__handle"></span>
         </div>
     </div>
     <hr class="horizontal-dividing-line">
-    <div class="vertical-list-item" @click="rpmsg_location = !rpmsg_location">
+    <div class="vertical-list-item" @click="qrcode = !qrcode">
         <div>
-            <h2>开启+1菜单顶置</h2>
-            <span class="secondary-text">重启生效</span>
+            <h2>开启右键识别二维码</h2>
+            <span class="secondary-text">右键菜单添加识别二维码选项, 重启生效</span>
         </div>
-        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': rpmsg_location }">
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': qrcode }">
             <span class="q-switch__handle"></span>
         </div>
     </div>
@@ -233,10 +256,12 @@
         </div>
     </div>
     <Transition duration="500" name="nested">
-        <div class="vertical-list-item" v-if="local_emoji"> 
-            <input :placeholder="emoji_folder" class="text-input focus" readonly="" type="text" spellcheck="false">
-            <div class="ops-btns">
-                <button class="q-button q-button--small q-button--secondary" @click="openEmoji(emoji_folder)">打开文件夹</button>
+        <div v-if="local_emoji">
+            <div class="vertical-list-item"> 
+                <input :placeholder="emoji_folder" class="text-input focus" readonly="" type="text" spellcheck="false">
+                <div class="ops-btns">
+                    <button class="q-button q-button--small q-button--secondary" @click="openEmoji(emoji_folder)">打开文件夹</button>
+                </div>
             </div>
         </div>
     </Transition>

@@ -14,10 +14,10 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
     const msgIds = msgprops?.msgRecord.msgId;
     const senderUid = msgprops?.msgRecord.senderUid;
     const content = message_element?.innerText;
-    const qThemeValue = document.body.getAttribute('q-theme');
-    //qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
+    // const qThemeValue = document.body.getAttribute('q-theme');
+    // qContextMenu.style.setProperty('--q-contextmenu-max-height', 'calc(40vh - 16px)');
     // +1
-    if (!setting_data?.setting.repeatmsg) {
+    if (setting_data?.setting.repeat_msg) {
         // 插入分隔线
         // qContextMenu.insertAdjacentHTML(location, separatorHTML)
         const repeatmsg = repeatmsg_ele.cloneNode(true);
@@ -66,29 +66,55 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
         }
     }
 
-    // 识别二维码
-    const qrcode = qrcode_ele.cloneNode(true);
-    qrcode.addEventListener('click', async () => {
-        const content = await decodeQR(message_element)
-        Swal.fire({
-            title: '识别结果',
-            html: `<input id="swal-input1" class="swal2-input" value="${content}">`,
-        });
-        // 关闭右键菜单
-        qContextMenu.remove()
-    })
-    if (classList?.[0] === "image-content") {
-        qContextMenu.insertBefore(qrcode, qContextMenu.firstChild);
-        /*
-        if (qThemeValue == "light") {            
+    if (setting_data?.setting.qrcode) {
+        // 识别二维码
+        const qrcode = qrcode_ele.cloneNode(true);
+        qrcode.addEventListener('click', async () => {
+            const content = await decodeQR(message_element)
+            Swal.fire({
+                title: '识别结果',
+                html: `<input id="swal-input1" class="swal2-input" value="${content}">`,
+            });
+            // 关闭右键菜单
+            qContextMenu.remove()
+        })
+        if (classList?.[0] === "image-content") {
             qContextMenu.insertBefore(qrcode, qContextMenu.firstChild);
-        } else {
-            qrcode.querySelector("svg").setAttribute("fill", "#ffffff")
-            qContextMenu.insertBefore(qrcode, qContextMenu.firstChild);
+            /*
+            if (qThemeValue == "light") {            
+                qContextMenu.insertBefore(qrcode, qContextMenu.firstChild);
+            } else {
+                qrcode.querySelector("svg").setAttribute("fill", "#ffffff")
+                qContextMenu.insertBefore(qrcode, qContextMenu.firstChild);
+            }
+            */
         }
-         */
     }
 
+    if (setting_data?.setting.qrcode) {
+        // 识别二维码
+        const qrcode = qrcode_ele.cloneNode(true);
+        qrcode.addEventListener('click', async () => {
+            const content = await decodeQR(message_element)
+            Swal.fire({
+                title: '识别结果',
+                html: `<input id="swal-input1" class="swal2-input" value="${content}">`,
+            });
+            // 关闭右键菜单
+            qContextMenu.remove()
+        })
+        if (classList?.[0] === "image-content") {
+            qContextMenu.insertBefore(qrcode, qContextMenu.firstChild);
+            /*
+            if (qThemeValue == "light") {            
+                qContextMenu.insertBefore(qrcode, qContextMenu.firstChild);
+            } else {
+                qrcode.querySelector("svg").setAttribute("fill", "#ffffff")
+                qContextMenu.insertBefore(qrcode, qContextMenu.firstChild);
+            }
+            */
+        }
+    }
     // 回复点击监听 点击回复按钮
     qContextMenu.childNodes.forEach((element) => {
         if (element.textContent === "回复") {

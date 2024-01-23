@@ -1,4 +1,4 @@
-const { ipcMain } = require("electron");
+const { ipcMain, shell } = require("electron");
 const { tencent_tmt } = require(`./tencent_tmt.js`);
 const { baidu_fanyi } = require(`./baidu_fanyi.js`);
 const { output } = require(`./utils.js`);
@@ -29,6 +29,7 @@ function setSettings(settingsPath, content) {
 function onLoad() {
     const pluginDataPath = LiteLoader.plugins.qqpromote.path.data;
     const settingsPath = path.join(pluginDataPath, "settings.json");
+    const emojiPath = path.join(pluginDataPath, "emoji")
     const defaultSettings = {
         "setting": {
             repeatmsg: false,
@@ -54,6 +55,8 @@ function onLoad() {
             friendsinfo: false,
             resetLogin: false,
             display_style: false,
+            local_emoji: false,
+            emoji_folder: emojiPath,
             translate_type: "腾讯翻译",
             time_color: "rgba(0,0,0,.5)",
             translate_SECRET_ID: '',
@@ -63,8 +66,8 @@ function onLoad() {
         }
     }
     // 设置文件判断
-    if (!fs.existsSync(pluginDataPath)) {
-        fs.mkdirSync(pluginDataPath, { recursive: true });
+    if (!fs.existsSync(emojiPath)) {
+        fs.mkdirSync(emojiPath, { recursive: true });
     }
     if (!fs.existsSync(settingsPath)) {
         fs.writeFileSync(settingsPath, JSON.stringify(defaultSettings, null, 4));
@@ -185,6 +188,14 @@ function onLoad() {
             }
         }
     )
+    // 打开文件夹
+    ipcMain.handle(
+        "LiteLoader.qqpromote.openFolder", 
+        (event, localPath) => {
+            const openPath = path.normalize(localPath);
+            shell.showItemInFolder(openPath);
+        }
+    );
 }
 
 module.exports = {

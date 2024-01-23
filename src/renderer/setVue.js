@@ -1,11 +1,13 @@
 /*
  * @Date: 2024-01-19 16:55:53
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-22 23:30:46
+ * @LastEditTime: 2024-01-23 19:21:19
  */
 // 导入工具函数
 import { setSettings } from "./utils.js"
 const { createApp, ref, reactive, watch } = await import('../cdnjs.cloudflare.com_ajax_libs_vue_3.3.4_vue.esm-browser.prod.min.js');
+
+const openFolder = qqpromote.openFolder
 
 async function setting_vue(node) {
     const setting_data = await qqpromote.getSettings()
@@ -14,6 +16,11 @@ async function setting_vue(node) {
     node.addEventListener("click", () => {
         if (!document.querySelector("#qqpromote")?.__vue_app__) {
             const app = createApp({
+                methods: {
+                    openEmoji(path) {
+                        openFolder(path)
+                    }
+                },
                 setup() {
                     const setting_obj = reactive(setting_data.setting)
                     watch(setting_obj, (newValue, oldValue) => {

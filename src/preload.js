@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-05 13:44:33
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-23 01:12:01
+ * @LastEditTime: 2024-01-23 19:29:12
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -34,5 +34,9 @@ contextBridge.exposeInMainWorld("qqpromote", {
     chatgpt: (content, data) => ipcRenderer.invoke(
         "LiteLoader.qqpromote.chatgpt",
         content, data
+    ),
+    openFolder: (localPath) => ipcRenderer.invoke(
+        "LiteLoader.qqpromote.openFolder",
+        localPath
     )
 });

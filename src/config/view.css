@@ -46,15 +46,6 @@
   transform: rotate(0deg);
 }
 
-/* 纵向列表条目 */
-.qqpromote .vertical-list-item {
-  margin: 12px 0px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-
 
 /* 水平分割线 */
 .qqpromote .horizontal-dividing-line {
@@ -132,11 +123,29 @@
   display: block !important;
 }
 
-.qqpromote .translate-input:focus {
+/* 文本框 */
+.qqpromote .text-input {
+  align-self: normal;
+  flex: 1;
+  height: auto;
+  border-radius: 4px;
+  margin-right: 16px;
+  transition: all 100ms ease-out;
+}
+
+/* 文本框-一直聚焦 */
+.qqpromote .text-input.focus {
   padding-left: 5px;
   background-color: var(--overlay_active);
 }
 
+/* 文本框-聚焦 */
+.qqpromote .text-input:focus {
+  padding-left: 5px;
+  background-color: var(--overlay_active);
+}
+
+/* 纵向列表条目 */
 .qqpromote .vertical-list-item {
   cursor: pointer;
   margin: 12px 0px;
@@ -146,19 +155,18 @@
   transition:width 2s;
 }
 
-.qqpromote .translate-input {
-  align-self: normal;
-  flex: 1;
-  border-radius: 4px;
-  margin-right: 16px;
-  transition: all 100ms ease-out;
+/* 纵向列表条目-文本 */
+.qqpromote .vertical-list-item.text {
+  gap: 5px; /* 设置子元素的间距 */
+  cursor: default;
 }
 
-.qqpromote input {
+.qqpromote .radio-input {
   appearance: auto;
   cursor:pointer;
 }
 
+/* 列表 */
 .qqpromote .column-list-item {
   margin: 12px 0px;
   display: flex;
@@ -168,7 +176,9 @@
 }
 
 .qqpromote .column-list-item input {
-  padding: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 5px;
 }
 
 .nested-enter-active {

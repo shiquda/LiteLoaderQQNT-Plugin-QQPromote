@@ -1,17 +1,23 @@
 /*
  * @Date: 2024-01-23 01:14:13
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-23 15:55:17
+ * @LastEditTime: 2024-01-23 19:34:44
  */
+const fs = require("fs");
 const { LowSync, JSONFileSync } = require('@commonify/lowdb');
 const pluginDataPath = LiteLoader.plugins.qqpromote.path.data;
+
+// 设置文件判断
+if (!fs.existsSync(pluginDataPath)) {
+    fs.mkdirSync(pluginDataPath, { recursive: true });
+}
 
 const adapter = new JSONFileSync(`${pluginDataPath}/db.json`)
 const db = new LowSync(adapter)
 db.read()
 if (!db.data) {
     db.data = {}
-    db.write()
+    db.write() 
 }
 
 async function setUrlData(url, data) {

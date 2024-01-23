@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 20:16:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-22 23:30:18
+ * @LastEditTime: 2024-01-23 19:31:06
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -41,7 +41,7 @@
         <div v-if="show_time">
             <div class="vertical-list-item">
                 <div class="translate-div" style="width: 15%;">自定义颜色:</div>
-                <input class="translate-input" type="color" v-model="time_color">
+                <input class="text-input" type="color" v-model="time_color">
             </div>
             <div class="vertical-list-item" @click="show_time_up = !show_time_up">
                 <div>
@@ -96,17 +96,17 @@
     </div>
     <Transition duration="500" name="nested">
         <div v-if="translate">
-            <input type="radio" value="腾讯翻译" v-model="translate_type">
+            <input class="radio-input" type="radio" value="腾讯翻译" v-model="translate_type">
             <label>腾讯翻译</label>
-            <input type="radio" value="百度翻译" v-model="translate_type">
+            <input class="radio-input" type="radio" value="百度翻译" v-model="translate_type">
             <label>百度翻译</label>
             <div class="column-list-item" v-if="translate && translate_type=='腾讯翻译'">
-                <input class="translate-input" type="password" spellcheck="false" v-model="translate_SECRET_ID" placeholder="SECRET_ID">
-                <input class="translate-input" type="password" spellcheck="false" v-model="translate_SECRET_KEY" placeholder="SECRET_KEY">
+                <input class="text-input" type="password" spellcheck="false" v-model="translate_SECRET_ID" placeholder="SECRET_ID">
+                <input class="text-input" type="password" spellcheck="false" v-model="translate_SECRET_KEY" placeholder="SECRET_KEY">
             </div>
             <div class="column-list-item" v-if="translate && translate_type=='百度翻译'">
-                <input class="translate-input" type="password" spellcheck="false" v-model="translate_baidu_appid" placeholder="appid">
-                <input class="translate-input" type="password" spellcheck="false" v-model="translate_baidu_key" placeholder="key">
+                <input class="text-input" type="password" spellcheck="false" v-model="translate_baidu_appid" placeholder="appid">
+                <input class="text-input" type="password" spellcheck="false" v-model="translate_baidu_key" placeholder="key">
             </div>    
         </div>
     </Transition>
@@ -132,10 +132,10 @@
                 </div>
             </div>
             <div class="column-list-item">
-                <div class="vertical-list-item">
-                    API服务器:<input class="translate-input" type="text" spellcheck="false" v-model="chatgpt_url" placeholder="API服务器">
+                <div class="vertical-list-item text">
+                    API服务器:<input class="text-input" type="text" spellcheck="false" v-model="chatgpt_url" placeholder="API服务器">
                 </div>
-                <input class="translate-input" type="password" spellcheck="false" v-model="chatgpt_key" placeholder="chatgpt_key">
+                <input class="text-input" type="password" spellcheck="false" v-model="chatgpt_key" placeholder="chatgpt_key">
             </div>
         </div>
     </Transition>
@@ -222,7 +222,26 @@
             <span class="q-switch__handle"></span>
         </div>
     </div>
+    <hr class="horizontal-dividing-line">
+    <div class="vertical-list-item" @click="local_emoji = !local_emoji">
+        <div>
+            <h2>本地表情</h2>
+            <span class="secondary-text">在表情收藏栏添加本地表情</span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': local_emoji }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
+    <Transition duration="500" name="nested">
+        <div class="vertical-list-item" v-if="local_emoji"> 
+            <input :placeholder="emoji_folder" class="text-input focus" readonly="" type="text" spellcheck="false">
+            <div class="ops-btns">
+                <button class="q-button q-button--small q-button--secondary" @click="openEmoji(emoji_folder)">打开文件夹</button>
+            </div>
+        </div>
+    </Transition>
 </div>
+
 <div class="wrap" id="sidebar">
     <div class="vertical-list-item title" @click="sidebar_show = !sidebar_show">
         <h2>侧边栏管理</h2>

@@ -1,14 +1,14 @@
 /*
  * @Date: 2024-01-23 01:14:13
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-23 02:20:34
+ * @LastEditTime: 2024-01-23 15:55:17
  */
 const { LowSync, JSONFileSync } = require('@commonify/lowdb');
 const pluginDataPath = LiteLoader.plugins.qqpromote.path.data;
 
 const adapter = new JSONFileSync(`${pluginDataPath}/db.json`)
 const db = new LowSync(adapter)
-if (db.read()) {
+if (!db.read()) {
     db.data = {}
     db.write()
 }

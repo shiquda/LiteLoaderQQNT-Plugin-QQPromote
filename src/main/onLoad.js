@@ -8,19 +8,6 @@ const fs = require("fs");
 const path = require("path");
 const ogs = require("open-graph-scraper");
 
-function checkAndCompleteKeys(json1, json2, check_key) {
-    const keys1 = Object.keys(json1[check_key]);
-    const keys2 = Object.keys(json2[check_key]);
-
-    for (const key of keys2) {
-        if (!keys1.includes(key)) {
-            json1[check_key][key] = json2[check_key][key]; // 补全缺少的 key
-        }
-    }
-    
-    return json1;
-}
-
 function setSettings(settingsPath, content) {
     const new_config = typeof content == "string"? JSON.stringify(JSON.parse(content), null, 4):JSON.stringify(content, null, 4)
     fs.writeFileSync(settingsPath, new_config, "utf-8");
@@ -29,53 +16,6 @@ function setSettings(settingsPath, content) {
 function onLoad() {
     const pluginDataPath = LiteLoader.plugins.qqpromote.path.data;
     const settingsPath = path.join(pluginDataPath, "settings.json");
-    const emojiPath = path.join(pluginDataPath, "emoji")
-    const defaultSettings = {
-        "setting": {
-            repeatmsg: false,
-            translate: false,
-            show_time: false,
-            show_time_up: false,
-            rpmsg_location: false,
-            replaceArk: false,
-            not_updata: false,
-            link_preview: false,
-            chatgpt: false,
-            chatgpt_location: false,
-            chatgpt_key: "",
-            chatgpt_url: "https://gpt.srap.link/v1/chat/completions",
-            sidebar_list: {},
-            messagebar_list: {},
-            upbar_list: {},
-            reply_at: false,
-            reply_at_click: false,
-            auto_ptt2Text: false,
-            auto_login: false,
-            call_barring: false,
-            friendsinfo: false,
-            resetLogin: false,
-            display_style: false,
-            local_emoji: false,
-            emoji_folder: emojiPath,
-            translate_type: "腾讯翻译",
-            time_color: "rgba(0,0,0,.5)",
-            translate_SECRET_ID: '',
-            translate_SECRET_KEY: '',
-            translate_baidu_appid: '',
-            translate_baidu_key: ''
-        }
-    }
-    // 设置文件判断
-    if (!fs.existsSync(emojiPath)) {
-        fs.mkdirSync(emojiPath, { recursive: true });
-    }
-    if (!fs.existsSync(settingsPath)) {
-        fs.writeFileSync(settingsPath, JSON.stringify(defaultSettings, null, 4));
-    } else {
-        const data = fs.readFileSync(settingsPath, "utf-8");
-        const config = checkAndCompleteKeys(JSON.parse(data), defaultSettings, "setting");
-        fs.writeFileSync(settingsPath, JSON.stringify(config, null, 4), "utf-8");
-    }
 
     // 获取设置
     ipcMain.handle(
@@ -193,7 +133,7 @@ function onLoad() {
         "LiteLoader.qqpromote.openFolder", 
         (event, localPath) => {
             const openPath = path.normalize(localPath);
-            shell.showItemInFolder(openPath);
+            shell.openPath(openPath);
         }
     );
 }

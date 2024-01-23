@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-22 21:00:24
+ * @LastEditTime: 2024-01-23 21:22:00
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -10,11 +10,14 @@
 const fs = require("fs");
 const path = require("path");
 const { onLoad, setSettings } = require("./main/onLoad.js");
-const { replaceArk } = require("./main/utils.js");
+const { output, replaceArk, getEmojis } = require("./main/utils.js");
+
+let emojiCallbackId = "";
 
 function onBrowserWindowCreated(window) {
     const pluginDataPath = LiteLoader.plugins.qqpromote.path.data;
     const settingsPath = path.join(pluginDataPath, "settings.json");
+    const emojis = getEmojis();
 
     // 复写并监听ipc通信内容
     const original_send = window.webContents.send;
@@ -64,11 +67,61 @@ function onBrowserWindowCreated(window) {
             if (args?.[1][0]?.payload?.avSdkData) {
                 args = null
             }
+        } else if (args[0].callbackId === emojiCallbackId) {
+            // 收藏表情
+            localEmojiInfoList = emojis.map(item => ({
+                uin: '',
+                emoId: 0,
+                emoPath: item,
+                isExist: true,
+                resId: '',
+                url: item,
+                md5: '',
+                emoOriginalPath: '',
+                thumbPath: '',
+                RomaingType: '',
+                isAPNG: false,
+                isMarkFace: false,
+                eId: '',
+                epId: '0',
+                ocrWord: '',
+                modifyWord: '',
+                exposeNum: 0,
+                clickNum: 0,
+                desc: '本地表情' 
+            }));
+            args[1].emojiInfoList = localEmojiInfoList.concat(args[1].emojiInfoList)
         }
         return original_send.call(window.webContents, channel, ...args);
     };
 
     window.webContents.send = patched_send;
+
+    function ipc_message(_, status, name, ...args) {
+        if (name !== "___!log" && args[0][1] && args[0][1][0] != "info") {
+            const event = args[0][0];
+            const data = args[0][1];
+            if (data && data[0] == "nodeIKernelMsgService/fetchFavEmojiList") {
+                if (data[1].resId === "") {
+                    emojiCallbackId = event.callbackId
+                }
+            }
+        }
+    }
+    const ipc_message_proxy = window.webContents._events["-ipc-message"]?.[0] || window.webContents._events["-ipc-message"];
+    
+    const proxyEvents = new Proxy(ipc_message_proxy, {
+        // 拦截函数调用
+        apply(target, thisArg, argumentsList) {
+            ipc_message(...argumentsList);
+            return target.apply(thisArg, argumentsList);
+        }
+    });
+    if (window.webContents._events["-ipc-message"][0]) {
+        window.webContents._events["-ipc-message"][0] = proxyEvents
+    } else {
+        window.webContents._events["-ipc-message"] = proxyEvents
+    }
 }
 
 onLoad()

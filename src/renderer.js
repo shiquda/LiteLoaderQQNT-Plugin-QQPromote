@@ -30,7 +30,10 @@ async function onLoad() {
     const Interval = setInterval(() => {
         if ((location.pathname === "/renderer/login.html" || location.hash == "#/login") && setting_data.setting.auto_login) {
             const loginBtnText = document.querySelector(".auto-login .q-button span");
-            if (!loginBtnText) return;
+            if (!loginBtnText) {
+                clearInterval(Interval);
+                return
+            };
             if (login_time>=0) {
                 loginBtnText.innerText = `${login_time} 秒后自动登录`;
                 login_time--;
@@ -38,7 +41,10 @@ async function onLoad() {
                 loginBtnText.click();
             }
         }
-        if (location.href.indexOf("#/main/message") == -1 && location.href.indexOf("#/chat/") == -1) return;
+        if (location.href.indexOf("#/main/message") == -1 && location.href.indexOf("#/chat/") == -1) {
+            clearInterval(Interval);
+            return
+        };
         if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.2.0")) {
             setTimeout(() => {
                 Swal.fire({

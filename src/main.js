@@ -2,11 +2,12 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-23 21:22:00
+ * @LastEditTime: 2024-01-23 22:19:36
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
  */
+const { randomUUID } = require("crypto")
 const fs = require("fs");
 const path = require("path");
 const { onLoad, setSettings } = require("./main/onLoad.js");
@@ -67,14 +68,14 @@ function onBrowserWindowCreated(window) {
             if (args?.[1][0]?.payload?.avSdkData) {
                 args = null
             }
-        } else if (args[0].callbackId === emojiCallbackId) {
+        } else if (args?.[0]?.callbackId === emojiCallbackId) {
             // 收藏表情
-            localEmojiInfoList = emojis.map(item => ({
+            localEmojiInfoList = emojis.map((item, index) => ({
                 uin: '',
-                emoId: 0,
+                emoId: index,
                 emoPath: item,
                 isExist: true,
-                resId: '',
+                resId: randomUUID(),
                 url: item,
                 md5: '',
                 emoOriginalPath: '',
@@ -88,7 +89,7 @@ function onBrowserWindowCreated(window) {
                 modifyWord: '',
                 exposeNum: 0,
                 clickNum: 0,
-                desc: '本地表情' 
+                desc: '本地表情'
             }));
             args[1].emojiInfoList = localEmojiInfoList.concat(args[1].emojiInfoList)
         }

@@ -1,4 +1,4 @@
-import { check_only_img, get_link_data } from "./utils.js"
+import { check_only_img, get_link_data, output } from "./utils.js"
 import { message_time, message_web } from "./myelement.js"
 
 let translate_hover;
@@ -133,7 +133,7 @@ async function domUpMessages(node) {
     // 名称扩展
     if (setting_data?.setting.friendsinfo && node.querySelector(".msg-content-container")) {
         const friendItem = friendslist.find(item => item.uid === senderUid);
-        const friend_info = `<${friendItem.nickName}>(${friendItem.uin})`
+        const friend_info = `<${friendItem.raw.remark? friendItem.raw.remark:friendItem.nickName}>(${friendItem.uin})`
         const user_name = node.querySelector(".user-name .text-ellipsis")
         user_name.textContent = user_name.textContent+friend_info
     }

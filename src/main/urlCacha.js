@@ -8,7 +8,8 @@ const pluginDataPath = LiteLoader.plugins.qqpromote.path.data;
 
 const adapter = new JSONFileSync(`${pluginDataPath}/db.json`)
 const db = new LowSync(adapter)
-if (!db.read()) {
+db.read()
+if (!db.data) {
     db.data = {}
     db.write()
 }

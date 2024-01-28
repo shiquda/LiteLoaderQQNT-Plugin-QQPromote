@@ -145,6 +145,15 @@
     </div>
     <Transition duration="500" name="nested">
         <div v-if="chatgpt">
+            <div class="vertical-list-item" @click="chatgpt_add_reply = !chatgpt_add_reply">
+                <div>
+                    <h2>开启CHATGPT协助聊天自动添加回复引用</h2>
+                    <span class="secondary-text">重启生效</span>
+                </div>
+                <div class="switchBackgroundImage q-switch" :class="{ 'is-active': chatgpt_add_reply }">
+                    <span class="q-switch__handle"></span>
+                </div>
+            </div>
             <div class="vertical-list-item" @click="chatgpt_location = !chatgpt_location">
                 <div>
                     <h2>开启CHATGPT协助聊天置顶</h2>

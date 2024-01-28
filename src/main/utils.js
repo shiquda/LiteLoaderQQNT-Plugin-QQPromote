@@ -22,6 +22,7 @@ const defaultSettings = {
         not_updata: false,
         link_preview: false,
         chatgpt: false,
+        chatgpt_add_reply: false,
         chatgpt_location: false,
         chatgpt_key: "",
         chatgpt_url: "https://gpt.srap.link/v1/chat/completions",

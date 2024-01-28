@@ -49,10 +49,19 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
     if (setting_data?.setting.chatgpt) {
         const chatgpt_msg = chatgpt_ele.cloneNode(true);
         chatgpt_msg.addEventListener('click', async () => {
-            const msg = await chatgpt(content, setting_data.setting)
-            await LLAPI.set_editor(msg)
-            // 关闭右键菜单
-            qContextMenu.remove()
+            let msg = await chatgpt(content, setting_data.setting)
+            if (setting_data?.setting.chatgpt_add_reply) {
+                await LLAPI.set_editor(msg)
+                qContextMenu.childNodes.forEach((element) => {
+                    if (element.textContent === "回复") {
+                        element.click()
+                    }
+                })
+            } else {
+                await LLAPI.set_editor(msg)
+                // 关闭右键菜单
+                qContextMenu.remove()
+            }
         })
         /*
         if (qThemeValue != "light") {

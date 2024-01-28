@@ -1,9 +1,10 @@
 /*
  * @Date: 2024-01-19 16:44:32
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-23 22:21:29
+ * @LastEditTime: 2024-01-26 17:43:27
  */
 import { setting_data, setSettings, output } from "./utils.js"
+import { setVideoBackGround } from "./videoBackGround.js"
 
 function changeHref(location) {
     if (location.hash == "#/main/message") {
@@ -51,6 +52,7 @@ function changeHref(location) {
             }
         )
     }
+    setVideoBackGround(location)
 }
 
 export {

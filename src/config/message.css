@@ -55,24 +55,22 @@
 	padding-left: 0px;
 }
 
-.message-content__wrapper .web .text {
+/* 链接预览 */
+.message-content__wrapper .title,
+.message-content__wrapper .text {
+	/*
 	word-break:break-word;
 	margin-top:1px
+	*/
+	max-width: 300px;
+	word-wrap: break-word;
 }
 
-.message-content__wrapper .web .quote {
-	max-width:100%;
+.message-content__wrapper .quote {
 	overflow:hidden;
-	width:100%;
 	display:flex;
 }
-.message-content__wrapper .web .quote-text {
-	width:100%;
-	max-width:100%;
-	padding-left:.625rem;
-	margin-left:-.625rem
-}
-.message-content__wrapper .web .quote:before {
+.message-content__wrapper .quote:before {
 	flex:0 0 auto;
 	width:.125rem;
 	border-radius:.125rem;
@@ -80,10 +78,42 @@
 	margin:.1875rem .5rem .125rem 0;
 	content:" "
 }
-.message-content__wrapper .web:hover {
+.message-content__wrapper .media-photo {
+	max-width: 300px;
+}
+.message-content__wrapper .quote-text {
+	padding-left:.625rem;
+	margin-left:-.625rem;
+	display:flex;
+	flex-direction: column;
+}
+
+.message-content__wrapper .quote:hover {
     background-color: var(--overlay_hover);
 }
 
+
 .user_name_time {
 	margin-left: 10px;
+}
+
+.qqpromote_video_overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	/* filter: blur(5px); */
+	background-color: rgba(255,255,255,1.0); /* 半透明白色遮罩 */
+	pointer-events: none;
+}
+
+video.qqpromote_video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+	pointer-events: none;
 }

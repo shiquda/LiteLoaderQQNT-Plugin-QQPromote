@@ -1,0 +1,26 @@
+<div class="q-pulldown-menu pulldown-menu" @click="toggleDropdown" ref="pulldown" data-v-7ad1107e="" style="width: 150px; pointer-events: auto;"
+    v-click-outside="onClickOutside">
+    <div class="q-pulldown-menu-button">
+        <input type="text" class="content" spellcheck="false" readonly="" :placeholder="selectedOption">
+        <svg class="icon" :class="{ 'is-fold': !isOpen }" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 8L12 17L3 8" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+        </svg>
+    </div>
+    <div class="q-context-menu" tabindex="-1" role="menu" bf-menu="" style="z-index: 4000; --q-contextmenu-max-height: calc(100vh - 16px);"
+        :style="{ 'top': top+'px', 'left': left+'px' }" v-if="isOpen">
+        <ul class="q-pulldown-menu-list small-size" style="max-height: unset; min-width: 140px;">
+            <li class="q-pulldown-menu-list-item" bf-combobox-popup-item="" tabindex="-1" role="option" bf-label-inner="true" id="lrx4yl8d"
+                v-for="(option, index) in options" @click="selectOption(option)" :class="{ selected: option===selectedOption }">
+                <span class="content">{{option}}</span>
+                <span class="icon">
+                    <i class="q-icon" data-v-717ec976="" style="--b4589f60: inherit; --6ef2e80d: 1em;">
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 7L6.00001 11L14 3" stroke="currentColor" stroke-linejoin="round">
+                            </path>
+                        </svg>
+                    </i>
+                </span>
+            </li>
+        </ul>
+    </div>
+</div>

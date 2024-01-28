@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-19 16:40:54
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-19 16:41:07
+ * @LastEditTime: 2024-01-25 01:48:02
  */
 const separator_ele = document.createElement("div");
 separator_ele.innerHTML = `
@@ -71,19 +71,13 @@ const message_time = `
 </span>
 `
 const message_web = `
-<div class="web">
-  <div class="quote">
-    <div class="quote-text">
-      <div class="preview-resizer">
-        <div class="preview media-container">
-          <img class="media-photo" style="width: 100%;height: 100%;" src="{img}">
-        </div>
-      </div>
-      <div class="title">
-        <strong dir="auto">{title}</strong>
-      </div>
-      <div class="text" dir="auto">{text}</div>
+<div class="quote">
+  <div class="quote-text">
+    <img class="media-photo" src="{img}">
+    <div class="title">
+      <strong dir="auto">{title}</strong>
     </div>
+    <div class="text" dir="auto">{text}</div>
   </div>
 </div>
 `

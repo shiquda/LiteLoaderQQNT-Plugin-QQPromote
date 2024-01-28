@@ -48,12 +48,15 @@ async function domUpMessages(node) {
             const msg_content = node.querySelector(".msg-content-container").firstElementChild
             msg_content.style.overflow = "visible";
             const web_ele1 = document.createElement("div");
+            //
             web_ele1.innerHTML = message_web.format({ url: url, img: url_data.ogImage?.[0]?.url, title: url_data.ogTitle, text: url_data.ogDescription})
             const web_ele = web_ele1.lastElementChild
             const img_ele = web_ele.querySelector(".media-photo")
-            img_ele.onerror = function() {
-                img_ele.style.display = "none"
-            };
+            if (img_ele) {
+                img_ele.onerror = function() {
+                    img_ele.style.display = "none"
+                };
+            }
             msg_content.appendChild(web_ele);
         }
     }
@@ -100,7 +103,7 @@ async function domUpMessages(node) {
             const time_inner_ele = msg_time_ele.querySelector(".time .inner")
             time_inner_ele.style.color = setting_data?.setting.time_color
             msg_time_ele.addEventListener("click", async (event) => {
-                if (setting_data?.setting.repeatmsg) {
+                if (setting_data?.setting.repeat_msg_time) {
                     const peer = await LLAPI.getPeer()
                     await LLAPI.forwardMessage(peer, peer, [msgId])
                 }

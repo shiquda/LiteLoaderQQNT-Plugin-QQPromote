@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-22 20:33:56
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-23 23:13:12
+ * @LastEditTime: 2024-01-26 19:49:36
  */
 const fs = require("fs");
 const path = require("path");
@@ -11,7 +11,7 @@ const settingsPath = path.join(pluginDataPath, "settings.json");
 const emojiPath = path.join(pluginDataPath, "emoji");
 const remotesPath = path.join(emojiPath, "remotes.txt");
 const defaultSettings = {
-    "setting": {
+    setting: {
         repeat_msg: false,
         repeat_msg_time: false,
         translate: false,
@@ -44,7 +44,25 @@ const defaultSettings = {
         translate_SECRET_ID: '',
         translate_SECRET_KEY: '',
         translate_baidu_appid: '',
-        translate_baidu_key: ''
+        translate_baidu_key: '',
+        video_background_data: {
+            url: "",
+            style: {}
+        },
+        video_background: {
+            "#/main/message": {
+                name: "聊天页面",
+                value: false
+            },
+            "#/setting/settings/common": {
+                name: "设置页面",
+                value: false
+            },
+            "#/index/2": {
+                name: "频道页面",
+                value: false
+            }
+        }
     }
 }
 
@@ -59,21 +77,23 @@ if (!fs.existsSync(settingsPath)) {
     fs.writeFileSync(settingsPath, JSON.stringify(defaultSettings, null, 4));
 } else {
     const data = fs.readFileSync(settingsPath, "utf-8");
-    const config = checkAndCompleteKeys(JSON.parse(data), defaultSettings, "setting");
+    const config = checkAndCompleteKeys(JSON.parse(data), defaultSettings);
     fs.writeFileSync(settingsPath, JSON.stringify(config, null, 4), "utf-8");
 }
 
-function checkAndCompleteKeys(json1, json2, check_key) {
-    const keys1 = Object.keys(json1[check_key]);
-    const keys2 = Object.keys(json2[check_key]);
+function checkAndCompleteKeys(json, defaultSettings) {
+    const keys = Object.keys(json);
+    const defaultKeys = Object.keys(defaultSettings);
 
-    for (const key of keys2) {
-        if (!keys1.includes(key)) {
-            json1[check_key][key] = json2[check_key][key]; // 补全缺少的 key
+    for (const defaultKey of defaultKeys) {
+        if (!keys.includes(defaultKey)) {
+            json[defaultKey] = defaultSettings[defaultKey]; // 补全缺少的 key
+        } else if (typeof json[defaultKey] === "object" && typeof defaultSettings[defaultKey] === "object") {
+            json[defaultKey] = checkAndCompleteKeys(json[defaultKey], defaultSettings[defaultKey]);
         }
     }
     
-    return json1;
+    return json;
 }
 
 // 卡片替换函数

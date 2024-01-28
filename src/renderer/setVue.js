@@ -1,10 +1,16 @@
 /*
  * @Date: 2024-01-19 16:55:53
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-23 19:21:19
+ * @LastEditTime: 2024-01-28 20:44:21
+ */
+/*
+ * @Date: 2024-01-19 16:55:53
+ * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
+ * @LastEditTime: 2024-01-28 16:09:17
  */
 // 导入工具函数
 import { setSettings } from "./utils.js"
+import { dropDownTab } from "../page/dropDownTab.js"
 const { createApp, ref, reactive, watch } = await import('../cdnjs.cloudflare.com_ajax_libs_vue_3.3.4_vue.esm-browser.prod.min.js');
 
 const openFolder = qqpromote.openFolder
@@ -64,12 +70,35 @@ async function setting_vue(node) {
                     const upbar_list = reactive(setting_data.setting.upbar_list)
                     const upbar = ref(false)
                     return {
-                        upbar, 
+                        upbar,
                         upbar_list
                     }
                 }
             })
             app.mount('#upbar')
+        }
+        if (!document.querySelector("#video_background")?.__vue_app__) {
+            const app = createApp({
+                components: {
+                    'my-dropdown-tab': dropDownTab
+                },
+                methods: {
+                    handleOptionSelected(option) {
+                        console.log(option)
+                    }
+                },
+                setup() {
+                    const video_background = reactive(setting_data.setting.video_background)
+                    const video_background_data = reactive(setting_data.setting.video_background_data)
+                    const video_background_bar = ref(false)
+                    return {
+                        video_background_bar,
+                        video_background_data,
+                        video_background
+                    }
+                }
+            })
+            app.mount('#video_background')
         }
         if (!document.querySelector("#qqpromote_version")?.__vue_app__) {
             const app = createApp({
@@ -79,7 +108,7 @@ async function setting_vue(node) {
                     }
                 }
             })
-            app.mount('#qqpromote_version')
+            app.mount('#qqpromote_version');
         }
     })
 }

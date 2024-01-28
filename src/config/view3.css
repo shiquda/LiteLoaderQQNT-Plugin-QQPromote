@@ -1,8 +1,0 @@
-.qqpromote .vertical-list-item {
-    cursor: pointer;
-    margin: 10px 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition:width 2s;
-}

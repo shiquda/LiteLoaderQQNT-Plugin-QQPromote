@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 20:16:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-23 23:13:37
+ * @LastEditTime: 2024-01-28 20:43:56
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -326,5 +326,33 @@
         </div>
         <hr class="horizontal-dividing-line">
     </ul>
+</div>
+<div class="wrap" id="video_background">
+    <div class="vertical-list-item title" @click="video_background_bar = !video_background_bar">
+        <h2>视频背景管理(未完成)</h2>
+        <svg class="icon" :class="{ 'is-fold': !video_background_bar }" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 8L12 17L3 8" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+        </svg>
+    </div>
+    <div v-if="video_background_bar">
+        <my-dropdown-tab @option-selected="handleOptionSelected"></my-dropdown-tab>
+        <div class="column-list-item">
+            <h2>视频背景地址</h2>
+            <input class="text-input" type="text" spellcheck="false" v-model="video_background_data.url">
+        </div>
+        <hr class="horizontal-dividing-line">
+        <ul v-for="(data, hash) in video_background">
+            <div class="vertical-list-item" @click="data.value=!data.value">
+                <div>
+                    <h2>{{data.name}}</h2>
+                    <span class="secondary-text">重启生效</span>
+                </div>
+                <div class="switchBackgroundImage q-switch" :class="{ 'is-active': data.value }">
+                    <span class="q-switch__handle"></span>
+                </div>
+            </div>
+            <hr class="horizontal-dividing-line">
+        </ul>
+    </div>
 </div>
 <h1 class="version" id="qqpromote_version">当前版本<a class="link">v{{ version }}</a></h1>

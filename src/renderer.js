@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-09 00:35:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-23 01:08:46
+ * @LastEditTime: 2024-01-28 20:08:18
  */
 import { domUpMessages } from "./renderer/domUpMessages.js"
 import { changeHref } from "./renderer/changeHref.js"
@@ -31,6 +31,7 @@ async function onLoad() {
         if ((location.pathname === "/renderer/login.html" || location.hash == "#/login") && setting_data.setting.auto_login) {
             const loginBtnText = document.querySelector(".auto-login .q-button span");
             if (!loginBtnText) {
+                console.log(loginBtnText)
                 clearInterval(Interval);
                 return
             };
@@ -40,6 +41,7 @@ async function onLoad() {
             } else {
                 loginBtnText.click();
             }
+            return
         }
         if (location.href.indexOf("#/main/message") == -1 && location.href.indexOf("#/chat/") == -1) {
             clearInterval(Interval);
@@ -69,7 +71,7 @@ async function onLoad() {
     }, 1000);
 
     userLogin()
-    
+
     LLAPI.add_qmenu(addrepeatmsg_menu)
 
     LLAPI.on("dom-up-messages", domUpMessages)

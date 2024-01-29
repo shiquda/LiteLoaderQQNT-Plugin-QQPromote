@@ -62,7 +62,7 @@
 	word-break:break-word;
 	margin-top:1px
 	*/
-	max-width: 300px;
+	max-width: var(--message-width);
 	word-wrap: break-word;
 }
 
@@ -79,7 +79,7 @@
 	content:" "
 }
 .message-content__wrapper .media-photo {
-	max-width: 300px;
+	max-width: var(--message-width);
 }
 .message-content__wrapper .quote-text {
 	padding-left:.625rem;

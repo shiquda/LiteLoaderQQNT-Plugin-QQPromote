@@ -52,6 +52,8 @@ async function domUpMessages(node) {
             web_ele1.innerHTML = message_web.format({ url: url, img: url_data.ogImage?.[0]?.url, title: url_data.ogTitle, text: url_data.ogDescription})
             const web_ele = web_ele1.lastElementChild
             const img_ele = web_ele.querySelector(".media-photo")
+            const message_width = node.querySelector('.message-content').offsetWidth
+            web_ele.style.setProperty('--message-width', `${message_width>=300? message_width-10:300}px`);
             if (img_ele) {
                 img_ele.onerror = function() {
                     img_ele.style.display = "none"

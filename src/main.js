@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-23 22:19:36
+ * @LastEditTime: 2024-01-31 00:05:58
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -26,17 +26,42 @@ function onBrowserWindowCreated(window) {
     const patched_send = function (channel, ...args) {
         const data = JSON.parse(fs.readFileSync(settingsPath, "utf-8"));
         // 替换历史消息中的小程序卡片
-        if (args?.[1]?.msgList?.length > 0 && data.setting.replaceArk) {
-            // 替换小程序卡片
+        if (args?.[1]?.msgList?.length > 0) {
             const msgList = args?.[1]?.msgList;
+            // 替换小程序卡片
             msgList.forEach((msgItem) => {
                 let msg_seq = msgItem.msgSeq;
-                msgItem.elements.forEach((msgElements) => {
-                    if (msgElements.arkElement && msgElements.arkElement.bytesData) {
-                        const json = JSON.parse(msgElements.arkElement.bytesData);
+                msgItem.elements.forEach((msgElement) => {
+                    if (msgElement.arkElement && msgElement.arkElement.bytesData && data.setting.replaceArk) {
+                        const json = JSON.parse(msgElement.arkElement.bytesData);
                         if (json?.meta?.detail_1?.appid) {
-                            msgElements.arkElement.bytesData = replaceArk(json, msg_seq);
+                            msgElement.arkElement.bytesData = replaceArk(json, msg_seq);
                         }
+                    }
+                    if (data.setting.face_block[msgElement.faceElement?.faceIndex]?.value) {
+                        msgItem.msgType = 5
+                        msgItem.subMsgType = 4
+                        msgElement.elementType = 8
+                        msgElement.faceElement = null
+                        msgElement.grayTipElement = {
+                            subElementType: 1,
+                            revokeElement: null,
+                            proclamationElement: null,
+                            emojiReplyElement: null,
+                            groupElement: null,
+                            buddyElement: null,
+                            feedMsgElement: null,
+                            essenceElement: null,
+                            groupNotifyElement: null,
+                            buddyNotifyElement: null,
+                            xmlElement: null,
+                            fileReceiptElement: null,
+                            localGrayTipElement: null,
+                            blockGrayTipElement: null,
+                            aioOpGrayTipElement: null,
+                            jsonGrayTipElement: null,
+                            walletGrayTipElement: null,
+                        };
                     }
                 });
             });
@@ -92,6 +117,9 @@ function onBrowserWindowCreated(window) {
                 desc: '本地表情'
             }));
             args[1].emojiInfoList = localEmojiInfoList.concat(args[1].emojiInfoList)
+        } else if (args?.[1]?.[0]?.cmdName === "nodeIKernelMsgListener/onRecvMsg") {
+            const faceIndex = args[1][0].payload.msgList[0].elements[0].faceElement?.faceIndex
+            if (faceIndex == 392) args[1][0].payload.msgList = []
         }
         return original_send.call(window.webContents, channel, ...args);
     };

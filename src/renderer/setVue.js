@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-19 16:55:53
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-28 20:44:21
+ * @LastEditTime: 2024-01-30 23:14:37
  */
 /*
  * @Date: 2024-01-19 16:55:53
@@ -99,6 +99,19 @@ async function setting_vue(node) {
                 }
             })
             app.mount('#video_background')
+        }
+        if (!document.querySelector("#facebar")?.__vue_app__) {
+            const app = createApp({
+                setup() {
+                    const face_block = reactive(setting_data.setting.face_block)
+                    const facebar = ref(false)
+                    return {
+                        facebar,
+                        face_block
+                    }
+                }
+            })
+            app.mount('#facebar')
         }
         if (!document.querySelector("#qqpromote_version")?.__vue_app__) {
             const app = createApp({

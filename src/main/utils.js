@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-22 20:33:56
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-26 19:49:36
+ * @LastEditTime: 2024-01-30 23:12:32
  */
 const fs = require("fs");
 const path = require("path");
@@ -61,6 +61,20 @@ const defaultSettings = {
             },
             "#/index/2": {
                 name: "频道页面",
+                value: false
+            }
+        },
+        face_block: {
+            392: {
+                name: '新年小龙',
+                value: false
+            },
+            393: {
+                name: '新年中龙',
+                value: false
+            },
+            394: {
+                name: '新年大龙',
                 value: false
             }
         }

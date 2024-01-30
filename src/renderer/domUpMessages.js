@@ -4,14 +4,49 @@ import { message_time, message_web } from "./myelement.js"
 let translate_hover;
 
 async function domUpMessages(node) {
-    const setting_data = await qqpromote.getSettings()
-    const peer = await LLAPI.getPeer()
-    const friendslist = await LLAPI.getFriendsList()
+    /*
+    console.time('test');
+    //const msgprops = node.firstElementChild.__VUE__[0].props
+    const messageTimestamp = node.querySelector('.message__timestamp')
+    if (messageTimestamp) messageTimestamp.style.display = "none"
+    const targetSenderUid = node.firstElementChild.__VUE__[0].props.msgRecord.senderUid
+    const lastSenderUid = node.nextElementSibling?.firstElementChild.__VUE__[0].props?.msgRecord.senderUid
+    
+    const nextElement = node.previousElementSibling
+    const nextUserName = nextElement?.querySelector('.user-name')
+    const nextSenderUid = nextElement?.firstElementChild.__VUE__[0].props?.msgRecord.senderUid
+    const userName = node.querySelector('.user-name')
+    const avatar = node.querySelector('.avatar')
+    if (targetSenderUid === lastSenderUid && userName) {
+        userName.style.display = "none"
+        avatar.style.display = "none"
+    } else if (targetSenderUid !== lastSenderUid) {
+        node.querySelector('.message').style.paddingTop = "10px"
+    }
+    if (targetSenderUid === nextSenderUid && nextUserName?.style.display === "") {
+        nextUserName.style.display = "none"
+        nextElement.querySelector('.avatar').style.display = "none"
+        nextElement.querySelector('.message').style.paddingTop = "0px"
+    }
+    if (nextElement !== null) {
+        console.log(nextElement)
+        node.querySelector('.message').style.paddingBottom = "0px"
+    }
+    const messageContainer = node.querySelector('.message-container')
+    if (messageContainer) {
+        messageContainer.style.paddingBottom = "1px" // 0.008056640625
+        messageContainer.style.paddingTop = "1px" // 0.006103515625
+    }
+    console.timeEnd('test');
+    */
     const msgprops = node?.firstElementChild?.__VUE__?.[0]?.props
     const msgId = msgprops?.msgRecord.msgId;
     const msgTime = msgprops?.msgRecord.msgTime;
     const elements = msgprops?.msgRecord.elements[0];
     const senderUid = msgprops?.msgRecord.senderUid;
+    const setting_data = await qqpromote.getSettings()
+    const peer = await LLAPI.getPeer()
+    const friendslist = await LLAPI.getFriendsList()
     // 翻译
     const msg_text = node.querySelector(".text-normal")
     if (msg_text) {
@@ -48,7 +83,6 @@ async function domUpMessages(node) {
             const msg_content = node.querySelector(".msg-content-container").firstElementChild
             msg_content.style.overflow = "visible";
             const web_ele1 = document.createElement("div");
-            //
             web_ele1.innerHTML = message_web.format({ url: url, img: url_data.ogImage?.[0]?.url, title: url_data.ogTitle, text: url_data.ogDescription})
             const web_ele = web_ele1.lastElementChild
             const img_ele = web_ele.querySelector(".media-photo")

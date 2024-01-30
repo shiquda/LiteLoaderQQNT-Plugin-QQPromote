@@ -25,7 +25,7 @@ const defaultSettings = {
         chatgpt_add_reply: false,
         chatgpt_location: false,
         chatgpt_key: "",
-        chatgpt_url: "https://gpt.srap.link/v1/chat/completions",
+        chatgpt_url: "https://api.openai.com/v1/chat/completions",
         sidebar_list: {},
         messagebar_list: {},
         upbar_list: {},

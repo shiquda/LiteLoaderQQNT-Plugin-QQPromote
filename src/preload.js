@@ -38,5 +38,9 @@ contextBridge.exposeInMainWorld("qqpromote", {
     openFolder: (localPath) => ipcRenderer.invoke(
         "LiteLoader.qqpromote.openFolder",
         localPath
+    ),
+    getAmrPath: (text) => ipcRenderer.invoke(
+        "LiteLoader.qqpromote.getAmrPath",
+        text
     )
 });

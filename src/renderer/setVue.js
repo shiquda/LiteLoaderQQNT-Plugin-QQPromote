@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-19 16:55:53
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-30 23:14:37
+ * @LastEditTime: 2024-01-31 16:22:52
  */
 /*
  * @Date: 2024-01-19 16:55:53
@@ -104,10 +104,16 @@ async function setting_vue(node) {
             const app = createApp({
                 setup() {
                     const face_block = reactive(setting_data.setting.face_block)
+                    const face_prompt = ref(setting_data.setting.face_prompt)
+                    watch(face_prompt, (newValue, oldValue) => {
+                        setting_data.setting.face_prompt = newValue
+                        setSettings(setting_data)
+                    })
                     const facebar = ref(false)
                     return {
                         facebar,
-                        face_block
+                        face_block,
+                        face_prompt
                     }
                 }
             })

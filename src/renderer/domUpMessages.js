@@ -3,7 +3,65 @@ import { message_time, message_web } from "./myelement.js"
 
 let translate_hover;
 
+const childMsgHeight = new Map();
+
 async function domUpMessages(node) {
+    const msg_list = node.closest('.ml-list.list').querySelectorAll('.ml-item')
+    Array.from(msg_list).forEach(element => {
+        const targetProps = element.firstElementChild.__VUE__[0].props
+        const targetSenderUid = targetProps.msgRecord.senderUid
+        const lastProps = element.nextElementSibling?.firstElementChild.__VUE__[0].props
+        const lastSenderUid = lastProps?.msgRecord.senderUid
+    
+        if (targetSenderUid === lastSenderUid) {
+            childMsgHeight.set(targetSenderUid, (childMsgHeight.get(targetSenderUid) ?? 0) + element.getBoundingClientRect().height);
+            element.classList.remove('main')
+        } else if (targetProps.msgRecord.elements[0].grayTipElement === null) {
+            const avatarSpan = element.querySelector(".avatar-span")
+            avatarSpan.style.height = `${(childMsgHeight.get(targetSenderUid) ?? 0) + element.getBoundingClientRect().height - 7}px`;
+            childMsgHeight.set(targetSenderUid, 0);
+            element.classList.add('main')
+        }
+    });
+    /*
+    console.time('test');
+    //const msgprops = node.firstElementChild.__VUE__[0].props
+    const targetSenderUid = node.firstElementChild.__VUE__[0].props.msgRecord.senderUid
+    const lastSenderUid = node.nextElementSibling?.firstElementChild.__VUE__[0].props?.msgRecord.senderUid
+
+    const nextElement = node.previousElementSibling
+    let nextElement2 = nextElement
+    const nextUserName = nextElement?.querySelector('.user-name')
+    const nextSenderUid = nextElement?.firstElementChild.__VUE__[0].props?.msgRecord.senderUid
+
+    const userName = node.querySelector('.user-name')
+    const avatar = node.querySelector('.avatar-span')
+    if (targetSenderUid !== lastSenderUid && userName) {
+        userName.classList.add('main')
+        avatar.classList.add('main')
+        avatar.style.height = `${node.getBoundingClientRect().height - 7}px` // 1442px
+        while (targetSenderUid === nextElement2?.firstElementChild.__VUE__[0].props?.msgRecord.senderUid) {
+            avatar.style.height = `${avatar.getBoundingClientRect().height + nextElement2.getBoundingClientRect().height}px`
+            nextElement2 = nextElement2.previousElementSibling
+        }
+    } else if (userName) {
+        let lastElement = node.nextElementSibling
+        while (lastElement) {
+            const lastavatar = lastElement.querySelector('.avatar-span')
+            if (lastavatar?.classList.contains('main')) {
+                lastavatar.style.height = `${lastavatar.getBoundingClientRect().height + node.getBoundingClientRect().height}px`
+                lastElement = false
+            } else {
+                lastElement = lastElement.nextElementSibling
+            }
+        }
+    }
+    if (targetSenderUid === nextSenderUid && nextUserName && nextUserName.classList.contains('main')) {
+        //nextUserName.classList.remove('main')
+        //nextElement.querySelector('.avatar-span').classList.remove('main')
+    }
+    console.timeEnd('test');
+    */
     /*
     console.time('test');
     //const msgprops = node.firstElementChild.__VUE__[0].props

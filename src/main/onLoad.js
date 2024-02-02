@@ -1,7 +1,7 @@
 const { ipcMain, shell } = require("electron");
 const { tencent_tmt } = require(`./tencent_tmt.js`);
 const { baidu_fanyi } = require(`./baidu_fanyi.js`);
-const { output } = require(`./utils.js`);
+const { output, getAmr } = require(`./utils.js`);
 const { setUrlData, getUrlData } = require(`./urlCacha.js`);
 const axios = require('axios');
 const fs = require("fs");
@@ -30,7 +30,6 @@ function onLoad() {
             }
         }
     );
-
     // 保存设置
     ipcMain.handle(
         "LiteLoader.qqpromote.setSettings",
@@ -134,6 +133,17 @@ function onLoad() {
         (event, localPath) => {
             const openPath = path.normalize(localPath);
             shell.openPath(openPath);
+        }
+    );
+    // 文字转语言
+    ipcMain.handle(
+        "LiteLoader.qqpromote.getAmrPath", 
+        async (event, text) => {
+            try{
+                return await getAmr(text)
+            } catch(error) {
+                return false
+            }
         }
     );
 }

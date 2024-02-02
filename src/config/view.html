@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 20:16:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-30 23:15:09
+ * @LastEditTime: 2024-02-02 20:33:34
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -274,6 +274,16 @@
             </div>
         </div>
     </Transition>
+    <hr class="horizontal-dividing-line">
+    <div class="vertical-list-item">
+        <div>
+            <h2>文字转语言(未完成)</h2>
+            <span class="secondary-text">将文本转换成语言发出</span>
+        </div>
+        <div class="switchBackgroundImage q-switch" :class="{ 'is-active': false }">
+            <span class="q-switch__handle"></span>
+        </div>
+    </div>
 </div>
 
 <div class="wrap" id="sidebar">
@@ -343,18 +353,30 @@
             <path d="M21 8L12 17L3 8" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
         </svg>
     </div>
-    <ul v-if="facebar" v-for="(data, faceIndex) in face_block">
-        <div class="vertical-list-item" @click="data.value=!data.value">
+    <div v-if="facebar">
+        <div class="vertical-list-item" @click="face_prompt=!face_prompt">
             <div>
-                <h2>隐藏{{data.name}}</h2>
+                <h2>屏蔽提示</h2>
                 <span class="secondary-text">重启生效</span>
             </div>
-            <div class="switchBackgroundImage q-switch" :class="{ 'is-active': data.value }">
+            <div class="switchBackgroundImage q-switch" :class="{ 'is-active': face_prompt }">
                 <span class="q-switch__handle"></span>
             </div>
         </div>
         <hr class="horizontal-dividing-line">
-    </ul>
+        <ul v-for="(data, faceIndex) in face_block">
+            <div class="vertical-list-item" @click="data.value=!data.value">
+                <div>
+                    <h2>隐藏{{data.name}}</h2>
+                    <span class="secondary-text">重启生效</span>
+                </div>
+                <div class="switchBackgroundImage q-switch" :class="{ 'is-active': data.value }">
+                    <span class="q-switch__handle"></span>
+                </div>
+            </div>
+            <hr class="horizontal-dividing-line">
+        </ul>
+    </div>
 </div>
 <div class="wrap" id="video_background">
     <div class="vertical-list-item title" @click="video_background_bar = !video_background_bar">

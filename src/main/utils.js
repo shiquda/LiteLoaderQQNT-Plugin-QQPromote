@@ -1,14 +1,16 @@
 /*
  * @Date: 2024-01-22 20:33:56
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-30 23:12:32
+ * @LastEditTime: 2024-02-02 20:28:58
  */
 const fs = require("fs");
 const path = require("path");
+const { encode, getDuration } = require('silk-wasm')
 
 const pluginDataPath = LiteLoader.plugins.qqpromote.path.data;
 const settingsPath = path.join(pluginDataPath, "settings.json");
 const emojiPath = path.join(pluginDataPath, "emoji");
+const pttPath = path.join(pluginDataPath, "ptt");
 const remotesPath = path.join(emojiPath, "remotes.txt");
 const defaultSettings = {
     setting: {
@@ -64,6 +66,7 @@ const defaultSettings = {
                 value: false
             }
         },
+        face_prompt: false,
         face_block: {
             392: {
                 name: '新年小龙',
@@ -84,6 +87,9 @@ const defaultSettings = {
 // 设置文件判断
 if (!fs.existsSync(emojiPath)) {
     fs.mkdirSync(emojiPath, { recursive: true });
+}
+if (!fs.existsSync(pttPath)) {
+    fs.mkdirSync(pttPath, { recursive: true });
 }
 if (!fs.existsSync(remotesPath)) {
     fs.writeFileSync(remotesPath, "");
@@ -172,9 +178,16 @@ function getEmojis(){
     }
 }
 
+async function getAmr(text) {
+    const pcm = fs.readFileSync('xxx')
+    const silk = await encode(pcm, 24000)
+    fs.readFileSync(`${pttPath}/`, silk.data)
+    return 
+}
 
 module.exports = {
     replaceArk,
     getEmojis,
-    output
+    output,
+    getAmr
 }

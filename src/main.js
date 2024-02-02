@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-12 15:41:47
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-31 00:05:58
+ * @LastEditTime: 2024-01-31 19:42:08
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -32,6 +32,7 @@ function onBrowserWindowCreated(window) {
             msgList.forEach((msgItem) => {
                 let msg_seq = msgItem.msgSeq;
                 msgItem.elements.forEach((msgElement) => {
+                    // output(msgItem.msgType, msgItem.subMsgType, msgElement.grayTipElement)
                     if (msgElement.arkElement && msgElement.arkElement.bytesData && data.setting.replaceArk) {
                         const json = JSON.parse(msgElement.arkElement.bytesData);
                         if (json?.meta?.detail_1?.appid) {
@@ -40,11 +41,11 @@ function onBrowserWindowCreated(window) {
                     }
                     if (data.setting.face_block[msgElement.faceElement?.faceIndex]?.value) {
                         msgItem.msgType = 5
-                        msgItem.subMsgType = 4
+                        msgItem.subMsgType = 12
                         msgElement.elementType = 8
                         msgElement.faceElement = null
                         msgElement.grayTipElement = {
-                            subElementType: 1,
+                            subElementType: 12,
                             revokeElement: null,
                             proclamationElement: null,
                             emojiReplyElement: null,
@@ -54,7 +55,19 @@ function onBrowserWindowCreated(window) {
                             essenceElement: null,
                             groupNotifyElement: null,
                             buddyNotifyElement: null,
-                            xmlElement: null,
+                            xmlElement: {
+                                busiType: '0',
+                                busiId: '10145',
+                                c2cType: 0,
+                                serviceType: 0,
+                                ctrlFlag: 0,
+                                content: data.setting.face_prompt? `<nor txt="龙王"/> <qq uin="${msgItem.senderUid}" col="3" jp="" /> <nor txt="在群里喷水"/>`:null,
+                                templId: '0',
+                                seqId: '0',
+                                templParam: new Map([]),
+                                pbReserv: '0',
+                                members: new Map([])
+                            },
                             fileReceiptElement: null,
                             localGrayTipElement: null,
                             blockGrayTipElement: null,

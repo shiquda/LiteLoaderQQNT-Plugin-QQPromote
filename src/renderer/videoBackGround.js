@@ -1,11 +1,11 @@
 /*
  * @Date: 2024-01-26 17:29:07
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-27 16:46:14
+ * @LastEditTime: 2024-02-02 19:24:06
  */
 async function setVideoBackGround(location) {
     const setting_data = (await qqpromote.getSettings()).setting;
-    if (setting_data.video_background[location.hash].value && !document.querySelector(".qqpromote_video")){
+    if (setting_data.video_background[location.hash]?.value && !document.querySelector(".qqpromote_video")){
         document.body.insertAdjacentHTML('afterbegin', `
             <video class="qqpromote_video" autoplay muted loop>
                 <source src="local:///H:/Download/Video/83122.mp4" type="video/mp4">

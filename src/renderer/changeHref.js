@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-19 16:44:32
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-26 17:43:27
+ * @LastEditTime: 2024-02-02 19:57:56
  */
 import { setting_data, setSettings, output } from "./utils.js"
 import { setVideoBackGround } from "./videoBackGround.js"
@@ -12,18 +12,6 @@ function changeHref(location) {
             (node)=> {
                 const aria_label = node.firstChild.getAttribute("aria-label")
                 if (aria_label && !(aria_label in setting_data.setting.sidebar_list)) {
-                    setting_data.setting.sidebar_list[aria_label] = false
-                    setSettings(setting_data)
-                }
-                if (setting_data.setting.sidebar_list[aria_label]){
-                    node.remove()
-                }
-            }
-        )
-        document.querySelectorAll(".nav-item").forEach(
-            (node)=> {
-                const aria_label = node.getAttribute("aria-label")
-                if (aria_label && !(aria_label.startsWith("消息")) && !(aria_label in setting_data.setting.sidebar_list)) {
                     setting_data.setting.sidebar_list[aria_label] = false
                     setSettings(setting_data)
                 }
@@ -55,6 +43,18 @@ function changeHref(location) {
     setVideoBackGround(location)
 }
 
+function domUpNavItem(node) {
+    const aria_label = node.getAttribute("aria-label")
+    if (aria_label && !(aria_label.endsWith("未读")) && !(aria_label in setting_data.setting.sidebar_list)) {
+        setting_data.setting.sidebar_list[aria_label] = false
+        setSettings(setting_data)
+    }
+    if (setting_data.setting.sidebar_list[aria_label]){
+        node.remove()
+    }
+}
+
 export {
-    changeHref
+    changeHref,
+    domUpNavItem
 }

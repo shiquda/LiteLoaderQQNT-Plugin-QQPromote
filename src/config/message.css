@@ -117,3 +117,65 @@ video.qqpromote_video {
     object-fit: cover;
 	pointer-events: none;
 }
+
+@keyframes nameHideAnimation {
+	0% { opacity: 1; }
+	100% { opacity: 0; display: none; }
+}
+
+@keyframes messageHideAnimation {
+	0% { opacity: 1; }
+	100% { opacity: 1; padding-bottom: 0; }
+}
+
+.name_hidden {
+	animation: nameHideAnimation 0.5s ease forwards;
+}
+
+.message_hidden {
+	animation: messageHideAnimation 0.5s ease forwards;
+}
+
+
+.merge-message .ml-root.q-scroll-view .ml-item.merge.merge-main .avatar-span {
+    display: grid;
+    position: absolute;
+    top: 0px;
+}
+
+.ml-root.q-scroll-view .ml-list,
+.ml-root.q-scroll-view .avatar-span {
+    overflow: unset;
+}
+
+.ml-list.list .message-container .avatar-span {
+	top: 0px;
+    position: absolute;
+    display: grid;
+    align-items: end;
+}
+
+.ml-list.list .message-container .avatar {
+    position: sticky !important;
+    bottom: 0px !important;
+}
+
+.ml-list.list .ml-item:not(.main) .avatar-span {
+	display: none;
+}
+
+.ml-list.list .ml-item:not(.main) .user-name {
+	display: none;
+}
+
+.ml-list.list .message__timestamp {
+	display: none;
+}
+
+.ml-list.list .message {
+	padding-bottom: 0px;
+}
+
+.ml-list.list .message-container {
+	padding: 0px 20px;
+}

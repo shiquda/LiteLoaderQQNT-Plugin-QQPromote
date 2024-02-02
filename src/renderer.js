@@ -1,10 +1,10 @@
 /*
  * @Date: 2024-01-09 00:35:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-30 19:02:28
+ * @LastEditTime: 2024-02-02 19:50:37
  */
 import { domUpMessages } from "./renderer/domUpMessages.js"
-import { changeHref } from "./renderer/changeHref.js"
+import { changeHref, domUpNavItem } from "./renderer/changeHref.js"
 import { userLogin } from "./renderer/userLogin.js"
 import { setMessage } from "./renderer/setMessage.js"
 import { addrepeatmsg_menu } from "./renderer/addRepeatMsgMenu.js"
@@ -28,7 +28,7 @@ async function onLoad() {
     document.head.appendChild(link_element);
     // 自动登录和依赖检测
     const Interval = setInterval(() => {
-        if ((location.pathname === "/renderer/login.html" || location.hash == "#/login") && setting_data.setting.auto_login) {
+        if (location.pathname === "/renderer/login.html" && setting_data.setting.auto_login) {
             const loginBtnText = document.querySelector(".auto-login .q-button span");
             if (!loginBtnText) {
                 console.log(loginBtnText)
@@ -43,11 +43,8 @@ async function onLoad() {
             }
             return
         }
-        if (location.href.indexOf("#/main/message") == -1 && location.href.indexOf("#/chat/") == -1) {
-            clearInterval(Interval);
-            return
-        };
-        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.2.0")) {
+        if (location.hash !== "#/main/message" && location.href.indexOf("#/chat/") == -1) return
+        if (!(LiteLoader?.plugins?.LLAPI?.manifest?.version >= "1.2.2")) {
             setTimeout(() => {
                 Swal.fire({
                     title: 'LLAPI版本过低，请在插件市场安装最新版',
@@ -75,8 +72,9 @@ async function onLoad() {
     LLAPI.add_qmenu(addrepeatmsg_menu)
 
     LLAPI.on("dom-up-messages", domUpMessages)
-
+    
     LLAPI.on("change_href", changeHref)
+    LLAPI.on("dom-up-nav-item", domUpNavItem)
 
     LLAPI.on("set_message", setMessage)
 }

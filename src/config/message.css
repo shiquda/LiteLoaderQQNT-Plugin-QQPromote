@@ -118,6 +118,8 @@ video.qqpromote_video {
 	pointer-events: none;
 }
 
+/*
+
 @keyframes nameHideAnimation {
 	0% { opacity: 1; }
 	100% { opacity: 0; display: none; }
@@ -179,3 +181,4 @@ video.qqpromote_video {
 .ml-list.list .message-container {
 	padding: 0px 20px;
 }
+*/

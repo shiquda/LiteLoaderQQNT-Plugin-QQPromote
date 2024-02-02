@@ -6,6 +6,7 @@ let translate_hover;
 const childMsgHeight = new Map();
 
 async function domUpMessages(node) {
+    /*
     const msg_list = node.closest('.ml-list.list').querySelectorAll('.ml-item')
     Array.from(msg_list).forEach(element => {
         const targetProps = element.firstElementChild.__VUE__[0].props
@@ -23,6 +24,7 @@ async function domUpMessages(node) {
             element.classList.add('main')
         }
     });
+    */
     /*
     console.time('test');
     //const msgprops = node.firstElementChild.__VUE__[0].props

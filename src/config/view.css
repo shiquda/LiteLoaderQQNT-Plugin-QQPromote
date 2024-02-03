@@ -204,3 +204,10 @@
   transform: translateX(30px);
   opacity: 0.001;
 }
+
+/* 夜间模式-输入框 */
+@media (prefers-color-scheme: dark) {
+  .qqpromote input {
+      color: rgb(255, 255, 255);
+  }
+}

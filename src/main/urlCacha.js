@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-23 01:14:13
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-23 19:34:44
+ * @LastEditTime: 2024-02-03 18:19:30
  */
 const fs = require("fs");
 const { LowSync, JSONFileSync } = require('@commonify/lowdb');
@@ -16,8 +16,17 @@ const adapter = new JSONFileSync(`${pluginDataPath}/db.json`)
 const db = new LowSync(adapter)
 db.read()
 if (!db.data) {
-    db.data = {}
+    db.data = {
+        verison: "1.0.0",
+    }
     db.write() 
+} else if (!db.data.verison || db.data?.verison < "1.0.0"){
+    output("数据库版本过低，正在升级")
+    db.data = {
+        verison: "1.0.0",
+    }
+    db.write()
+    output("数据库升级完成")
 }
 
 async function setUrlData(url, data) {

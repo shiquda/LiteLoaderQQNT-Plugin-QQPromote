@@ -143,7 +143,7 @@ async function domUpMessages(node) {
             const msg_content = node.querySelector(".msg-content-container").firstElementChild
             msg_content.style.overflow = "visible";
             const web_ele1 = document.createElement("div");
-            web_ele1.innerHTML = message_web.format({ url: url, img: url_data.ogImage?.[0]?.url, title: url_data.ogTitle, text: url_data.ogDescription})
+            web_ele1.innerHTML = message_web.format({ url: url, img: url_data?.image, title: url_data?.title, text: url_data?.description})
             const web_ele = web_ele1.lastElementChild
             const img_ele = web_ele.querySelector(".media-photo")
             const message_width = node.querySelector('.message-content').offsetWidth

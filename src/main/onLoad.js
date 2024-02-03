@@ -6,7 +6,7 @@ const { setUrlData, getUrlData } = require(`./urlCacha.js`);
 const axios = require('axios');
 const fs = require("fs");
 const path = require("path");
-const ogs = require("open-graph-scraper");
+const { getLinkPreview } = require("./link_preview.js");
 
 function setSettings(settingsPath, content) {
     const new_config = typeof content == "string"? JSON.stringify(JSON.parse(content), null, 4):JSON.stringify(content, null, 4)
@@ -69,13 +69,12 @@ function onLoad() {
             try {
                 data = await getUrlData(url)
                 if (!data) {
-                    const options = { url: url };
-                    data = (await ogs(options)).result;
+                    data = await getLinkPreview(url);
                     setUrlData(url, data)
                 }
                 return data
             } catch (error) {
-                output(error)
+                output(`${url}获取预览信息错误: ${error}`);
                 return false
             }
         }

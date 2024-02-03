@@ -52,13 +52,9 @@ async function get_link_data(url) {
                 const imgbase64 = await get_imgbase64(data.data.pic, { headers, responseType: 'arraybuffer' });
                 const url_data = {
                     result: {
-                        ogTitle: data.data.title,
-                        ogDescription: data.data.desc,
-                        ogImage: [
-                            {
-                                url: imgbase64
-                            }
-                        ]
+                        title: data.data.title,
+                        description: data.data.desc,
+                        image: imgbase64
                     }
                 };
                 return url_data

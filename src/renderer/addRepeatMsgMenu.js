@@ -1,5 +1,5 @@
 import { setting_data, decodeQR } from "./utils.js"
-import { repeatmsg_ele, qrcode_ele, chatgpt_ele } from "./myelement.js"
+import { repeatmsg_ele, qrcode_ele, chatgpt_ele } from "./myElement.js"
 const chatgpt = qqpromote.chatgpt
 
 /**

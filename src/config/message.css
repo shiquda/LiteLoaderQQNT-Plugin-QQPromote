@@ -55,42 +55,7 @@
 	padding-left: 0px;
 }
 
-/* 链接预览 */
-.message-content__wrapper .title,
-.message-content__wrapper .text {
-	/*
-	word-break:break-word;
-	margin-top:1px
-	*/
-	max-width: var(--message-width);
-	word-wrap: break-word;
-}
 
-.message-content__wrapper .quote {
-	overflow:hidden;
-	display:flex;
-}
-.message-content__wrapper .quote:before {
-	flex:0 0 auto;
-	width:.125rem;
-	border-radius:.125rem;
-	background-color:#3390ec;
-	margin:.1875rem .5rem .125rem 0;
-	content:" "
-}
-.message-content__wrapper .media-photo {
-	max-width: var(--message-width);
-}
-.message-content__wrapper .quote-text {
-	padding-left:.625rem;
-	margin-left:-.625rem;
-	display:flex;
-	flex-direction: column;
-}
-
-.message-content__wrapper .quote:hover {
-    background-color: var(--overlay_hover);
-}
 
 
 .user_name_time {

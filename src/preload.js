@@ -2,7 +2,7 @@
  * @Author: Night-stars-1 nujj1042633805@gmail.com
  * @Date: 2023-08-05 13:44:33
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-23 20:39:37
+ * @LastEditTime: 2024-02-03 20:12:59
  * @Description: 
  * 
  * Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -42,5 +42,13 @@ contextBridge.exposeInMainWorld("qqpromote", {
     getAmrPath: (text) => ipcRenderer.invoke(
         "LiteLoader.qqpromote.getAmrPath",
         text
-    )
+    ),
+    updateStyle: (callback) => ipcRenderer.on(
+        "LiteLoader.qqpromote.updateStyle",
+        callback
+    ),
+    updateWebPageStyle: (callback) => ipcRenderer.on(
+        "LiteLoader.qqpromote.updateWebPageStyle",
+        callback
+    ),
 });

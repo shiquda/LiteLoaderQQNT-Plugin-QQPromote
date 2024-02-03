@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-09 00:35:45
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-02-02 20:44:40
+ * @LastEditTime: 2024-02-03 20:12:24
  */
 import { domUpMessages } from "./renderer/domUpMessages.js"
 import { changeHref, domUpNavItem } from "./renderer/changeHref.js"
@@ -9,6 +9,9 @@ import { userLogin } from "./renderer/userLogin.js"
 import { setMessage } from "./renderer/setMessage.js"
 import { addrepeatmsg_menu } from "./renderer/addRepeatMsgMenu.js"
 import { setting_vue } from "./renderer/setVue.js"
+
+const updateStyle = qqpromote.updateStyle;
+const updateWebPageStyle = qqpromote.updateWebPageStyle;
 
 let login_time = 3;
 
@@ -26,6 +29,18 @@ async function onLoad() {
     link_element.rel = "stylesheet";
     link_element.href = css_file_path;
     document.head.appendChild(link_element);
+    // WebPageCSS
+    const WebPageCSS_file_path = `local:///${plugin_path}/src/config/WebPage.css`;
+    const WebPageCSS_link_element = document.createElement("link");
+    WebPageCSS_link_element.rel = "stylesheet";
+    WebPageCSS_link_element.href = WebPageCSS_file_path;
+    document.head.appendChild(WebPageCSS_link_element);
+    updateStyle(() => {
+        link_element.href = `${css_file_path}?r=${new Date().getTime()}`;
+    });
+    updateWebPageStyle(() => {
+        WebPageCSS_link_element.href = `${WebPageCSS_file_path}?r=${new Date().getTime()}`;
+    });
     // 自动登录和依赖检测
     const Interval = setInterval(() => {
         if (location.pathname === "/renderer/login.html" && setting_data.setting.auto_login) {

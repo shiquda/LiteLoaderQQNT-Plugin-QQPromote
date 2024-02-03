@@ -1,12 +1,12 @@
-const { ipcMain, shell } = require("electron");
+const { ipcMain, shell, BrowserWindow } = require("electron");
 const { tencent_tmt } = require(`./tencent_tmt.js`);
 const { baidu_fanyi } = require(`./baidu_fanyi.js`);
-const { output, getAmr } = require(`./utils.js`);
+const { output, getAmr, debounce } = require(`./utils.js`);
 const { setUrlData, getUrlData } = require(`./urlCacha.js`);
+const { getLinkPreview } = require("./link_preview.js");
 const axios = require('axios');
 const fs = require("fs");
 const path = require("path");
-const { getLinkPreview } = require("./link_preview.js");
 
 function setSettings(settingsPath, content) {
     const new_config = typeof content == "string"? JSON.stringify(JSON.parse(content), null, 4):JSON.stringify(content, null, 4)
@@ -16,7 +16,31 @@ function setSettings(settingsPath, content) {
 function onLoad() {
     const pluginDataPath = LiteLoader.plugins.qqpromote.path.data;
     const settingsPath = path.join(pluginDataPath, "settings.json");
-
+    // 监听并更新message.css
+    fs.watch(
+        path.join(__dirname, "..", "config", "message.css"),
+        "utf-8",
+        debounce(() => {
+            BrowserWindow.getAllWindows().forEach(window => {
+                if (window.webContents.getURL().includes("#/main/message")) {
+                    window.webContents.send('LiteLoader.qqpromote.updateStyle');
+                }
+            })
+        }, 100)
+    );
+    
+    // 监听并编译WebPage.scss
+    fs.watch(
+        path.join(__dirname, "..", "config", "WebPage.css"),
+        "utf-8",
+        debounce(() => {
+            BrowserWindow.getAllWindows().forEach(window => {
+                if (window.webContents.getURL().includes("#/main/message")) {
+                    window.webContents.send('LiteLoader.qqpromote.updateWebPageStyle');
+                }
+            })
+        }, 100),
+    );
     // 获取设置
     ipcMain.handle(
         "LiteLoader.qqpromote.getSettings",

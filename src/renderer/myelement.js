@@ -1,14 +1,14 @@
 /*
  * @Date: 2024-01-19 16:40:54
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-25 01:48:02
+ * @LastEditTime: 2024-02-03 20:28:29
  */
 const separator_ele = document.createElement("div");
-separator_ele.innerHTML = `
+separator_ele.innerHTML = /*html*/`
 <div class="q-context-menu-separator" role="separator"></div>
 `
 const repeatmsg_ele = document.createElement("div");
-repeatmsg_ele.innerHTML = `
+repeatmsg_ele.innerHTML = /*html*/`
 <a 
  id="repeatmsg"
  class="q-context-menu-item q-context-menu-item--normal" 
@@ -26,7 +26,7 @@ repeatmsg_ele.innerHTML = `
 </a>
 `
 const qrcode_ele = document.createElement("div");
-qrcode_ele.innerHTML = `
+qrcode_ele.innerHTML = /*html*/`
 <a 
  id="qrcode"
  class="q-context-menu-item q-context-menu-item--normal" 
@@ -44,7 +44,7 @@ qrcode_ele.innerHTML = `
 </a>
 `
 const chatgpt_ele = document.createElement("div");
-chatgpt_ele.innerHTML = `
+chatgpt_ele.innerHTML = /*html*/`
 <a 
  id="chatgpt"
  class="q-context-menu-item q-context-menu-item--normal" 
@@ -62,7 +62,7 @@ chatgpt_ele.innerHTML = `
 </a>
 `
 
-const message_time = `
+const message_time = /*html*/`
 <span class="time tgico">
 <span class="i18n" dir="auto">{time}</span>
 <div class="inner tgico" title="{detail_time}">
@@ -70,14 +70,18 @@ const message_time = `
 </div>
 </span>
 `
-const message_web = `
-<div class="quote">
-  <div class="quote-text">
-    <img class="media-photo" src="{img}">
-    <div class="title">
-      <strong dir="auto">{title}</strong>
+const message_web = /*html*/`
+<div class="WebPage">
+  <div class="WebPage--content">
+    <div class="media-inner interactive">
+      <img class="media-photo" src="{img}">
     </div>
-    <div class="text" dir="auto">{text}</div>
+    <div class="WebPage-text">
+      <div class="site-title">
+        <strong dir="auto">{title}</strong>
+      </div>
+      <div class="site-description" dir="auto">{description}</div>
+    </div>
   </div>
 </div>
 `

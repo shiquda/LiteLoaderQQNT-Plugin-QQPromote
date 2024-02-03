@@ -1,0 +1,65 @@
+/* 链接预览 */
+.WebPage {
+	display:flex;
+	margin-top: .25rem;
+    margin-bottom: .125rem;
+    padding: .375rem;
+    line-height: 1.3rem;
+    background-color: rgb(217,245,206);
+    border-radius: .25rem;
+    position: relative;
+    overflow: hidden;
+}
+/* 主控件-前缀(颜色条) */
+.WebPage:before {
+	content:" ";
+    display: block;
+    position: absolute;
+    top: 0;
+    inset-inline-start: 0;
+    bottom: 0;
+    width: 3px;
+	background:rgb(69, 175, 84);
+}
+/* 主控件-悬浮 */
+.WebPage:hover {
+    background-color: var(--overlay_hover);
+}
+
+/* 小图片 */
+.WebPage.with-small-photo .WebPage--content {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+/* 内容 */
+.WebPage .WebPage--content {
+    position: relative;
+    margin-inline-start: .25rem;
+}
+
+/* 文本 */
+.WebPage .WebPage-text {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: flex-start;
+    position: relative;
+}
+
+/* 标题和描述 */
+.WebPage .site-title,
+.WebPage .site-description {
+	/*
+	word-break:break-word;
+	margin-top:1px
+	*/
+	max-width: var(--message-width);
+	word-wrap: break-word;
+}
+
+/* 图片最大宽度 */
+.WebPage .media-photo {
+	max-width: var(--message-width);
+    border-radius: 0.375rem;
+}

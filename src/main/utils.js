@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-22 20:33:56
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-02-02 20:28:58
+ * @LastEditTime: 2024-02-03 19:07:10
  */
 const fs = require("fs");
 const path = require("path");
@@ -185,9 +185,26 @@ async function getAmr(text) {
     return 
 }
 
+/**
+ * 防抖函数，避免频繁触发
+ * @param {function} func 
+ * @param {number} time 
+ * @returns {function}
+ */
+function debounce(func, time) {
+    let timer = null;
+    return (...args) => {
+      timer && clearTimeout(timer);
+      timer = setTimeout(() => {
+        func.apply(this, args);
+      }, time);
+    };
+}
+
 module.exports = {
     replaceArk,
     getEmojis,
     output,
-    getAmr
+    getAmr,
+    debounce
 }

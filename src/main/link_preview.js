@@ -1,3 +1,8 @@
+/*
+ * @Date: 2024-02-03 16:15:39
+ * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
+ * @LastEditTime: 2024-02-03 20:46:48
+ */
 const axios = require('axios');
 
 async function getHtml(url) {
@@ -23,6 +28,7 @@ async function getLinkPreview(url) {
         element.includes('name="image"') && (data.image = element.match(/content="([\s\S]*)"/)[1])
             || element.includes('property="og:image"') && (data.image = element.match(/content="([\s\S]*)"/)[1])
     });
+    data?.image?.startsWith('//') && (data.image = 'https:' + data.image);
     return data;
 }
 

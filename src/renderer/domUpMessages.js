@@ -1,5 +1,5 @@
 import { check_only_img, get_link_data, output } from "./utils.js"
-import { message_time, message_web } from "./myelement.js"
+import { message_time, message_web } from "./myElement.js"
 
 let translate_hover;
 
@@ -143,12 +143,18 @@ async function domUpMessages(node) {
             const msg_content = node.querySelector(".msg-content-container").firstElementChild
             msg_content.style.overflow = "visible";
             const web_ele1 = document.createElement("div");
-            web_ele1.innerHTML = message_web.format({ url: url, img: url_data?.image, title: url_data?.title, text: url_data?.description})
+            web_ele1.innerHTML = message_web.format({ url: url, img: url_data?.image, title: url_data?.title, description: url_data?.description})
             const web_ele = web_ele1.lastElementChild
             const img_ele = web_ele.querySelector(".media-photo")
             const message_width = node.querySelector('.message-content').offsetWidth
             web_ele.style.setProperty('--message-width', `${message_width>=300? message_width-10:300}px`);
             if (img_ele) {
+                img_ele.onload = function() {
+                    const width = this.width;
+                    //const height = this.height;
+                    output(width<message_width/3)
+                    width<message_width/3 && web_ele.classList.add('with-small-photo')
+                };
                 img_ele.onerror = function() {
                     img_ele.style.display = "none"
                 };

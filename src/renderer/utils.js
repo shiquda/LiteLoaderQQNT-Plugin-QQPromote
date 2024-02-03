@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-01-19 16:49:48
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-01-19 17:01:10
+ * @LastEditTime: 2024-02-03 21:10:17
  */
 
 const plugin_path = LiteLoader.plugins.qqpromote.path; // 插件本体的路径
@@ -10,7 +10,7 @@ const get_imgbase64 = qqpromote.get_imgbase64
 
 // 自定义format用法
 String.prototype.format = function(params) {
-    return this.replace(/\{(\w+)\}/g, (match, key) => params[key] || match);
+    return this.replace(/\{(\w+)\}/g, (match, key) => params[key] || '');
 };
 
 

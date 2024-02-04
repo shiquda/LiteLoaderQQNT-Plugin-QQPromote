@@ -227,12 +227,12 @@ async function domUpMessages(node) {
         message_container.addEventListener('click', async () => {
             const interval = setInterval(async () => {
                 let editor = await LLAPI.get_editor()
-                if (editor) {
-                    editor = editor.replace(/<msg-at.*<\/msg-at>&nbsp;/, '');
-                    LLAPI.set_editor(editor)
+                if (editor.includes("</msg-at>")) {
                     clearInterval(interval);
+                    LLAPI.del_editor("msg-at", true);
                 }
             });
+            setTimeout(() => clearInterval(interval), 50);
         })
     }
     // 名称扩展

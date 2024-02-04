@@ -112,6 +112,7 @@ async function addrepeatmsg_menu(qContextMenu, message_element) {
                             LLAPI.del_editor("msg-at", true)
                         }
                     });
+                    setTimeout(() => clearInterval(interval), 50);
                 })
             }
         }

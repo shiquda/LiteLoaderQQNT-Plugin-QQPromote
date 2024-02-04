@@ -1,6 +1,5 @@
 /* 链接预览 */
 .WebPage {
-	display:flex;
 	margin-top: .25rem;
     margin-bottom: .125rem;
     padding: .375rem;
@@ -8,7 +7,6 @@
     background-color: rgb(217,245,206);
     border-radius: .25rem;
     position: relative;
-    overflow: hidden;
 }
 /* 主控件-前缀(颜色条) */
 .WebPage:before {
@@ -21,45 +19,57 @@
     width: 3px;
 	background:rgb(69, 175, 84);
 }
-/* 主控件-悬浮 */
+/* 主控件-悬浮
 .WebPage:hover {
     background-color: var(--overlay_hover);
 }
+ */
 
-/* 小图片 */
+/* 小图片
 .WebPage.with-small-photo .WebPage--content {
     display: flex;
     flex-direction: row-reverse;
 }
+ */
 
 /* 内容 */
 .WebPage .WebPage--content {
+    max-width: var(--message-width);
     position: relative;
     margin-inline-start: .25rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 8;
+    overflow: hidden;
 }
 
 /* 文本 */
 .WebPage .WebPage-text {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    align-items: flex-start;
     position: relative;
 }
 
 /* 标题和描述 */
 .WebPage .site-title,
 .WebPage .site-description {
-	/*
-	word-break:break-word;
-	margin-top:1px
-	*/
-	max-width: var(--message-width);
-	word-wrap: break-word;
+    word-wrap: break-word;
 }
 
 /* 图片最大宽度 */
 .WebPage .media-photo {
-	max-width: var(--message-width);
+    max-width: var(--message-width);
     border-radius: 0.375rem;
+}
+
+/* 图片-环绕布局 */
+.WebPage.with-small-photo .media-photo {
+    float: right;
+    margin-left: 0.5em;
+}
+
+/* 夜间模式-输入框 */
+@media (prefers-color-scheme: dark) {
+    .WebPage {
+        color: rgb(242, 242, 242);
+        background-color: rgb(39,62,85,0.5);
+    }
 }

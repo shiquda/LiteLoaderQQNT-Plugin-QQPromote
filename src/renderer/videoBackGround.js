@@ -1,14 +1,14 @@
 /*
  * @Date: 2024-01-26 17:29:07
  * @LastEditors: Night-stars-1 nujj1042633805@gmail.com
- * @LastEditTime: 2024-02-02 19:24:06
+ * @LastEditTime: 2024-02-04 18:02:30
  */
 async function setVideoBackGround(location) {
     const setting_data = (await qqpromote.getSettings()).setting;
     if (setting_data.video_background[location.hash]?.value && !document.querySelector(".qqpromote_video")){
-        document.body.insertAdjacentHTML('afterbegin', `
+        document.body.insertAdjacentHTML('afterbegin', /*html*/`
             <video class="qqpromote_video" autoplay muted loop>
-                <source src="local:///H:/Download/Video/83122.mp4" type="video/mp4">
+                <source src="local:///C:/Users/Administrator/Videos/动漫/[Airota][Majo no Tabitabi][BDRip 1080p HEVC-10bit FLAC ASS]/[Airota][Majo no Tabitabi][02][BDRip 1080p HEVC-10bit FLAC ASS].mkv" type="video/mp4">
             </video>
             
         `);// <div class="qqpromote_video_overlay"></div>

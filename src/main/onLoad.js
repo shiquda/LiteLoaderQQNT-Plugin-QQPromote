@@ -143,7 +143,9 @@ function onLoad() {
                     }
                 );
                 output(response?.data)
-                return response?.data?.choices?.[0]?.message?.content
+                let msg = response?.data?.choices?.[0]?.message?.content
+                msg = msg.replaceAll("\n", "<br>")
+                return msg
             } catch (error) {
                 output(error)
                 return false

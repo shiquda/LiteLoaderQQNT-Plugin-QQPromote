@@ -9,7 +9,7 @@ const fs = require("fs");
 const path = require("path");
 
 function setSettings(settingsPath, content) {
-    const new_config = typeof content == "string"? JSON.stringify(JSON.parse(content), null, 4):JSON.stringify(content, null, 4)
+    const new_config = typeof content == "string" ? JSON.stringify(JSON.parse(content), null, 4) : JSON.stringify(content, null, 4)
     fs.writeFileSync(settingsPath, new_config, "utf-8");
 }
 
@@ -28,7 +28,7 @@ function onLoad() {
             })
         }, 100)
     );
-    
+
     // 监听并编译WebPage.scss
     fs.watch(
         path.join(__dirname, "..", "config", "WebPage.css"),
@@ -126,12 +126,12 @@ function onLoad() {
                 const response = await axios.post(
                     data.chatgpt_url,
                     {
-                        'model': 'gpt-3.5-turbo',
+                        'model': data.chatgpt_model,
                         'messages': [
-                        {
-                            'role': 'user',
-                            'content': content
-                        }
+                            {
+                                'role': 'user',
+                                'content': content
+                            }
                         ],
                         'temperature': 0.7
                     },
@@ -154,7 +154,7 @@ function onLoad() {
     )
     // 打开文件夹
     ipcMain.handle(
-        "LiteLoader.qqpromote.openFolder", 
+        "LiteLoader.qqpromote.openFolder",
         (event, localPath) => {
             const openPath = path.normalize(localPath);
             shell.openPath(openPath);
@@ -162,11 +162,11 @@ function onLoad() {
     );
     // 文字转语言
     ipcMain.handle(
-        "LiteLoader.qqpromote.getAmrPath", 
+        "LiteLoader.qqpromote.getAmrPath",
         async (event, text) => {
-            try{
+            try {
                 return await getAmr(text)
-            } catch(error) {
+            } catch (error) {
                 return false
             }
         }

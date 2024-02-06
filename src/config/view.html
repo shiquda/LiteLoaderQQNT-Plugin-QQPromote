@@ -168,6 +168,27 @@
                     API服务器:<input class="text-input" type="text" spellcheck="false" v-model="chatgpt_url" placeholder="API服务器">
                 </div>
                 <input class="text-input" type="password" spellcheck="false" v-model="chatgpt_key" placeholder="chatgpt_key">
+                <div class="vertical-list-item text">
+                    模型:<input class="text-input" type="text" spellcheck="false" v-model="chatgpt_model" placeholder="默认是gpt-3.5-turbo，可自定义" list="models">
+                    <datalist id="models">
+                        <option value="gpt-3.5-turbo">
+                        <option value="gpt-3.5-turbo-0301">
+                        <option value="gpt-3.5-turbo-0613">
+                        <option value="gpt-3.5-turbo-1106">
+                        <option value="gpt-3.5-turbo-16k">
+                        <option value="gpt-3.5-turbo-16k-0613">
+                        <option value="gpt-3.5-turbo-0125">
+                        <option value="gpt-4">
+                        <option value="gpt-4-0314">
+                        <option value="gpt-4-0613">
+                        <option value="gpt-4-1106-preview">
+                        <option value="gpt-4-32k">
+                        <option value="gpt-4-32k-0314">
+                        <option value="gpt-4-32k-0613">
+                        <option value="gpt-4-0125-preview">
+                    </datalist>
+                </div>
+                <span class="secondary-text">重启生效</span>
             </div>
         </div>
     </Transition>
